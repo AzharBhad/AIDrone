@@ -1,0 +1,33 @@
+testing_strategy:
+  test_levels:
+    unit_testing:
+      coverage:
+        target: "95%"
+        critical_paths: "100%"
+      automation:
+        tools: ["Jest", "JUnit"]
+        execution: "Pre-commit"
+
+    integration_testing:
+      coverage:
+        target: "90%"
+        api_coverage: "100%"
+      types:
+        - name: "API Testing"
+          tools: ["Postman", "Karate"]
+        - name: "Service Integration"
+          tools: ["TestContainers"]
+
+    performance_testing:
+      types:
+        load_testing:
+          tool: "k6"
+          scenarios:
+            - name: "Peak load"
+              users: "10000"
+              duration: "1 hour"
+        stress_testing:
+          tool: "JMeter"
+          scenarios:
+            - name: "Breaking point"
+              ramp_up: "Linear"

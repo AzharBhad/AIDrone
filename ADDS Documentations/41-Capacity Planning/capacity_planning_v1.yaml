@@ -1,0 +1,33 @@
+capacity_planning:
+  infrastructure_capacity:
+    drone_fleet:
+      metrics:
+        - name: "Active fleet size"
+          current: "500"
+          max_capacity: "1000"
+        - name: "Delivery capacity"
+          current: "5000/day"
+          peak_capacity: "10000/day"
+
+    ground_infrastructure:
+      components:
+        - name: "Charging stations"
+          current: "50"
+          planned: "100"
+        - name: "Maintenance hubs"
+          current: "10"
+          planned: "20"
+
+  scaling_strategy:
+    triggers:
+      demand:
+        - threshold: "80% capacity"
+          action: "Fleet expansion"
+        - threshold: "90% capacity"
+          action: "Emergency scaling"
+
+    growth_planning:
+      quarterly:
+        - "Demand forecast"
+        - "Resource allocation"
+        - "Infrastructure expansion"

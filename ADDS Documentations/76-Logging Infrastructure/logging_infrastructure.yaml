@@ -1,0 +1,27 @@
+logging_infrastructure:
+  collection:
+    sources:
+      application:
+        - type: "Application logs"
+          format: "JSON"
+          retention: "30 days"
+        - type: "Access logs"
+          format: "Combined"
+          retention: "90 days"
+
+      system:
+        - type: "System metrics"
+          interval: "1 minute"
+          retention: "7 days"
+
+  processing:
+    pipeline:
+      collection: "Fluentd"
+      processing: "Logstash"
+      storage: "Elasticsearch"
+      visualization: "Kibana"
+
+    enrichment:
+      - "Geolocation"
+      - "User agent parsing"
+      - "Error categorization"

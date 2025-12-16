@@ -1,0 +1,28 @@
+#3. API Documentation
+api_specifications:
+  version: "2.0"
+  base_url: "https://api.drone-delivery.com/v2"
+
+  endpoints:
+    flight_operations:
+      - path: "/flights"
+        methods: ["GET", "POST", "PUT"]
+        authentication: "OAuth2.0"
+        rate_limit: 1000
+
+      - path: "/missions"
+        methods: ["GET", "POST", "DELETE"]
+        authentication: "OAuth2.0"
+        rate_limit: 500
+
+    telemetry:
+      - path: "/telemetry/stream"
+        protocol: "WebSocket"
+        authentication: "JWT"
+        data_format: "Protocol Buffers"
+
+    maintenance:
+      - path: "/maintenance"
+        methods: ["GET", "POST", "PATCH"]
+        authentication: "API Key"
+        rate_limit: 100

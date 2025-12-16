@@ -1,0 +1,17 @@
+graph TD
+    subgraph Core
+        C1[Control Center] --> C2[Regional Hubs]
+        C2 --> C3[Edge Nodes]
+    end
+
+    subgraph Distribution
+        C3 --> D1[Ground Stations]
+        D1 --> D2[Mesh Network]
+        D2 --> D3[Drone Fleet]
+    end
+
+    subgraph Backup
+        B1[Satellite] --> D3
+        B2[4G LTE] --> D3
+        B3[Emergency Comm] --> D3
+    end

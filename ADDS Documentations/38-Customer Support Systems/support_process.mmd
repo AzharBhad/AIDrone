@@ -1,0 +1,18 @@
+%%Support Process Flow
+graph TD
+    subgraph Initial_Contact
+        I1[Customer Query] --> I2[Channel Selection]
+        I2 --> I3[Issue Classification]
+    end
+
+    subgraph Resolution
+        I3 --> R1[First Level Support]
+        R1 --> R2[Escalation]
+        R2 --> R3[Specialized Support]
+    end
+
+    subgraph Follow_Up
+        R3 --> F1[Resolution Verification]
+        F1 --> F2[Customer Feedback]
+        F2 --> F3[Process Improvement]
+    end

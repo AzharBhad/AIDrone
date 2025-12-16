@@ -1,0 +1,19 @@
+graph TD
+    subgraph User_Journey
+        L1[Login] --> D1[Dashboard]
+        D1 --> O1[Order Management]
+        D1 --> F1[Flight Tracking]
+        D1 --> R1[Reporting]
+    end
+
+    subgraph Interactions
+        O1 --> OC[Order Creation]
+        F1 --> FT[Track Delivery]
+        R1 --> RA[Analytics View]
+    end
+
+    subgraph Feedback
+        OC --> N1[Notifications]
+        FT --> N1
+        RA --> N1
+    end

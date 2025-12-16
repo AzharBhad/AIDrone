@@ -1,0 +1,33 @@
+observability:
+  metrics:
+    collection:
+      proxy_metrics:
+        - "Request count"
+        - "Latency"
+        - "Error rate"
+      service_metrics:
+        - "Service health"
+        - "Resource usage"
+        - "Custom metrics"
+
+  tracing:
+    implementation: "OpenTelemetry"
+    sampling:
+      type: "Probabilistic"
+      rate: 0.01
+    correlation:
+      enabled: true
+      propagation: "W3C TraceContext"
+
+  visualization:
+    dashboards:
+      - name: "Service Health"
+        metrics:
+          - "Success rate"
+          - "Latency p95"
+          - "Error rate"
+      - name: "Mesh Overview"
+        metrics:
+          - "Traffic flow"
+          - "Service map"
+          - "Alert status"

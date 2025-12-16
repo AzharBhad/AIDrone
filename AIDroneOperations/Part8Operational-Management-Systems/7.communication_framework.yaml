@@ -1,0 +1,47 @@
+#7. Communication Framework
+communication_management:
+  stakeholder_categories:
+    internal:
+      - group: "Operations Team"
+        communication_frequency: "Daily"
+        channels:
+          - "Operations dashboard"
+          - "Team meetings"
+          - "Emergency alerts"
+
+      - group: "Management"
+        communication_frequency: "Weekly"
+        channels:
+          - "Performance reports"
+          - "Strategy meetings"
+          - "Executive dashboard"
+
+    external:
+      - group: "Customers"
+        communication_frequency: "Real-time"
+        channels:
+          - "Mobile app"
+          - "Email notifications"
+          - "Support portal"
+
+      - group: "Regulators"
+        communication_frequency: "As required"
+        channels:
+          - "Formal reports"
+          - "Compliance updates"
+          - "Audit documentation"
+
+  reporting_framework:
+    operational_reports:
+      frequency: "Daily"
+      content:
+        - "Performance metrics"
+        - "Incident reports"
+        - "Resource utilization"
+
+    management_reports:
+      frequency: "Monthly"
+      content:
+        - "KPI dashboard"
+        - "Financial metrics"
+        - "Strategic initiatives"

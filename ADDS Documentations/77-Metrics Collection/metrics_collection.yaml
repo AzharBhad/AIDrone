@@ -1,0 +1,25 @@
+metrics_collection:
+  metric_types:
+    system:
+      resources:
+        - name: "CPU Usage"
+          type: "Gauge"
+          interval: "10s"
+        - name: "Memory Usage"
+          type: "Gauge"
+          interval: "30s"
+
+    business:
+      kpis:
+        - name: "Delivery Success Rate"
+          type: "Counter"
+          interval: "1m"
+        - name: "Average Delivery Time"
+          type: "Histogram"
+          interval: "5m"
+
+  storage:
+    implementation: "Prometheus"
+    retention: "15 days"
+    replication: "2x"
+    compression: "enabled"

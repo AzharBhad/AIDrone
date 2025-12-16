@@ -1,0 +1,17 @@
+graph TD
+    subgraph Detection
+        D1[Incident Detection] --> D2[Impact Assessment]
+        D2 --> D3[DR Plan Activation]
+    end
+
+    subgraph Failover
+        D3 --> F1[System Failover]
+        F1 --> F2[Data Sync]
+        F2 --> F3[Service Restoration]
+    end
+
+    subgraph Recovery
+        F3 --> R1[Validation]
+        R1 --> R2[Normal Operations]
+        R2 --> R3[Post-Mortem]
+    end

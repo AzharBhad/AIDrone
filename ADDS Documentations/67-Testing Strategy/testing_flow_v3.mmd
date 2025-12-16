@@ -1,0 +1,17 @@
+graph TD
+    subgraph Development
+        D1[Unit Tests] --> D2[Integration Tests]
+        D2 --> D3[Component Tests]
+    end
+
+    subgraph Quality
+        D3 --> Q1[System Tests]
+        Q1 --> Q2[Performance Tests]
+        Q2 --> Q3[Security Tests]
+    end
+
+    subgraph Acceptance
+        Q3 --> A1[UAT]
+        A1 --> A2[Production Tests]
+        A2 --> A3[Monitoring]
+    end

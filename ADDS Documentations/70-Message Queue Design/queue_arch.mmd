@@ -1,0 +1,16 @@
+graph TD
+    subgraph Publishers
+        P1[Flight System] --> B1[Message Broker]
+        P2[Delivery System] --> B1
+    end
+
+    subgraph Processing
+        B1 --> PR1[Stream Processor]
+        PR1 --> PR2[State Store]
+    end
+
+    subgraph Subscribers
+        PR2 --> S1[Analytics]
+        PR2 --> S2[Monitoring]
+        PR2 --> S3[Storage]
+    end

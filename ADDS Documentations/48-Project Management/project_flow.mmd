@@ -1,0 +1,17 @@
+graph TD
+    subgraph Initiation
+        I1[Project Charter] --> I2[Stakeholder Analysis]
+        I2 --> I3[Requirements]
+    end
+
+    subgraph Planning
+        I3 --> P1[Project Plan]
+        P1 --> P2[Resource Allocation]
+        P2 --> P3[Risk Assessment]
+    end
+
+    subgraph Execution
+        P3 --> E1[Sprint Planning]
+        E1 --> E2[Development]
+        E2 --> E3[Review]
+    end

@@ -1,0 +1,31 @@
+operational_procedures:
+  flight_operations:
+    pre_flight:
+      checklist:
+        - "System diagnostics"
+        - "Weather verification"
+        - "Route validation"
+      timeframe: "5 minutes"
+
+    in_flight:
+      monitoring:
+        - "Real-time telemetry"
+        - "Environmental conditions"
+        - "Battery status"
+      procedures:
+        - "Dynamic route adjustment"
+        - "Emergency protocols"
+        - "Communication checks"
+
+  ground_operations:
+    maintenance:
+      schedules:
+        daily: ["Visual inspection", "Basic tests"]
+        weekly: ["Component check", "Software update"]
+        monthly: ["Full inspection", "Calibration"]
+
+    logistics:
+      procedures:
+        - "Inventory management"
+        - "Supply chain coordination"
+        - "Resource allocation"

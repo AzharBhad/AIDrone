@@ -1,0 +1,17 @@
+graph TD
+    subgraph Preparation
+        P1[Test Planning] --> P2[Environment Setup]
+        P2 --> P3[Data Preparation]
+    end
+
+    subgraph Execution
+        P3 --> E1[Component Tests]
+        E1 --> E2[Integration Tests]
+        E2 --> E3[System Tests]
+    end
+
+    subgraph Validation
+        E3 --> V1[Results Analysis]
+        V1 --> V2[Bug Tracking]
+        V2 --> V3[Sign-off]
+    end

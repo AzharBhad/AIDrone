@@ -1,0 +1,25 @@
+%%Change Process Flow
+graph TD
+    subgraph Request_Phase
+        R1[Change Request] --> R2[Initial Assessment]
+        R2 --> R3[Categorization]
+    end
+
+    subgraph Evaluation
+        R3 --> E1[Technical Review]
+        E1 --> E2[Risk Assessment]
+        E2 --> E3[CAB Review]
+    end
+
+    subgraph Implementation
+        E3 --> I1[Implementation Plan]
+        I1 --> I2[Testing]
+        I2 --> I3[Deployment]
+        I3 --> I4[Validation]
+    end
+
+    subgraph Review
+        I4 --> P1[Post-Implementation Review]
+        P1 --> P2[Documentation Update]
+        P2 --> P3[Closure]
+    end

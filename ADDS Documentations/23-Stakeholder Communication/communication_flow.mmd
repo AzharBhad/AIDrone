@@ -1,0 +1,21 @@
+graph TD
+    subgraph Internal_Comms
+        I1[Daily Updates] --> I2[Team Briefings]
+        I2 --> I3[Performance Reviews]
+    end
+
+    subgraph External_Comms
+        E1[Customer Updates] --> E2[Public Relations]
+        E2 --> E3[Regulatory Reports]
+    end
+
+    subgraph Emergency_Comms
+        M1[Incident Detection] --> M2[Alert System]
+        M2 --> M3[Response Coordination]
+    end
+
+    subgraph Feedback
+        F1[Collect Feedback] --> F2[Analysis]
+        F2 --> F3[Implementation]
+        F3 --> I1
+    end

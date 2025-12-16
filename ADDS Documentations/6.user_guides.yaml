@@ -1,0 +1,15 @@
+#User Guides
+operator_manual:
+  sections:
+    - "System overview"
+    - "Operating procedures"
+    - "Emergency protocols"
+    - "Maintenance guidelines"
+    - "Troubleshooting"
+
+customer_guide:
+    - "Service overview"
+    - "Ordering process"
+    - "Track and trace"
+    - "Support contact"
+    - "FAQs"

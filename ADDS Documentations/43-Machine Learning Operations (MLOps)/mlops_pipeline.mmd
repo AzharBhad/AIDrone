@@ -1,0 +1,24 @@
+graph TD
+    subgraph Data_Pipeline
+        D1[Data Collection] --> D2[Preprocessing]
+        D2 --> D3[Feature Engineering]
+    end
+
+    subgraph Training_Pipeline
+        D3 --> T1[Model Training]
+        T1 --> T2[Validation]
+        T2 --> T3[Testing]
+    end
+
+    subgraph Deployment_Pipeline
+        T3 --> P1[Staging]
+        P1 --> P2[Canary]
+        P2 --> P3[Production]
+    end
+
+    subgraph Monitoring
+        P3 --> M1[Performance]
+        M1 --> M2[Drift Detection]
+        M2 --> M3[Retraining]
+        M3 --> D1
+    end

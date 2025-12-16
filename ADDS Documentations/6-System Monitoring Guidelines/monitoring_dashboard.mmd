@@ -1,0 +1,19 @@
+%%Monitoring Dashboard Layout
+graph TD
+    subgraph Real-time_Metrics
+        RT1[System Health] --> D1[Main Dashboard]
+        RT2[Drone Status] --> D1
+        RT3[Weather Data] --> D1
+    end
+
+    subgraph Historical_Data
+        H1[Performance Trends] --> D2[Analytics Dashboard]
+        H2[Incident History] --> D2
+        H3[Maintenance Logs] --> D2
+    end
+
+    subgraph Alerts
+        A1[Active Alerts] --> D3[Alert Dashboard]
+        A2[Alert History] --> D3
+        A3[Response Tracking] --> D3
+    end

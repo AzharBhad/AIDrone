@@ -1,0 +1,18 @@
+%%Customer Journey Flow
+graph TD
+    subgraph Awareness
+        A1[Discovery] --> A2[Research]
+        A2 --> A3[Evaluation]
+    end
+
+    subgraph Engagement
+        A3 --> E1[Registration]
+        E1 --> E2[First Order]
+        E2 --> E3[Delivery]
+    end
+
+    subgraph Retention
+        E3 --> R1[Feedback]
+        R1 --> R2[Support]
+        R2 --> R3[Loyalty]
+    end

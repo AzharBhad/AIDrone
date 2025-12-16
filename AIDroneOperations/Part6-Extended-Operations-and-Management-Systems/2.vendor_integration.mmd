@@ -1,0 +1,20 @@
+%% 2. Vendor Integration Architecture
+graph TD
+    subgraph Vendor_Portal
+        V1[Vendor Registration] --> V2[Qualification]
+        V2 --> V3[Contract Management]
+        V3 --> V4[Performance Monitoring]
+    end
+
+    subgraph Quality_Control
+        Q1[Incoming Inspection] --> Q2[Testing]
+        Q2 --> Q3[Certification]
+        Q3 --> Q4[Approval]
+    end
+
+    subgraph Integration
+        V4 --> |Data| I1[Analytics]
+        Q4 --> |Results| I1
+        I1 --> |Reports| D1[Decision Making]
+        D1 --> |Actions| V3
+    end

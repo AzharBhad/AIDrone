@@ -1,0 +1,32 @@
+#Governance Framework
+data_governance:
+  data_classification:
+    categories:
+      sensitive:
+        types:
+          - "Personal information"
+          - "Financial data"
+          - "Location data"
+        retention: "2 years"
+        encryption: "Required"
+
+      operational:
+        types:
+          - "Flight telemetry"
+          - "System logs"
+          - "Performance metrics"
+        retention: "5 years"
+        encryption: "Optional"
+
+  compliance_requirements:
+    privacy:
+      - standard: "GDPR"
+        scope: "EU operations"
+      - standard: "CCPA"
+        scope: "California operations"
+
+    security:
+      - standard: "ISO 27001"
+        scope: "All operations"
+      - standard: "SOC 2"
+        scope: "Data handling"

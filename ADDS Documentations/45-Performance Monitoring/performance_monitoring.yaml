@@ -1,0 +1,30 @@
+#Monitoring Framework
+performance_monitoring:
+  metrics_collection:
+    system_metrics:
+      - name: "CPU Utilization"
+        threshold: "80%"
+        sampling: "1 minute"
+      - name: "Memory Usage"
+        threshold: "85%"
+        sampling: "1 minute"
+      - name: "Network Latency"
+        threshold: "100ms"
+        sampling: "30 seconds"
+
+    business_metrics:
+      - name: "Delivery Success Rate"
+        target: "99.9%"
+        calculation: "Rolling 24h"
+      - name: "Customer Satisfaction"
+        target: "4.8/5.0"
+        calculation: "Daily average"
+
+  alerting_system:
+    rules:
+      critical:
+        response: "Immediate"
+        notification: ["SMS", "Email", "Phone"]
+      warning:
+        response: "15 minutes"
+        notification: ["Email", "Dashboard"]

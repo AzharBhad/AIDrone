@@ -1,0 +1,17 @@
+sequenceDiagram
+    participant OMS as Order System
+    participant AI as AI Controller
+    participant Drone as Drone
+    participant UTM as UTM System
+    participant Weather as Weather Service
+
+    OMS->>AI: New Delivery Request
+    AI->>Weather: Check Conditions
+    Weather-->>AI: Weather Status
+    AI->>UTM: Request Clearance
+    UTM-->>AI: Flight Authorization
+    AI->>Drone: Initialize Systems
+    Drone-->>AI: System Status
+    AI->>Drone: Load Mission Data
+    Drone-->>AI: Mission Confirmed
+    AI->>OMS: Ready for Takeoff

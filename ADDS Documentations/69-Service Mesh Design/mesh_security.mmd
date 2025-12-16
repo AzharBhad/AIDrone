@@ -1,0 +1,17 @@
+graph TD
+    subgraph Authentication
+        A1[Identity Provider] --> A2[Authentication Policy]
+        A2 --> A3[Service Account]
+    end
+
+    subgraph Authorization
+        A3 --> B1[RBAC Policy]
+        B1 --> B2[Service Policy]
+        B2 --> B3[Access Control]
+    end
+
+    subgraph Communication
+        B3 --> C1[mTLS]
+        C1 --> C2[Encryption]
+        C2 --> C3[Service-to-Service]
+    end

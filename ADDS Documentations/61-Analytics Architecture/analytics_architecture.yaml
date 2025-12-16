@@ -1,0 +1,27 @@
+analytics_architecture:
+  data_pipeline:
+    ingestion:
+      real_time:
+        - source: "Drone telemetry"
+          volume: "500GB/day"
+        - source: "System metrics"
+          volume: "200GB/day"
+      batch:
+        - source: "Historical data"
+          frequency: "Daily"
+        - source: "External data"
+          frequency: "Weekly"
+
+    processing:
+      stream_processing:
+        engine: "Apache Flink"
+        latency: "< 100ms"
+      batch_processing:
+        engine: "Apache Spark"
+        window: "24 hours"
+
+  storage:
+    data_lake:
+      raw_zone: "S3/Parquet"
+      processed_zone: "Delta Lake"
+      curated_zone: "Snowflake"

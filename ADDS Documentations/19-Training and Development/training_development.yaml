@@ -1,0 +1,32 @@
+#Training Framework
+training_programs:
+  technical_training:
+    basic_operations:
+      duration: "40 hours"
+      modules:
+        - name: "System Overview"
+          duration: "8 hours"
+        - name: "Safety Procedures"
+          duration: "16 hours"
+        - name: "Emergency Response"
+          duration: "16 hours"
+
+    advanced_operations:
+      duration: "80 hours"
+      prerequisites: ["basic_operations"]
+      modules:
+        - name: "Complex Operations"
+          duration: "32 hours"
+        - name: "Troubleshooting"
+          duration: "24 hours"
+        - name: "System Administration"
+          duration: "24 hours"
+
+  certification_path:
+    levels:
+      - name: "Level 1 - Operator"
+        requirements: ["basic_operations"]
+      - name: "Level 2 - Senior Operator"
+        requirements: ["advanced_operations", "1 year experience"]
+      - name: "Level 3 - Specialist"
+        requirements: ["advanced_operations", "2 years experience"]

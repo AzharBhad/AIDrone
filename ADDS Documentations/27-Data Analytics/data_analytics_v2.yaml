@@ -1,0 +1,29 @@
+data_analytics:
+  data_sources:
+    operational_data:
+      - source: "Flight telemetry"
+        frequency: "Real-time"
+        volume: "500GB/day"
+      - source: "Customer data"
+        frequency: "Daily"
+        volume: "50GB/day"
+
+    external_data:
+      - source: "Weather data"
+        frequency: "15 minutes"
+      - source: "Traffic data"
+        frequency: "5 minutes"
+
+  analytics_types:
+    predictive:
+      models:
+        - name: "Demand forecasting"
+          accuracy: "93%"
+        - name: "Maintenance prediction"
+          accuracy: "95%"
+
+    prescriptive:
+      applications:
+        - "Route optimization"
+        - "Resource allocation"
+        - "Risk management"

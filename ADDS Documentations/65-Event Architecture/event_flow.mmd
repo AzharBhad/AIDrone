@@ -1,0 +1,16 @@
+graph TD
+    subgraph Publishers
+        P1[Flight Control] --> E1[Event Bus]
+        P2[Delivery System] --> E1
+    end
+
+    subgraph Processing
+        E1 --> PR1[Event Processor]
+        PR1 --> PR2[Event Store]
+    end
+
+    subgraph Subscribers
+        PR2 --> S1[Analytics]
+        PR2 --> S2[Monitoring]
+        PR2 --> S3[Notification]
+    end

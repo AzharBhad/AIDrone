@@ -1,0 +1,46 @@
+service_mesh:
+  components:
+    control_plane:
+      implementation: "Istio"
+      features:
+        - name: "Traffic Management"
+          capabilities:
+            - "Load balancing"
+            - "Circuit breaking"
+            - "Fault injection"
+        - name: "Security"
+          capabilities:
+            - "mTLS"
+            - "RBAC"
+            - "Authentication"
+
+    data_plane:
+      proxy: "Envoy"
+      configuration:
+        resources:
+          cpu: "0.5 cores"
+          memory: "256Mi"
+        networking:
+          ports:
+            - 15001: "Inbound"
+            - 15006: "Outbound"
+
+  policies:
+    traffic:
+      routing:
+        strategies:
+          - "Weighted routing"
+          - "Circuit breaking"
+          - "Retry policies"
+      resilience:
+        timeout: "2s"
+        retries: 3
+        circuit_breaker:
+          threshold: "50%"
+
+    security:
+      authentication:
+        - type: "JWT"
+          issuer: "Internal IdP"
+        - type: "mTLS"
+          mode: "STRICT"

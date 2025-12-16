@@ -1,0 +1,17 @@
+graph TD
+    subgraph Planning
+        P1[Demand Analysis] --> P2[Resource Planning]
+        P2 --> P3[Allocation Strategy]
+    end
+
+    subgraph Execution
+        P3 --> E1[Resource Assignment]
+        E1 --> E2[Monitoring]
+        E2 --> E3[Optimization]
+    end
+
+    subgraph Adjustment
+        E3 --> A1[Performance Review]
+        A1 --> A2[Resource Reallocation]
+        A2 --> P1
+    end

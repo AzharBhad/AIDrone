@@ -1,0 +1,38 @@
+#Asset Management Framework
+asset_management:
+  drone_fleet:
+    categories:
+      standard_drones:
+        capacity: "up to 5kg"
+        range: "10km"
+        maintenance_interval: "100 flight hours"
+      heavy_lift_drones:
+        capacity: "up to 15kg"
+        range: "8km"
+        maintenance_interval: "80 flight hours"
+
+  infrastructure:
+    charging_stations:
+      types:
+        - "Quick charge"
+        - "Standard charge"
+        - "Battery swap"
+      maintenance_schedule: "Monthly"
+
+    ground_stations:
+      components:
+        - "Communication systems"
+        - "Weather monitoring"
+        - "Security systems"
+      maintenance_schedule: "Weekly"
+
+  lifecycle_management:
+    acquisition:
+      - "Need assessment"
+      - "Procurement process"
+      - "Acceptance testing"
+
+    retirement:
+      - "Performance evaluation"
+      - "Replacement planning"
+      - "Secure disposal"

@@ -1,0 +1,28 @@
+%% 2. System Integration Architecture
+graph TD
+    subgraph External_Systems
+        E1[Weather Services] --> |API| IM[Integration Manager]
+        E2[UTM Systems] --> |API| IM
+        E3[Maintenance Systems] --> |API| IM
+        E4[Customer Systems] --> |API| IM
+    end
+
+    subgraph Integration_Layer
+        IM --> |Transform| DL[Data Lake]
+        IM --> |Real-time| ES[Event Stream]
+        DL --> |Analytics| AP[Analytics Platform]
+        ES --> |Processing| RT[Real-time Processing]
+    end
+
+    subgraph Core_Systems
+        AP --> |Insights| DS[Drone System]
+        RT --> |Commands| DS
+        DS --> |Feedback| AP
+        DS --> |Events| RT
+    end
+
+    subgraph Security_Layer
+        SEC[Security Gateway] --> |Protect| IM
+        SEC --> |Monitor| DL
+        SEC --> |Audit| ES
+    end

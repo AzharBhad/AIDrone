@@ -1,0 +1,32 @@
+event_architecture:
+  event_types:
+    domain_events:
+      flight_events:
+        - name: "FlightStarted"
+          schema_version: "1.0"
+          attributes: ["flightId", "timestamp", "location"]
+        - name: "DeliveryCompleted"
+          schema_version: "1.0"
+          attributes: ["deliveryId", "timestamp", "status"]
+
+    system_events:
+      operational:
+        - name: "SystemAlert"
+          priority: "High"
+          handlers: ["AlertService", "NotificationService"]
+        - name: "MetricsUpdate"
+          priority: "Normal"
+          handlers: ["MetricsService", "DashboardService"]
+
+  event_flow:
+    publishers:
+      - service: "FlightControl"
+        events: ["FlightStarted", "FlightCompleted"]
+      - service: "DeliveryManagement"
+        events: ["DeliveryAssigned", "DeliveryCompleted"]
+
+    subscribers:
+      - service: "Analytics"
+        subscriptions: ["All flight events", "All delivery events"]
+      - service: "Monitoring"
+        subscriptions: ["SystemAlert", "MetricsUpdate"]

@@ -1,0 +1,32 @@
+#Training Framework
+training_systems:
+  program_types:
+    technical_training:
+      modules:
+        - name: "Flight Operations"
+          duration: "40 hours"
+          certification: "Required"
+        - name: "Maintenance"
+          duration: "30 hours"
+          certification: "Required"
+        - name: "Emergency Response"
+          duration: "20 hours"
+          certification: "Required"
+
+    soft_skills:
+      modules:
+        - name: "Customer Service"
+          duration: "16 hours"
+        - name: "Communication"
+          duration: "12 hours"
+        - name: "Leadership"
+          duration: "24 hours"
+
+  delivery_methods:
+    platforms:
+      - name: "Virtual Reality"
+        usage: "Flight simulation"
+      - name: "E-learning"
+        usage: "Theory courses"
+      - name: "Hands-on"
+        usage: "Practical training"

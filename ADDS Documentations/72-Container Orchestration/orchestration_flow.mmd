@@ -1,0 +1,17 @@
+graph TD
+    subgraph Deployment
+        D1[CI/CD] --> D2[Image Registry]
+        D2 --> D3[Kubernetes API]
+    end
+
+    subgraph Orchestration
+        D3 --> O1[Scheduler]
+        O1 --> O2[Node Selection]
+        O2 --> O3[Container Runtime]
+    end
+
+    subgraph Monitoring
+        O3 --> M1[Metrics]
+        M1 --> M2[Logging]
+        M2 --> M3[Alerts]
+    end

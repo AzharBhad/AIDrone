@@ -1,0 +1,43 @@
+#5. Risk Management Configuration
+risk_management:
+  risk_categories:
+    operational:
+      - name: "Flight risks"
+        probability: "Low"
+        impact: "High"
+        controls:
+          - "Weather monitoring"
+          - "System redundancy"
+          - "Emergency protocols"
+
+    technical:
+      - name: "System failure"
+        probability: "Very low"
+        impact: "Critical"
+        controls:
+          - "Regular maintenance"
+          - "Component monitoring"
+          - "Backup systems"
+
+    regulatory:
+      - name: "Compliance risks"
+        probability: "Low"
+        impact: "High"
+        controls:
+          - "Regular audits"
+          - "Policy updates"
+          - "Staff training"
+
+  mitigation_strategies:
+    preventive:
+      - "Regular training"
+      - "System upgrades"
+      - "Policy enforcement"
+    detective:
+      - "Monitoring systems"
+      - "Regular audits"
+      - "Performance reviews"
+    corrective:
+      - "Incident response"
+      - "System recovery"
+      - "Process improvement"

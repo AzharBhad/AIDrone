@@ -1,0 +1,36 @@
+#3. Human Resource Management System
+hr_management:
+  workforce_planning:
+    roles:
+      operations:
+        - title: "Drone Operations Manager"
+          required_certifications: ["Remote Pilot License", "Safety Manager"]
+          shifts_coverage: "24/7"
+        - title: "Maintenance Technician"
+          required_certifications: ["Drone Maintenance", "Electronics"]
+          shifts_coverage: "24/7"
+        - title: "Flight Controller"
+          required_certifications: ["Air Traffic Control", "Remote Operations"]
+          shifts_coverage: "24/7"
+
+  training_programs:
+    technical_training:
+      modules:
+        - name: "Drone Operations"
+          duration: "80 hours"
+          certification: "Required"
+        - name: "Emergency Procedures"
+          duration: "40 hours"
+          certification: "Required"
+        - name: "System Maintenance"
+          duration: "60 hours"
+          certification: "Required"
+
+    soft_skills:
+      modules:
+        - name: "Communication"
+          duration: "20 hours"
+        - name: "Crisis Management"
+          duration: "30 hours"
+        - name: "Team Leadership"
+          duration: "25 hours"

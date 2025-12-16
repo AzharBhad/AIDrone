@@ -1,0 +1,20 @@
+%%4. Insurance and Risk Management
+graph TD
+    subgraph Risk_Assessment
+        R1[Identify Risks] --> R2[Analyze Impact]
+        R2 --> R3[Evaluate Probability]
+        R3 --> R4[Risk Rating]
+    end
+
+    subgraph Insurance_Coverage
+        R4 --> I1[Coverage Requirements]
+        I1 --> I2[Policy Selection]
+        I2 --> I3[Coverage Implementation]
+    end
+
+    subgraph Monitoring
+        I3 --> M1[Risk Monitoring]
+        M1 --> M2[Claims Management]
+        M2 --> M3[Policy Adjustment]
+        M3 --> R1
+    end

@@ -1,0 +1,17 @@
+#9. Performance Metrics
+key_metrics:
+  operational:
+    - name: "Delivery success rate"
+      target: "99.9%"
+    - name: "On-time delivery"
+      target: "95%"
+    - name: "Battery efficiency"
+      target: "85%"
+
+  system:
+    - name: "System uptime"
+      target: "99.99%"
+    - name: "Response time"
+      target: "< 100ms"
+    - name: "Error rate"
+      target: "< 0.1%"

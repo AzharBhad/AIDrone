@@ -1,0 +1,22 @@
+%% 4.Delivery Zone Management System
+graph TD
+    subgraph Approach_Phase
+        A[Initial Approach] -->|200m| B[Zone Assessment]
+        B -->|Clear| C[Final Approach]
+        B -->|Blocked| D[Holding Pattern]
+        D -->|Retry| B
+        C -->|5m| E[Hover Phase]
+    end
+
+    subgraph Delivery_Phase
+        E -->|Stable| F[Authentication]
+        F -->|Verified| G[Package Release]
+        F -->|Failed| H[Retry Auth]
+        H -->|3 Attempts| I[Abort Delivery]
+        G -->|Success| J[Delivery Confirmation]
+    end
+
+    subgraph Post_Delivery
+        J --> K[Update System]
+        K --> L[Return Flight]
+    end

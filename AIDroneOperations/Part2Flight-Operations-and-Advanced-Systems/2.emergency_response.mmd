@@ -1,0 +1,11 @@
+%% B.Emergency Response System
+stateDiagram-v2
+    [*] --> Normal_Operation
+    Normal_Operation --> Warning_State: Minor Issue
+    Normal_Operation --> Critical_State: Major Issue
+    Warning_State --> Normal_Operation: Resolved
+    Warning_State --> Critical_State: Escalation
+    Critical_State --> Emergency_Landing: Cannot Resolve
+    Critical_State --> RTB: Can Return
+    Emergency_Landing --> [*]
+    RTB --> [*]

@@ -1,0 +1,36 @@
+#5. International Operations Configuration
+international_operations:
+  regional_compliance:
+    regions:
+      europe:
+        regulations:
+          - "EASA Standards"
+          - "EU Data Protection"
+          - "CE Marking"
+        operational_hours: "06:00-22:00 CET"
+
+      north_america:
+        regulations:
+          - "FAA Regulations"
+          - "Transport Canada"
+          - "FIFRA Compliance"
+        operational_hours: "24/7"
+
+      asia_pacific:
+        regulations:
+          - "CAAC Standards"
+          - "CASA Requirements"
+          - "JCAB Guidelines"
+        operational_hours: "05:00-23:00 Local"
+
+  localization:
+    languages:
+      - code: "en"
+        documentation: true
+        interface: true
+      - code: "es"
+        documentation: true
+        interface: true
+      - code: "zh"
+        documentation: true
+        interface: true

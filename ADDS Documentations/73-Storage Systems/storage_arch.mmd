@@ -1,0 +1,16 @@
+graph TD
+    subgraph Data_Types
+        D1[Block Storage] --> S1[Volumes]
+        D2[Object Storage] --> S2[Buckets]
+    end
+
+    subgraph Management
+        S1 --> M1[Snapshots]
+        S2 --> M2[Versioning]
+    end
+
+    subgraph Protection
+        M1 --> P1[Backup]
+        M2 --> P2[Replication]
+        P1 --> P3[Archive]
+    end

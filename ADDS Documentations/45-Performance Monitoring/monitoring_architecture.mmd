@@ -1,0 +1,17 @@
+graph TD
+    subgraph Data_Collection
+        D1[Metrics] --> D2[Logs]
+        D2 --> D3[Traces]
+    end
+
+    subgraph Processing
+        D3 --> P1[Aggregation]
+        P1 --> P2[Analysis]
+        P2 --> P3[Alerting]
+    end
+
+    subgraph Visualization
+        P3 --> V1[Dashboards]
+        V1 --> V2[Reports]
+        V2 --> V3[Alerts]
+    end

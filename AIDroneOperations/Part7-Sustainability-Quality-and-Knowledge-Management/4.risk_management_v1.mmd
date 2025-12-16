@@ -1,0 +1,11 @@
+%% 4. Risk Management Framework
+stateDiagram-v2
+    [*] --> Risk_Identification
+    Risk_Identification --> Risk_Assessment
+    Risk_Assessment --> Risk_Analysis
+    Risk_Analysis --> Risk_Mitigation
+    Risk_Mitigation --> Risk_Monitoring
+    Risk_Monitoring --> Risk_Reporting
+    Risk_Reporting --> Risk_Review
+    Risk_Review --> Risk_Identification
+    Risk_Review --> [*]

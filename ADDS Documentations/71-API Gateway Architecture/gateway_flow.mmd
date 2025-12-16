@@ -1,0 +1,17 @@
+graph TD
+    subgraph Client
+        C1[Mobile App] --> G1[Gateway]
+        C2[Web App] --> G1
+    end
+
+    subgraph Gateway
+        G1 --> P1[Authentication]
+        P1 --> P2[Rate Limiting]
+        P2 --> P3[Routing]
+    end
+
+    subgraph Backend
+        P3 --> S1[Services]
+        S1 --> S2[Monitoring]
+        S2 --> S3[Analytics]
+    end

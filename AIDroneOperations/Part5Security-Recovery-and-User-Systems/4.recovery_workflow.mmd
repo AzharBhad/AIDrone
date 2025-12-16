@@ -1,0 +1,14 @@
+%% 4. Recovery Workflow Diagram
+stateDiagram-v2
+    [*] --> Normal_Operation
+    Normal_Operation --> Incident_Detected: System Alert
+    Incident_Detected --> Assessment: Trigger DR
+    Assessment --> Minor_Recovery: Level 1
+    Assessment --> Major_Recovery: Level 2
+    Assessment --> Disaster_Recovery: Level 3
+    Minor_Recovery --> Service_Restoration
+    Major_Recovery --> Service_Restoration
+    Disaster_Recovery --> Service_Restoration
+    Service_Restoration --> Normal_Operation
+    Service_Restoration --> Post_Incident_Review
+    Post_Incident_Review --> [*]

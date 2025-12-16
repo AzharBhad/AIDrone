@@ -1,0 +1,29 @@
+service_levels:
+  delivery_service:
+    standard_delivery:
+      response_time: "30 minutes"
+      success_rate: "99.5%"
+      operating_hours: "06:00-22:00"
+      compensation:
+        late_delivery: "Full refund"
+        failed_delivery: "Full refund + credit"
+
+    express_delivery:
+      response_time: "15 minutes"
+      success_rate: "99.9%"
+      operating_hours: "24/7"
+      compensation:
+        late_delivery: "Full refund + 50% credit"
+        failed_delivery: "Full refund + 100% credit"
+
+  system_performance:
+    availability:
+      uptime: "99.99%"
+      planned_maintenance: "Maximum 4 hours/month"
+      notification_period: "72 hours"
+
+    support_response:
+      critical: "15 minutes"
+      high: "1 hour"
+      medium: "4 hours"
+      low: "24 hours"

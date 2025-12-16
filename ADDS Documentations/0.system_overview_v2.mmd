@@ -1,0 +1,19 @@
+%%Autonomous Drone Delivery System (ADDS) - System Documentation
+graph TD
+    subgraph Core_Systems
+        A[Order Management] --> B[Flight Control]
+        B --> C[Delivery Execution]
+        C --> D[Return Operations]
+    end
+
+    subgraph Support_Systems
+        E[Safety & Compliance] --> B
+        F[Maintenance] --> B
+        G[Analytics] --> B
+    end
+
+    subgraph Infrastructure
+        H[Ground Control] --> B
+        I[Communication Network] --> B
+        J[Charging Stations] --> B
+    end

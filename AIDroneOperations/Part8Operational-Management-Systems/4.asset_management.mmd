@@ -1,0 +1,20 @@
+%% 4. Asset Management System
+graph TD
+    subgraph Asset_Lifecycle
+        A1[Acquisition] --> A2[Deployment]
+        A2 --> A3[Operation]
+        A3 --> A4[Maintenance]
+        A4 --> A5[Retirement]
+    end
+
+    subgraph Tracking
+        T1[Asset Registry] --> T2[Location Tracking]
+        T2 --> T3[Usage Monitoring]
+        T3 --> T4[Maintenance Schedule]
+    end
+
+    subgraph Management
+        M1[Cost Analysis] --> M2[Performance Metrics]
+        M2 --> M3[Optimization]
+        M3 --> M1
+    end

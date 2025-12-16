@@ -1,0 +1,33 @@
+#Project Framework
+project_management:
+  methodology:
+    type: "Hybrid (Agile/Waterfall)"
+    sprint_duration: "2 weeks"
+    ceremonies:
+      - name: "Daily Standup"
+        duration: "15 minutes"
+      - name: "Sprint Planning"
+        duration: "4 hours"
+      - name: "Retrospective"
+        duration: "2 hours"
+
+  portfolio_management:
+    categories:
+      strategic:
+        priority: "High"
+        budget_allocation: "40%"
+        review_frequency: "Monthly"
+
+      operational:
+        priority: "Medium"
+        budget_allocation: "35%"
+        review_frequency: "Quarterly"
+
+  resource_allocation:
+    teams:
+      - name: "Development"
+        capacity: "80%"
+      - name: "Operations"
+        capacity: "85%"
+      - name: "QA"
+        capacity: "75%"

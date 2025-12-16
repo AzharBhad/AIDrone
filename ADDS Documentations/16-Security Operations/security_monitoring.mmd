@@ -1,0 +1,17 @@
+graph TD
+    subgraph Detection
+        D1[Security Sensors] --> D2[SIEM System]
+        D2 --> D3[Threat Analysis]
+    end
+
+    subgraph Response
+        D3 --> R1[Alert Classification]
+        R1 --> R2[Incident Response]
+        R2 --> R3[Containment]
+    end
+
+    subgraph Recovery
+        R3 --> C1[Investigation]
+        C1 --> C2[Remediation]
+        C2 --> C3[Documentation]
+    end

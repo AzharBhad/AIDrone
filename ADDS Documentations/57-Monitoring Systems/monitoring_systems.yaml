@@ -1,0 +1,25 @@
+monitoring_systems:
+  operational_monitoring:
+    real_time:
+      metrics:
+        - name: "Drone telemetry"
+          frequency: "1 second"
+        - name: "System health"
+          frequency: "5 seconds"
+        - name: "Network status"
+          frequency: "10 seconds"
+
+    historical:
+      retention:
+        hot_storage: "30 days"
+        warm_storage: "90 days"
+        cold_storage: "7 years"
+
+  alerting:
+    severity_levels:
+      critical:
+        response_time: "1 minute"
+        notification: ["SMS", "Email", "Phone"]
+      warning:
+        response_time: "5 minutes"
+        notification: ["Email", "Dashboard"]

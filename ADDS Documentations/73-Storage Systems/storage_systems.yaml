@@ -1,0 +1,31 @@
+storage_systems:
+  block_storage:
+    implementation: "EBS"
+    tiers:
+      - name: "High-Performance"
+        type: "io2"
+        iops: "50000"
+      - name: "General-Purpose"
+        type: "gp3"
+        iops: "16000"
+
+  object_storage:
+    implementation: "S3"
+    buckets:
+      - name: "flight-data"
+        lifecycle:
+          transition_glacier: "90 days"
+          expire: "7 years"
+      - name: "media-assets"
+        lifecycle:
+          transition_ia: "30 days"
+          expire: "1 year"
+
+  backup_strategy:
+    methods:
+      snapshot:
+        frequency: "4 hours"
+        retention: "30 days"
+      replication:
+        type: "Cross-region"
+        latency: "< 15 minutes"

@@ -1,0 +1,17 @@
+graph TD
+    subgraph Preparation
+        P1[Order Receipt] --> P2[Flight Planning]
+        P2 --> P3[Pre-flight Check]
+    end
+
+    subgraph Execution
+        P3 --> E1[Takeoff]
+        E1 --> E2[Flight Operations]
+        E2 --> E3[Landing]
+    end
+
+    subgraph Completion
+        E3 --> C1[Post-flight Check]
+        C1 --> C2[Maintenance]
+        C2 --> C3[Documentation]
+    end

@@ -1,0 +1,19 @@
+%% 2. Environmental Impact Monitoring
+graph TD
+    subgraph Data_Collection
+        D1[Energy Usage] -->|Monitor| M1[Metrics Collection]
+        D2[Emissions] -->|Monitor| M1
+        D3[Noise Levels] -->|Monitor| M1
+    end
+
+    subgraph Analysis
+        M1 -->|Process| A1[Impact Assessment]
+        A1 -->|Calculate| A2[Sustainability Score]
+        A2 -->|Generate| R1[Reports]
+    end
+
+    subgraph Action
+        R1 -->|Recommend| O1[Optimization]
+        O1 -->|Implement| I1[Improvements]
+        I1 -->|Verify| D1
+    end

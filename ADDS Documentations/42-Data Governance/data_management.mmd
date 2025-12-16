@@ -1,0 +1,17 @@
+graph TD
+    subgraph Collection
+        C1[Data Sources] --> C2[Validation]
+        C2 --> C3[Classification]
+    end
+
+    subgraph Processing
+        C3 --> P1[Transformation]
+        P1 --> P2[Quality Check]
+        P2 --> P3[Storage]
+    end
+
+    subgraph Governance
+        P3 --> G1[Access Control]
+        G1 --> G2[Audit]
+        G2 --> G3[Compliance]
+    end

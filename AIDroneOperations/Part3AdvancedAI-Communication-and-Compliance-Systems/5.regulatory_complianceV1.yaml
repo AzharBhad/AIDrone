@@ -1,0 +1,35 @@
+#5. Regulatory Compliance System
+regulatory_compliance:
+  certifications:
+    required_standards:
+      - "ISO 21384-3:2024"
+      - "ASTM F3411-24"
+      - "EASA Special Condition Light UAS"
+
+    documentation:
+      flight_logs:
+        retention: "5 years"
+        parameters:
+          - "Flight paths"
+          - "System status"
+          - "Incidents"
+          - "Maintenance records"
+
+    reporting:
+      frequency: "Monthly"
+      metrics:
+        - "Safety incidents"
+        - "Near-misses"
+        - "System failures"
+        - "Maintenance activities"
+
+  operational_requirements:
+    airspace_compliance:
+      utm_integration: true
+      notification_system: "Automated"
+      restricted_zones:
+        update_frequency: "Real-time"
+        data_sources:
+          - "National aviation authority"
+          - "Local regulations"
+          - "Temporary restrictions"

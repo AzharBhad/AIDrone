@@ -1,0 +1,41 @@
+#Communication Framework
+communication_management:
+  stakeholder_groups:
+    internal:
+      operational_team:
+        frequency: "Daily"
+        channels:
+          - "Operations dashboard"
+          - "Team meetings"
+          - "Emergency alerts"
+
+      management:
+        frequency: "Weekly"
+        channels:
+          - "Executive reports"
+          - "Strategy meetings"
+          - "Performance reviews"
+
+    external:
+      customers:
+        frequency: "Real-time"
+        channels:
+          - "Mobile app"
+          - "Email notifications"
+          - "Support center"
+
+      regulators:
+        frequency: "As required"
+        channels:
+          - "Formal reports"
+          - "Compliance updates"
+          - "Audit documentation"
+
+  communication_protocols:
+    emergency:
+      response_time: "Immediate"
+      escalation_path: ["Supervisor", "Manager", "Director"]
+
+    standard:
+      response_time: "24 hours"
+      escalation_path: ["Support", "Supervisor"]

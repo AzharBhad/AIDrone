@@ -1,0 +1,17 @@
+graph TD
+    subgraph Collection
+        C1[Data Collection] --> C2[Validation]
+        C2 --> C3[Processing]
+    end
+
+    subgraph Analysis
+        C3 --> A1[Metrics Calculation]
+        A1 --> A2[Performance Analysis]
+        A2 --> A3[Reporting]
+    end
+
+    subgraph Action
+        A3 --> T1[Threshold Monitoring]
+        T1 --> T2[Alert Generation]
+        T2 --> T3[Response Actions]
+    end

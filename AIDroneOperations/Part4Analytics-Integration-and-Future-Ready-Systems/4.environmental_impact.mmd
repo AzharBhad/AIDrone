@@ -1,0 +1,19 @@
+%% 4. Environmental Impact Monitoring
+graph LR
+    subgraph Data_Collection
+        D1[Energy Usage] --> |Monitor| EM[Environmental Metrics]
+        D2[Noise Levels] --> |Monitor| EM
+        D3[Carbon Footprint] --> |Monitor| EM
+    end
+
+    subgraph Analysis
+        EM --> |Process| EA[Environmental Analysis]
+        EA --> |Calculate| EI[Impact Index]
+        EI --> |Report| ER[Environmental Report]
+    end
+
+    subgraph Optimization
+        ER --> |Suggest| OA[Optimization Actions]
+        OA --> |Implement| OS[Operation Systems]
+        OS --> |Verify| EM
+    end

@@ -1,0 +1,21 @@
+%% 6. UI/UX Flow Diagram
+graph TD
+    subgraph Operator_Interface
+        O1[Login] --> O2[Dashboard]
+        O2 --> O3[Flight Control]
+        O2 --> O4[System Monitor]
+        O2 --> O5[Maintenance]
+    end
+
+    subgraph Customer_Interface
+        C1[Login] --> C2[Order Creation]
+        C2 --> C3[Tracking]
+        C3 --> C4[Delivery Confirmation]
+        C4 --> C5[Feedback]
+    end
+
+    subgraph Integration
+        O3 --> |Update| C3
+        O5 --> |Schedule| D1[Delivery Planning]
+        C2 --> |New Order| D1
+    end

@@ -1,0 +1,19 @@
+%%Performance Monitoring
+graph TD
+    subgraph Metrics_Collection
+        M1[System Metrics] --> A1[Analysis Engine]
+        M2[Performance Data] --> A1
+        M3[Incident Reports] --> A1
+    end
+
+    subgraph Analysis
+        A1 --> P1[Performance Calculation]
+        P1 --> P2[SLA Compliance Check]
+        P2 --> P3[Report Generation]
+    end
+
+    subgraph Action
+        P3 --> AC1[Compliance Report]
+        P3 --> AC2[Improvement Plans]
+        P3 --> AC3[Compensation Processing]
+    end

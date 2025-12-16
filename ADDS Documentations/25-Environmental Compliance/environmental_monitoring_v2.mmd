@@ -1,0 +1,18 @@
+%%Environmental Monitoring Flow
+graph TD
+    subgraph Monitoring
+        M1[Data Collection] --> M2[Analysis]
+        M2 --> M3[Reporting]
+    end
+
+    subgraph Compliance
+        M3 --> C1[Standards Check]
+        C1 --> C2[Adjustment Plans]
+        C2 --> C3[Implementation]
+    end
+
+    subgraph Improvement
+        C3 --> I1[Performance Review]
+        I1 --> I2[Strategy Update]
+        I2 --> M1
+    end

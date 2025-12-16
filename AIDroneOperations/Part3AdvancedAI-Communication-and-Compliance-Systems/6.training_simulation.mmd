@@ -1,0 +1,27 @@
+%% 6. Training and Simulation System
+graph TD
+    subgraph Training_Environment
+        T1[Virtual Training] --> T2[Scenario Generator]
+        T2 --> T3[Physics Engine]
+        T3 --> T4[Weather Simulation]
+        T4 --> T5[System Response]
+    end
+
+    subgraph Simulation_Types
+        S1[Normal Operations] --> T2
+        S2[Emergency Scenarios] --> T2
+        S3[Edge Cases] --> T2
+    end
+
+    subgraph Analysis
+        T5 --> A1[Performance Analysis]
+        T5 --> A2[Safety Assessment]
+        T5 --> A3[Efficiency Metrics]
+    end
+
+    subgraph Feedback
+        A1 --> F1[System Improvements]
+        A2 --> F1
+        A3 --> F1
+        F1 --> T1
+    end

@@ -1,0 +1,34 @@
+disaster_recovery:
+  recovery_objectives:
+    rto: # Recovery Time Objective
+      critical_systems:
+        time: "15 minutes"
+        components:
+          - "Flight Control"
+          - "Communication Systems"
+          - "Safety Systems"
+      business_systems:
+        time: "4 hours"
+        components:
+          - "Order Management"
+          - "Customer Portal"
+          - "Analytics"
+
+    rpo: # Recovery Point Objective
+      critical_data:
+        time: "0 minutes"
+        sync: "Real-time replication"
+      business_data:
+        time: "15 minutes"
+        sync: "Near real-time backup"
+
+  failover_sites:
+    primary:
+      location: "US-EAST"
+      capacity: "100%"
+    secondary:
+      location: "US-WEST"
+      capacity: "100%"
+    tertiary:
+      location: "EU-CENTRAL"
+      capacity: "75%"

@@ -1,0 +1,36 @@
+integration_patterns:
+  communication_styles:
+    synchronous:
+      patterns:
+        - name: "Request-Response"
+          protocol: "REST"
+          timeout: "5 seconds"
+        - name: "GraphQL"
+          implementation: "Federation"
+          timeout: "3 seconds"
+
+    asynchronous:
+      patterns:
+        - name: "Event-Driven"
+          technology: "Apache Kafka"
+          guarantee: "At-least-once"
+        - name: "Message Queue"
+          technology: "RabbitMQ"
+          guarantee: "Exactly-once"
+
+  integration_types:
+    internal:
+      service_mesh:
+        implementation: "Istio"
+        features:
+          - "Traffic management"
+          - "Security"
+          - "Observability"
+
+    external:
+      api_gateway:
+        implementation: "Kong"
+        features:
+          - "Rate limiting"
+          - "Authentication"
+          - "Transformation"

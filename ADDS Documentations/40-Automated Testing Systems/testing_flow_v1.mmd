@@ -1,0 +1,17 @@
+graph TD
+    subgraph Test_Planning
+        T1[Requirements] --> T2[Test Design]
+        T2 --> T3[Automation Script]
+    end
+
+    subgraph Execution
+        T3 --> E1[Unit Tests]
+        E1 --> E2[Integration Tests]
+        E2 --> E3[System Tests]
+    end
+
+    subgraph Analysis
+        E3 --> A1[Results Analysis]
+        A1 --> A2[Issue Tracking]
+        A2 --> A3[Quality Metrics]
+    end

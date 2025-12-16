@@ -1,0 +1,19 @@
+%%6. Stakeholder Management
+graph TD
+    subgraph Identification
+        S1[Internal Stakeholders] --> SM[Stakeholder Matrix]
+        S2[External Stakeholders] --> SM
+    end
+
+    subgraph Analysis
+        SM --> A1[Impact Assessment]
+        A1 --> A2[Interest Analysis]
+        A2 --> A3[Influence Mapping]
+    end
+
+    subgraph Engagement
+        A3 --> E1[Communication Plan]
+        E1 --> E2[Engagement Strategy]
+        E2 --> E3[Feedback Loop]
+        E3 --> SM
+    end

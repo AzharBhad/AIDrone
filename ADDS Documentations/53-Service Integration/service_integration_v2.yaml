@@ -1,0 +1,29 @@
+service_integration:
+  api_services:
+    external_apis:
+      - name: "Weather Service"
+        protocol: "REST"
+        update_frequency: "5 minutes"
+      - name: "Traffic Management"
+        protocol: "gRPC"
+        update_frequency: "Real-time"
+
+    internal_apis:
+      - name: "Fleet Management"
+        protocol: "GraphQL"
+        latency_target: "50ms"
+      - name: "Order Processing"
+        protocol: "REST"
+        latency_target: "100ms"
+
+  integration_patterns:
+    messaging:
+      - type: "Event-driven"
+        implementation: "Apache Kafka"
+      - type: "Request-response"
+        implementation: "REST/GraphQL"
+
+    security:
+      - "OAuth 2.0"
+      - "mTLS"
+      - "API Keys"

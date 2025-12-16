@@ -1,0 +1,23 @@
+integration_testing:
+  test_levels:
+    component_integration:
+      scope:
+        - "API endpoints"
+        - "Service communications"
+        - "Data flow"
+      automation: "100%"
+
+    system_integration:
+      scope:
+        - "End-to-end workflows"
+        - "Cross-service interactions"
+        - "External integrations"
+      automation: "85%"
+
+  test_environments:
+    staging:
+      refresh: "Daily"
+      data_sync: "Production mirror"
+    pre_production:
+      refresh: "Weekly"
+      data_sync: "Sanitized production"

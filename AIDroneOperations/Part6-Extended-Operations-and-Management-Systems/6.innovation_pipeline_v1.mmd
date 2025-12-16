@@ -1,0 +1,24 @@
+%% 6. Innovation Pipeline Management
+graph TD
+    subgraph Ideation
+        I1[Research] --> I2[Concept Development]
+        I2 --> I3[Feasibility Study]
+    end
+
+    subgraph Development
+        I3 --> D1[Prototype]
+        D1 --> D2[Testing]
+        D2 --> D3[Validation]
+    end
+
+    subgraph Implementation
+        D3 --> P1[Pilot Program]
+        P1 --> P2[Scale Testing]
+        P2 --> P3[Full Deployment]
+    end
+
+    subgraph Feedback
+        P3 --> F1[Performance Analysis]
+        F1 --> F2[User Feedback]
+        F2 --> I1
+    end

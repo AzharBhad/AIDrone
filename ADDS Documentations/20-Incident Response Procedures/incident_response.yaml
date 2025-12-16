@@ -1,0 +1,33 @@
+#Incident Response Framework
+incident_response:
+  incident_categories:
+    critical:
+      response_time: "5 minutes"
+      escalation_path: ["Supervisor", "Manager", "Director"]
+      notification: ["Email", "SMS", "Phone"]
+
+    major:
+      response_time: "15 minutes"
+      escalation_path: ["Supervisor", "Manager"]
+      notification: ["Email", "SMS"]
+
+    minor:
+      response_time: "30 minutes"
+      escalation_path: ["Supervisor"]
+      notification: ["Email"]
+
+  response_procedures:
+    immediate_actions:
+      - "Incident assessment"
+      - "Safety measures"
+      - "Communication initiation"
+
+    investigation:
+      - "Data collection"
+      - "Root cause analysis"
+      - "Impact assessment"
+
+    resolution:
+      - "Corrective actions"
+      - "Prevention measures"
+      - "Documentation"

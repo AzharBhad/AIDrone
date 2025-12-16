@@ -1,0 +1,31 @@
+#Regulatory Framework
+compliance_requirements:
+  aviation_regulations:
+    faa_compliance:
+      - regulation: "Part 107"
+        requirements:
+          - "Remote pilot certification"
+          - "Aircraft registration"
+          - "Operating limitations"
+      - regulation: "BVLOS Operations"
+        requirements:
+          - "Special authorization"
+          - "Enhanced safety measures"
+          - "Risk assessment"
+
+  data_protection:
+    gdpr_compliance:
+      - "Data minimization"
+      - "User consent management"
+      - "Data retention policies"
+    ccpa_compliance:
+      - "Privacy notices"
+      - "Data access requests"
+      - "Opt-out mechanisms"
+
+  safety_standards:
+    iso_compliance:
+      - standard: "ISO 9001:2025"
+        scope: "Quality management"
+      - standard: "ISO 27001:2025"
+        scope: "Information security"

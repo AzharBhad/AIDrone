@@ -1,0 +1,24 @@
+%%ai System Architecture
+graph TD
+    subgraph Data_Collection
+        D1[Sensors] --> D2[Data Lake]
+        D2 --> D3[Feature Engineering]
+    end
+
+    subgraph AI_Processing
+        D3 --> P1[Model Training]
+        P1 --> P2[Validation]
+        P2 --> P3[Deployment]
+    end
+
+    subgraph Operation
+        P3 --> O1[Real-time Inference]
+        O1 --> O2[Decision Making]
+        O2 --> O3[Action Execution]
+    end
+
+    subgraph Feedback
+        O3 --> F1[Performance Monitoring]
+        F1 --> F2[Model Updates]
+        F2 --> D1
+    end

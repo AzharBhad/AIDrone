@@ -1,0 +1,12 @@
+%%Test Execution Flow
+stateDiagram-v2
+    [*] --> Unit_Tests
+    Unit_Tests --> Integration_Tests: Pass
+    Unit_Tests --> Bug_Fix: Fail
+    Integration_Tests --> System_Tests: Pass
+    Integration_Tests --> Bug_Fix: Fail
+    System_Tests --> UAT: Pass
+    System_Tests --> Bug_Fix: Fail
+    UAT --> Production: Pass
+    UAT --> Bug_Fix: Fail
+    Bug_Fix --> Unit_Tests

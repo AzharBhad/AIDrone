@@ -1,0 +1,18 @@
+graph TD
+    subgraph Write_Path
+        W1[Application] --> W2[Write Router]
+        W2 --> W3[Primary DB]
+        W3 --> W4[Replicas]
+    end
+
+    subgraph Read_Path
+        R1[Application] --> R2[Read Router]
+        R2 --> R3[Cache]
+        R2 --> R4[Read Replicas]
+    end
+
+    subgraph Analytics_Path
+        A1[ETL Process] --> A2[Data Lake]
+        A2 --> A3[Data Warehouse]
+        A3 --> A4[Analytics]
+    end

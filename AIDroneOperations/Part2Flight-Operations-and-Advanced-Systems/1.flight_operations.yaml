@@ -1,0 +1,38 @@
+#1. Flight Operations YAML Configuration
+flight_operations:
+  mission_parameters:
+    operational_modes:
+      normal:
+        cruise_speed: 15
+        max_speed: 25
+        altitude_range:
+          min: 30
+          max: 120
+          unit: "meters"
+      emergency:
+        safe_speed: 10
+        min_altitude: 25
+        landing_speed: 2
+        unit: "meters_per_second"
+
+    navigation:
+      path_planning:
+        update_rate: 10  # Hz
+        lookahead_distance: 100  # meters
+        obstacle_clearance: 15  # meters
+
+      waypoint_precision:
+        horizontal: 0.5  # meters
+        vertical: 1.0   # meters
+
+  sensor_fusion:
+    data_rates:
+      lidar: 300000  # points/second
+      cameras: 60    # fps
+      imu: 200       # Hz
+      gps: 10        # Hz
+
+    fusion_algorithms:
+      primary: "Extended Kalman Filter"
+      backup: "Unscented Kalman Filter"
+      update_rate: 100  # Hz

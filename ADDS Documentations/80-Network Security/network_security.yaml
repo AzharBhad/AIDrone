@@ -1,0 +1,43 @@
+#Security Framework
+network_security:
+  perimeter_security:
+    firewalls:
+      edge:
+        type: "Next-Gen Firewall"
+        features:
+          - "DPI"
+          - "IPS/IDS"
+          - "SSL Inspection"
+      internal:
+        type: "Micro-segmentation"
+        policy: "Zero Trust"
+
+    ddos_protection:
+      methods:
+        - "Traffic scrubbing"
+        - "Rate limiting"
+        - "Blackholing"
+      capacity: "100 Gbps"
+
+  access_control:
+    zones:
+      dmz:
+        allowed_services: ["HTTPS", "DNS"]
+        monitoring: "Full packet capture"
+      production:
+        access: "Restricted"
+        authentication: "MFA + Certificate"
+      management:
+        access: "Jump hosts only"
+        logging: "Full audit"
+
+  encryption:
+    in_transit:
+      protocols:
+        - type: "TLS 1.3"
+          ciphers: ["TLS_AES_256_GCM_SHA384"]
+        - type: "IPSec"
+          mode: "Transport"
+    at_rest:
+      method: "AES-256-GCM"
+      key_rotation: "90 days"

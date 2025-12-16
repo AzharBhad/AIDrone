@@ -1,0 +1,33 @@
+#Change Management Framework
+change_types:
+  standard_change:
+    approval_requirements:
+      - "Technical review"
+      - "Impact assessment"
+      - "Testing results"
+    implementation_window: "Off-peak hours"
+    notice_period: "5 business days"
+
+  emergency_change:
+    approval_requirements:
+      - "Emergency CAB approval"
+      - "Risk assessment"
+    implementation_window: "Immediate"
+    notice_period: "None"
+
+process_flow:
+  stages:
+    request:
+      - "Change request submission"
+      - "Initial assessment"
+      - "Categorization"
+
+    evaluation:
+      - "Technical review"
+      - "Risk assessment"
+      - "Resource planning"
+
+    implementation:
+      - "Deployment planning"
+      - "Testing"
+      - "Rollback preparation"

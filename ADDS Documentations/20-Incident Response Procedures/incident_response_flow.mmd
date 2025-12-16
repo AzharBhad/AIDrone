@@ -1,0 +1,23 @@
+graph TD
+    subgraph Detection
+        D1[Incident Detection] --> D2[Initial Assessment]
+        D2 --> D3[Classification]
+    end
+
+    subgraph Response
+        D3 --> R1[Team Activation]
+        R1 --> R2[Immediate Actions]
+        R2 --> R3[Situation Control]
+    end
+
+    subgraph Investigation
+        R3 --> I1[Evidence Collection]
+        I1 --> I2[Analysis]
+        I2 --> I3[Root Cause]
+    end
+
+    subgraph Resolution
+        I3 --> S1[Corrective Actions]
+        S1 --> S2[Documentation]
+        S2 --> S3[Lessons Learned]
+    end

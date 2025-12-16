@@ -1,0 +1,24 @@
+graph TD
+    subgraph Data_Collection
+        D1[Real-time Data] --> P1[Data Processing]
+        D2[Historical Data] --> P1
+        D3[External Data] --> P1
+    end
+
+    subgraph Analysis
+        P1 --> M1[Model Training]
+        M1 --> M2[Validation]
+        M2 --> M3[Deployment]
+    end
+
+    subgraph Application
+        M3 --> A1[Real-time Prediction]
+        A1 --> A2[Decision Support]
+        A2 --> A3[Automation]
+    end
+
+    subgraph Feedback
+        A3 --> F1[Performance Monitoring]
+        F1 --> F2[Model Updates]
+        F2 --> M1
+    end

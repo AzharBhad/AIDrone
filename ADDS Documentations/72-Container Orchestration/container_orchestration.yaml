@@ -1,0 +1,26 @@
+container_orchestration:
+  kubernetes_cluster:
+    infrastructure:
+      node_pools:
+        - name: "system-critical"
+          size: "c5.4xlarge"
+          min_nodes: 3
+        - name: "general-purpose"
+          size: "c5.2xlarge"
+          min_nodes: 5
+
+    workload_management:
+      scheduling:
+        policies:
+          - name: "Pod affinity"
+            rules: ["Zone distribution"]
+          - name: "Resource quotas"
+            limits: ["CPU", "Memory"]
+
+  deployment_strategies:
+    rolling_update:
+      max_unavailable: "25%"
+      max_surge: "25%"
+    blue_green:
+      switch_method: "Service selector"
+      rollback_time: "< 1 minute"

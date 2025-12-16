@@ -1,0 +1,33 @@
+resource_management:
+  compute_resources:
+    allocation:
+      auto_scaling:
+        triggers:
+          - metric: "CPU utilization"
+            threshold: "80%"
+          - metric: "Memory usage"
+            threshold: "85%"
+      load_balancing:
+        method: "Dynamic"
+        algorithm: "Least connections"
+
+  physical_resources:
+    drone_fleet:
+      allocation:
+        - type: "Standard delivery"
+          priority: "Normal"
+        - type: "Express delivery"
+          priority: "High"
+      optimization:
+        - "Route efficiency"
+        - "Battery management"
+        - "Maintenance scheduling"
+
+  human_resources:
+    scheduling:
+      shifts:
+        - "Morning: 06:00-14:00"
+        - "Afternoon: 14:00-22:00"
+        - "Night: 22:00-06:00"
+      backup:
+        minimum_staff: "25%"

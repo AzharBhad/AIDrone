@@ -1,0 +1,40 @@
+#1. Financial Management System Configuration
+financial_management:
+  cost_tracking:
+    operational_costs:
+      categories:
+        energy:
+          tracking_unit: "kWh"
+          cost_per_unit: "0.15 USD"
+          allocation: "Per flight"
+        maintenance:
+          tracking_unit: "Hour"
+          cost_per_unit: "75 USD"
+          allocation: "Per drone"
+        personnel:
+          tracking_unit: "Hour"
+          cost_per_unit: "Variable"
+          allocation: "Per shift"
+
+  revenue_streams:
+    delivery_services:
+      standard:
+        base_rate: "15 USD"
+        per_km_rate: "2 USD"
+        weight_multiplier: "1.5x per kg"
+      express:
+        base_rate: "25 USD"
+        per_km_rate: "3 USD"
+        weight_multiplier: "2x per kg"
+
+  financial_metrics:
+    kpis:
+      - name: "Cost per delivery"
+        target: "< 12 USD"
+        calculation: "Total costs / Deliveries"
+      - name: "Revenue per drone"
+        target: "> 1000 USD/day"
+        calculation: "Total revenue / Active drones"
+      - name: "Operating margin"
+        target: "> 30%"
+        calculation: "(Revenue - Costs) / Revenue"

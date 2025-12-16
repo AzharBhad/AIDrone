@@ -1,0 +1,18 @@
+graph TD
+    subgraph Ingestion
+        I1[Data Sources] --> I2[Collection]
+        I2 --> I3[Validation]
+    end
+
+    subgraph Processing
+        I3 --> P1[Stream Processing]
+        I3 --> P2[Batch Processing]
+        P1 --> P3[Data Lake]
+        P2 --> P3
+    end
+
+    subgraph Analysis
+        P3 --> A1[Analytics]
+        A1 --> A2[Visualization]
+        A2 --> A3[Insights]
+    end

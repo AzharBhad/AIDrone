@@ -1,0 +1,17 @@
+graph TD
+    subgraph Control
+        C1[Mission Control] --> C2[Flight Planning]
+        C2 --> C3[Execution]
+    end
+
+    subgraph Operation
+        C3 --> O1[Autonomous Flight]
+        O1 --> O2[Monitoring]
+        O2 --> O3[Adaptation]
+    end
+
+    subgraph Maintenance
+        O3 --> M1[Status Check]
+        M1 --> M2[Service Routing]
+        M2 --> M3[Verification]
+    end

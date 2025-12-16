@@ -1,0 +1,25 @@
+%% 2. Security Architecture Diagram
+graph TD
+    subgraph Perimeter_Security
+        P1[Firewall] --> |Filter| P2[DDoS Protection]
+        P2 --> |Protect| P3[Load Balancer]
+        P3 --> |Route| P4[API Gateway]
+    end
+
+    subgraph Authentication_Layer
+        P4 --> |Verify| A1[Identity Provider]
+        A1 --> |Token| A2[Auth Service]
+        A2 --> |Validate| A3[Permission Manager]
+    end
+
+    subgraph Encryption_Layer
+        A3 --> |Secure| E1[Encryption Service]
+        E1 --> |Protect| E2[Key Management]
+        E2 --> |Rotate| E3[Certificate Manager]
+    end
+
+    subgraph Monitoring
+        M1[Security Monitor] --> |Alert| M2[SIEM]
+        M2 --> |Analyze| M3[Threat Detection]
+        M3 --> |Respond| M4[Incident Response]
+    end

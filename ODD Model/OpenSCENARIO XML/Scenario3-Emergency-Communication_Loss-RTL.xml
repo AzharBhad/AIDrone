@@ -1,0 +1,633 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+================================================================================
+ASAM OpenSCENARIO XML 1.3.1
+Scenario: Emergency Communication Loss - Return to Launch
+Description: Communication link failure mid-flight triggering autonomous RTL
+Based on ODD Module: M005 + M008 - Safety System Requirements
+Test Objective: Validate lost link behavior and emergency procedures
+================================================================================
+-->
+<OpenSCENARIO xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+               xsi:noNamespaceSchemaLocation="OpenSCENARIO.xsd">
+
+  <FileHeader revMajor="1"
+              revMinor="3"
+              date="2025-10-30T12:00:00"
+              description="Communication loss emergency scenario with autonomous RTL"
+              author="Autonomous Systems Test Team"/>
+
+  <ParameterDeclarations>
+    <ParameterDeclaration name="CruiseAltitude" parameterType="double" value="50.0"/>
+    <ParameterDeclaration name="DroneMaxSpeed" parameterType="double" value="15.0"/>
+    <ParameterDeclaration name="PayloadWeight" parameterType="double" value="2.0"/>
+    <ParameterDeclaration name="LinkLossTime" parameterType="double" value="120.0"/>
+    <ParameterDeclaration name="LinkLossTimeout" parameterType="double" value="30.0"/>
+    <ParameterDeclaration name="BatteryLevel" parameterType="double" value="75.0"/>
+  </ParameterDeclarations>
+
+  <CatalogLocations>
+    <VehicleCatalog>
+      <Directory path="./Catalogs/Vehicles"/>
+    </VehicleCatalog>
+    <EnvironmentCatalog>
+      <Directory path="./Catalogs/Environment"/>
+    </EnvironmentCatalog>
+  </CatalogLocations>
+
+  <RoadNetwork>
+    <LogicFile filepath="./RoadNetworks/UrbanResidential_01.xodr"/>
+    <SceneGraphFile filepath="./RoadNetworks/UrbanResidential_01.opt.osgb"/>
+  </RoadNetwork>
+
+  <Entities>
+    <ScenarioObject name="EgoDrone">
+      <CatalogReference catalogName="VehicleCatalog" entryName="DeliveryDrone_Model_X1">
+        <ParameterAssignments>
+          <ParameterAssignment parameterRef="MaxSpeed" value="$DroneMaxSpeed"/>
+          <ParameterAssignment parameterRef="CurrentBattery" value="$BatteryLevel"/>
+        </ParameterAssignments>
+      </CatalogReference>
+      <ObjectController>
+        <CatalogReference catalogName="ControllerCatalog" entryName="AutonomousDroneController"/>
+      </ObjectController>
+    </ScenarioObject>
+
+    <!-- Electromagnetic Interference Source -->
+    <ScenarioObject name="EMI_Source">
+      <MiscObject miscObjectCategory="obstacle" mass="0.0" name="InterferenceZone">
+        <BoundingBox>
+          <Center x="2500.0" y="2300.0" z="30.0"/>
+          <Dimensions width="200.0" length="200.0" height="60.0"/>
+        </BoundingBox>
+        <Properties>
+          <Property name="interferenceType" value="cellular_tower"/>
+          <Property name="signalStrength" value="critical"/>
+        </Properties>
+      </MiscObject>
+    </ScenarioObject>
+
+    <!-- Home/Launch Point Marker -->
+    <ScenarioObject name="HomePoint">
+      <MiscObject miscObjectCategory="none" mass="0.0" name="LaunchPad">
+        <BoundingBox>
+          <Center x="1000.0" y="2000.0" z="0.5"/>
+          <Dimensions width="4.0" length="4.0" height="0.1"/>
+        </BoundingBox>
+        <Properties>
+          <Property name="type" value="landing_zone"/>
+          <Property name="priority" value="home_base"/>
+        </Properties>
+      </MiscObject>
+    </ScenarioObject>
+  </Entities>
+
+  <Storyboard>
+    <Init>
+      <Actions>
+        <Private entityRef="EgoDrone">
+          <PrivateAction>
+            <TeleportAction>
+              <Position>
+                <WorldPosition x="1000.0" y="2000.0" z="$CruiseAltitude" h="0.0" p="0.0" r="0.0"/>
+              </Position>
+            </TeleportAction>
+          </PrivateAction>
+          <PrivateAction>
+            <LongitudinalAction>
+              <SpeedAction>
+                <SpeedActionDynamics dynamicsShape="step" value="0.0" dynamicsDimension="time"/>
+                <SpeedActionTarget>
+                  <AbsoluteTargetSpeed value="15.0"/>
+                </SpeedActionTarget>
+              </SpeedAction>
+            </LongitudinalAction>
+          </PrivateAction>
+        </Private>
+
+        <Private entityRef="EMI_Source">
+          <PrivateAction>
+            <TeleportAction>
+              <Position>
+                <WorldPosition x="2500.0" y="2300.0" z="30.0" h="0.0" p="0.0" r="0.0"/>
+              </Position>
+            </TeleportAction>
+          </PrivateAction>
+          <PrivateAction>
+            <VisibilityAction graphics="false" traffic="false" sensors="true"/>
+          </PrivateAction>
+        </Private>
+
+        <Private entityRef="HomePoint">
+          <PrivateAction>
+            <TeleportAction>
+              <Position>
+                <WorldPosition x="1000.0" y="2000.0" z="0.5" h="0.0" p="0.0" r="0.0"/>
+              </Position>
+            </TeleportAction>
+          </PrivateAction>
+        </Private>
+
+        <GlobalAction>
+          <EnvironmentAction>
+            <Environment name="NominalConditions">
+              <TimeOfDay animation="false" dateTime="2025-10-30T15:00:00"/>
+              <Weather cloudState="free">
+                <Sun intensity="0.85" azimuth="3.14" elevation="0.78"/>
+                <Fog visualRange="10000.0"/>
+                <Precipitation precipitationType="dry" intensity="0.0"/>
+                <Wind speed="5.0" direction="90.0"/>
+              </Weather>
+              <RoadCondition frictionScaleFactor="1.0"/>
+            </Environment>
+          </EnvironmentAction>
+        </GlobalAction>
+      </Actions>
+    </Init>
+
+    <Story name="CommunicationLossEmergency">
+
+      <Act name="NormalFlightPhase">
+        <ManeuverGroup maximumExecutionCount="1" name="OutboundMission">
+          <Actors selectTriggeringEntities="false">
+            <EntityRef entityRef="EgoDrone"/>
+          </Actors>
+
+          <Maneuver name="NormalDeliveryRoute">
+            <Event name="NavigateOutbound" priority="overwrite">
+              <Action name="FollowPlannedRoute">
+                <PrivateAction>
+                  <RoutingAction>
+                    <FollowTrajectoryAction>
+                      <Trajectory name="OutboundRoute" closed="false">
+                        <Shape>
+                          <Polyline>
+                            <Vertex time="0.0">
+                              <Position>
+                                <WorldPosition x="1000.0" y="2000.0" z="$CruiseAltitude"/>
+                              </Position>
+                            </Vertex>
+                            <Vertex time="40.0">
+                              <Position>
+                                <WorldPosition x="1600.0" y="2120.0" z="$CruiseAltitude"/>
+                              </Position>
+                            </Vertex>
+                            <Vertex time="80.0">
+                              <Position>
+                                <WorldPosition x="2200.0" y="2240.0" z="$CruiseAltitude"/>
+                              </Position>
+                            </Vertex>
+                            <Vertex time="120.0">
+                              <Position>
+                                <WorldPosition x="2500.0" y="2300.0" z="$CruiseAltitude"/>
+                              </Position>
+                            </Vertex>
+                          </Polyline>
+                        </Shape>
+                      </Trajectory>
+                      <TimeReference>
+                        <Timing domainAbsoluteRelative="relative" scale="1.0" offset="0.0"/>
+                      </TimeReference>
+                      <TrajectoryFollowingMode followingMode="position"/>
+                    </FollowTrajectoryAction>
+                  </RoutingAction>
+                </PrivateAction>
+              </Action>
+              <StartTrigger>
+                <ConditionGroup>
+                  <Condition name="StartMission" delay="0" conditionEdge="rising">
+                    <ByValueCondition>
+                      <SimulationTimeCondition value="0.0" rule="greaterThan"/>
+                    </ByValueCondition>
+                  </Condition>
+                </ConditionGroup>
+              </StartTrigger>
+            </Event>
+
+            <!-- Communication Status Monitoring -->
+            <Event name="MonitorCommunication" priority="parallel">
+              <Action name="LogLinkQuality">
+                <UserDefinedAction>
+                  <CustomCommandAction type="MonitorCommLink">
+                    <Property name="linkQuality" value="good"/>
+                    <Property name="signalStrength" value="-65"/>
+                    <Property name="latency" value="120"/>
+                  </CustomCommandAction>
+                </UserDefinedAction>
+              </Action>
+              <StartTrigger>
+                <ConditionGroup>
+                  <Condition name="MonitoringActive" delay="0" conditionEdge="rising">
+                    <ByValueCondition>
+                      <SimulationTimeCondition value="0.0" rule="greaterThan"/>
+                    </ByValueCondition>
+                  </Condition>
+                </ConditionGroup>
+              </StartTrigger>
+            </Event>
+          </Maneuver>
+        </ManeuverGroup>
+
+        <StartTrigger>
+          <ConditionGroup>
+            <Condition name="ActStart" delay="0" conditionEdge="rising">
+              <ByValueCondition>
+                <SimulationTimeCondition value="0.0" rule="greaterThan"/>
+              </ByValueCondition>
+            </Condition>
+          </ConditionGroup>
+        </StartTrigger>
+
+        <StopTrigger>
+          <ConditionGroup>
+            <Condition name="CommLossDetected" delay="0" conditionEdge="rising">
+              <ByValueCondition>
+                <SimulationTimeCondition value="$LinkLossTime" rule="greaterThan"/>
+              </ByValueCondition>
+            </Condition>
+          </ConditionGroup>
+        </StopTrigger>
+      </Act>
+
+      <Act name="CommunicationLossEvent">
+        <ManeuverGroup maximumExecutionCount="1" name="LinkFailure">
+          <Actors selectTriggeringEntities="false">
+            <EntityRef entityRef="EgoDrone"/>
+          </Actors>
+
+          <Maneuver name="DetectAndRespond">
+            <Event name="LinkLossOccurs" priority="overwrite">
+              <Action name="TriggerLinkLoss">
+                <UserDefinedAction>
+                  <CustomCommandAction type="SimulateLinkLoss">
+                    <Property name="lossType" value="complete"/>
+                    <Property name="cause" value="electromagnetic_interference"/>
+                    <Property name="duration" value="$LinkLossTimeout"/>
+                  </CustomCommandAction>
+                </UserDefinedAction>
+              </Action>
+              <Action name="ActivateEMIZone">
+                <PrivateAction>
+                  <VisibilityAction graphics="true" traffic="true" sensors="true"/>
+                </PrivateAction>
+              </Action>
+              <StartTrigger>
+                <ConditionGroup>
+                  <Condition name="EnterInterferenceZone" delay="0" conditionEdge="rising">
+                    <ByEntityCondition>
+                      <TriggeringEntities triggeringEntitiesRule="any">
+                        <EntityRef entityRef="EgoDrone"/>
+                      </TriggeringEntities>
+                      <EntityCondition>
+                        <DistanceCondition value="100.0" freespace="true" alongRoute="false" rule="lessThan">
+                          <Position>
+                            <WorldPosition x="2500.0" y="2300.0" z="$CruiseAltitude"/>
+                          </Position>
+                        </DistanceCondition>
+                      </EntityCondition>
+                    </ByEntityCondition>
+                  </Condition>
+                </ConditionGroup>
+              </StartTrigger>
+            </Event>
+
+            <!-- Wait for Timeout -->
+            <Event name="LinkLossTimeout" priority="parallel">
+              <Action name="WaitForReestablish">
+                <UserDefinedAction>
+                  <CustomCommandAction type="WaitForLink">
+                    <Property name="timeoutSeconds" value="$LinkLossTimeout"/>
+                    <Property name="retryAttempts" value="5"/>
+                  </CustomCommandAction>
+                </UserDefinedAction>
+              </Action>
+              <StartTrigger>
+                <ConditionGroup>
+                  <Condition name="LinkLossActive" delay="0" conditionEdge="rising">
+                    <ByValueCondition>
+                      <StoryboardElementStateCondition storyboardElementType="event"
+                                                       storyboardElementRef="LinkLossOccurs"
+                                                       state="runningState"/>
+                    </ByValueCondition>
+                  </Condition>
+                </ConditionGroup>
+              </StartTrigger>
+            </Event>
+          </Maneuver>
+        </ManeuverGroup>
+
+        <StartTrigger>
+          <ConditionGroup>
+            <Condition name="LinkLossStart" delay="0" conditionEdge="rising">
+              <ByValueCondition>
+                <StoryboardElementStateCondition storyboardElementType="act"
+                                                 storyboardElementRef="NormalFlightPhase"
+                                                 state="completeState"/>
+              </ByValueCondition>
+            </Condition>
+          </ConditionGroup>
+        </StartTrigger>
+
+        <StopTrigger>
+          <ConditionGroup>
+            <Condition name="TimeoutExpired" delay="0" conditionEdge="rising">
+              <ByValueCondition>
+                <SimulationTimeCondition value="$LinkLossTime + $LinkLossTimeout" rule="greaterThan"/>
+              </ByValueCondition>
+            </Condition>
+          </ConditionGroup>
+        </StopTrigger>
+      </Act>
+
+      <Act name="EmergencyReturnToLaunch">
+        <ManeuverGroup maximumExecutionCount="1" name="AutonomousRTL">
+          <Actors selectTriggeringEntities="false">
+            <EntityRef entityRef="EgoDrone"/>
+          </Actors>
+
+          <Maneuver name="ExecuteRTL">
+            <Event name="ActivateRTLMode" priority="overwrite">
+              <Action name="EnableFailsafeMode">
+                <UserDefinedAction>
+                  <CustomCommandAction type="ActivateFailsafe">
+                    <Property name="mode" value="RETURN_TO_LAUNCH"/>
+                    <Property name="reason" value="LOST_LINK"/>
+                    <Property name="timestamp" value="$LinkLossTime"/>
+                  </CustomCommandAction>
+                </UserDefinedAction>
+              </Action>
+              <Action name="LogEmergencyEvent">
+                <UserDefinedAction>
+                  <CustomCommandAction type="LogEmergency">
+                    <Property name="eventType" value="COMMUNICATION_LOSS"/>
+                    <Property name="severity" value="HIGH"/>
+                    <Property name="batteryRemaining" value="$BatteryLevel"/>
+                    <Property name="position" value="2500.0,2300.0,50.0"/>
+                  </CustomCommandAction>
+                </UserDefinedAction>
+              </Action>
+              <StartTrigger>
+                <ConditionGroup>
+                  <Condition name="RTLTrigger" delay="0" conditionEdge="rising">
+                    <ByValueCondition>
+                      <SimulationTimeCondition value="$LinkLossTime + $LinkLossTimeout" rule="greaterThan"/>
+                    </ByValueCondition>
+                  </Condition>
+                </ConditionGroup>
+              </StartTrigger>
+            </Event>
+
+            <Event name="NavigateHomeAutonomous" priority="overwrite">
+              <Action name="ReturnTrajectory">
+                <PrivateAction>
+                  <RoutingAction>
+                    <FollowTrajectoryAction>
+                      <Trajectory name="RTLRoute" closed="false">
+                        <Shape>
+                          <Polyline>
+                            <Vertex time="0.0">
+                              <Position>
+                                <WorldPosition x="2500.0" y="2300.0" z="$CruiseAltitude"/>
+                              </Position>
+                            </Vertex>
+                            <Vertex time="30.0">
+                              <Position>
+                                <WorldPosition x="2200.0" y="2240.0" z="$CruiseAltitude"/>
+                              </Position>
+                            </Vertex>
+                            <Vertex time="60.0">
+                              <Position>
+                                <WorldPosition x="1900.0" y="2180.0" z="$CruiseAltitude"/>
+                              </Position>
+                            </Vertex>
+                            <Vertex time="90.0">
+                              <Position>
+                                <WorldPosition x="1600.0" y="2120.0" z="$CruiseAltitude"/>
+                              </Position>
+                            </Vertex>
+                            <Vertex time="120.0">
+                              <Position>
+                                <WorldPosition x="1300.0" y="2060.0" z="$CruiseAltitude"/>
+                              </Position>
+                            </Vertex>
+                            <Vertex time="140.0">
+                              <Position>
+                                <WorldPosition x="1000.0" y="2000.0" z="$CruiseAltitude"/>
+                              </Position>
+                            </Vertex>
+                          </Polyline>
+                        </Shape>
+                      </Trajectory>
+                      <TimeReference>
+                        <Timing domainAbsoluteRelative="relative" scale="1.0" offset="0.0"/>
+                      </TimeReference>
+                      <TrajectoryFollowingMode followingMode="position"/>
+                    </FollowTrajectoryAction>
+                  </RoutingAction>
+                </PrivateAction>
+              </Action>
+              <StartTrigger>
+                <ConditionGroup>
+                  <Condition name="RTLActivated" delay="1.0" conditionEdge="rising">
+                    <ByValueCondition>
+                      <StoryboardElementStateCondition storyboardElementType="event"
+                                                       storyboardElementRef="ActivateRTLMode"
+                                                       state="runningState"/>
+                    </ByValueCondition>
+                  </Condition>
+                </ConditionGroup>
+              </StartTrigger>
+            </Event>
+
+            <!-- Collision Avoidance During RTL -->
+            <Event name="ObstacleAvoidance" priority="parallel">
+              <Action name="DetectAndAvoid">
+                <UserDefinedAction>
+                  <CustomCommandAction type="ObstacleDetection">
+                    <Property name="detectionRange" value="100.0"/>
+                    <Property name="avoidanceStrategy" value="altitude_separation"/>
+                    <Property name="enabled" value="true"/>
+                  </CustomCommandAction>
+                </UserDefinedAction>
+              </Action>
+              <StartTrigger>
+                <ConditionGroup>
+                  <Condition name="RTLInProgress" delay="0" conditionEdge="rising">
+                    <ByValueCondition>
+                      <StoryboardElementStateCondition storyboardElementType="event"
+                                                       storyboardElementRef="NavigateHomeAutonomous"
+                                                       state="runningState"/>
+                    </ByValueCondition>
+                  </Condition>
+                </ConditionGroup>
+              </StartTrigger>
+            </Event>
+          </Maneuver>
+        </ManeuverGroup>
+
+        <StartTrigger>
+          <ConditionGroup>
+            <Condition name="RTLStart" delay="0" conditionEdge="rising">
+              <ByValueCondition>
+                <StoryboardElementStateCondition storyboardElementType="act"
+                                                 storyboardElementRef="CommunicationLossEvent"
+                                                 state="completeState"/>
+              </ByValueCondition>
+            </Condition>
+          </ConditionGroup>
+        </StartTrigger>
+
+        <StopTrigger>
+          <ConditionGroup>
+            <Condition name="ApproachingHome" delay="0" conditionEdge="rising">
+              <ByEntityCondition>
+                <TriggeringEntities triggeringEntitiesRule="any">
+                  <EntityRef entityRef="EgoDrone"/>
+                </TriggeringEntities>
+                <EntityCondition>
+                  <DistanceCondition value="20.0" freespace="true" alongRoute="false" rule="lessThan">
+                    <Position>
+                      <WorldPosition x="1000.0" y="2000.0" z="$CruiseAltitude"/>
+                    </Position>
+                  </DistanceCondition>
+                </EntityCondition>
+              </ByEntityCondition>
+            </Condition>
+          </ConditionGroup>
+        </StopTrigger>
+      </Act>
+
+      <Act name="EmergencyLanding">
+        <ManeuverGroup maximumExecutionCount="1" name="AutoLand">
+          <Actors selectTriggeringEntities="false">
+            <EntityRef entityRef="EgoDrone"/>
+          </Actors>
+
+          <Maneuver name="LandAtHome">
+            <Event name="DescendToLandingPad" priority="overwrite">
+              <Action name="ControlledDescent">
+                <PrivateAction>
+                  <LongitudinalAction>
+                    <SpeedAction>
+                      <SpeedActionDynamics dynamicsShape="linear" value="5.0" dynamicsDimension="time"/>
+                      <SpeedActionTarget>
+                        <AbsoluteTargetSpeed value="1.0"/>
+                      </SpeedActionTarget>
+                    </SpeedAction>
+                  </LongitudinalAction>
+                </PrivateAction>
+              </Action>
+              <Action name="DescentPath">
+                <PrivateAction>
+                  <RoutingAction>
+                    <AcquirePositionAction>
+                      <Position>
+                        <WorldPosition x="1000.0" y="2000.0" z="0.5"/>
+                      </Position>
+                    </AcquirePositionAction>
+                  </RoutingAction>
+                </PrivateAction>
+              </Action>
+              <StartTrigger>
+                <ConditionGroup>
+                  <Condition name="OverHomePad" delay="0" conditionEdge="rising">
+                    <ByEntityCondition>
+                      <TriggeringEntities triggeringEntitiesRule="any">
+                        <EntityRef entityRef="EgoDrone"/>
+                      </TriggeringEntities>
+                      <EntityCondition>
+                        <DistanceCondition value="5.0" freespace="true" alongRoute="false" rule="lessThan">
+                          <Position>
+                            <WorldPosition x="1000.0" y="2000.0" z="$CruiseAltitude"/>
+                          </Position>
+                        </DistanceCondition>
+                      </EntityCondition>
+                    </ByEntityCondition>
+                  </Condition>
+                </ConditionGroup>
+              </StartTrigger>
+            </Event>
+
+            <Event name="Touchdown" priority="overwrite">
+              <Action name="DisarmMotors">
+                <UserDefinedAction>
+                  <CustomCommandAction type="DisarmSystem">
+                    <Property name="landingConfirmed" value="true"/>
+                    <Property name="batteryRemaining" value="$BatteryLevel - 15.0"/>
+                    <Property name="missionStatus" value="EMERGENCY_RTL_COMPLETE"/>
+                  </CustomCommandAction>
+                </UserDefinedAction>
+              </Action>
+              <Action name="LogMissionEnd">
+                <UserDefinedAction>
+                  <CustomCommandAction type="EndMission">
+                    <Property name="result" value="EMERGENCY_LANDING"/>
+                    <Property name="reason" value="LOST_COMMUNICATION"/>
+                    <Property name="safetyLevel" value="SAFE"/>
+                  </CustomCommandAction>
+                </UserDefinedAction>
+              </Action>
+              <StartTrigger>
+                <ConditionGroup>
+                  <Condition name="OnGround" delay="2.0" conditionEdge="rising">
+                    <ByEntityCondition>
+                      <TriggeringEntities triggeringEntitiesRule="any">
+                        <EntityRef entityRef="EgoDrone"/>
+                      </TriggeringEntities>
+                      <EntityCondition>
+                        <ReachPositionCondition tolerance="0.3">
+                          <Position>
+                            <WorldPosition x="1000.0" y="2000.0" z="0.5"/>
+                          </Position>
+                        </ReachPositionCondition>
+                      </EntityCondition>
+                    </ByEntityCondition>
+                  </Condition>
+                </ConditionGroup>
+              </StartTrigger>
+            </Event>
+          </Maneuver>
+        </ManeuverGroup>
+
+        <StartTrigger>
+          <ConditionGroup>
+            <Condition name="LandingStart" delay="0" conditionEdge="rising">
+              <ByValueCondition>
+                <StoryboardElementStateCondition storyboardElementType="act"
+                                                 storyboardElementRef="EmergencyReturnToLaunch"
+                                                 state="completeState"/>
+              </ByValueCondition>
+            </Condition>
+          </ConditionGroup>
+        </StartTrigger>
+      </Act>
+    </Story>
+
+    <StopTrigger>
+      <ConditionGroup>
+        <Condition name="EmergencyComplete" delay="0" conditionEdge="rising">
+          <ByValueCondition>
+            <StoryboardElementStateCondition storyboardElementType="act"
+                                             storyboardElementRef="EmergencyLanding"
+                                             state="completeState"/>
+          </ByValueCondition>
+        </Condition>
+      </ConditionGroup>
+      <ConditionGroup>
+        <Condition name="CriticalBattery" delay="0" conditionEdge="rising">
+          <ByValueCondition>
+            <ParameterCondition parameterRef="BatteryLevel" value="20.0" rule="lessThan"/>
+          </ByValueCondition>
+        </Condition>
+      </ConditionGroup>
+      <ConditionGroup>
+        <Condition name="MaxSimTime" delay="0" conditionEdge="rising">
+          <ByValueCondition>
+            <SimulationTimeCondition value="500.0" rule="greaterThan"/>
+          </ByValueCondition>
+        </Condition>
+      </ConditionGroup>
+    </StopTrigger>
+  </Storyboard>
+
+</OpenSCENARIO>

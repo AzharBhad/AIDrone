@@ -1,0 +1,156 @@
+# ============================================================================
+# PART 108 PERSONNEL REQUIREMENTS (§108.300 - §108.320)
+# ============================================================================
+personnel_requirements:
+  type: "record"
+  description: "Part 108 personnel qualifications and responsibilities"
+
+  operations_supervisor:
+    type: "record"
+    description: "§108.305 - Operations Supervisor requirements"
+    fields:
+
+      minimum_qualifications:
+        type: "categorical"
+        requirements:
+          - hold_valid_part_107_certificate
+          - minimum_100_hours_uas_operational_experience
+          - completed_manufacturer_specific_training
+          - knowledge_of_part_108_regulations
+          - passed_operations_supervisor_assessment
+
+      responsibilities:
+        type: "categorical"
+        description: "Oversight and management duties"
+        values:
+          - ensure_compliance_with_part_108
+          - supervise_flight_coordinators
+          - approve_operational_plans
+          - manage_emergency_procedures
+          - maintain_operational_records
+          - ensure_aircraft_airworthiness
+
+      recurrent_requirements:
+        type: "record"
+        fields:
+          training_frequency:
+            value: 12
+            unit: "months"
+            description: "Annual recurrent training required"
+          experience_currency:
+            description: "Must maintain active involvement in operations"
+
+      limitations:
+        maximum_concurrent_operations:
+          type: "numeric"
+          value: 10
+          description: "Maximum operations under single supervisor"
+
+  flight_coordinator:
+    type: "record"
+    description: "§108.310 - Flight Coordinator requirements"
+    fields:
+
+      minimum_qualifications:
+        type: "record"
+        fields:
+          experience_requirement:
+            type: "numeric"
+            unit: "hours"
+            value: 5.0
+            description: "Minimum 5 hours with specific make/model"
+            conditions: "Under supervision of qualified coordinator or supervisor"
+
+          training_requirements:
+            type: "categorical"
+            values:
+              - manufacturer_specific_training_completed
+              - emergency_procedures_certified
+              - simplified_user_interaction_trained
+              - conformance_monitoring_qualified
+
+          currency_requirements:
+            type: "numeric"
+            unit: "hours"
+            value: 5.0
+            period: "12 months"
+            description: "Must maintain 5 hours in 12 months to remain current"
+
+      responsibilities:
+        type: "categorical"
+        description: "Tactical oversight duties"
+        values:
+          - monitor_aircraft_status
+          - monitor_conformance_with_flight_plan
+          - respond_to_system_alerts
+          - initiate_contingency_procedures
+          - coordinate_with_atc_when_required
+          - manage_simplified_user_interface
+
+      operational_limitations:
+        type: "record"
+        fields:
+
+          maximum_concurrent_aircraft:
+            type: "numeric"
+            value: 5
+            description: "Maximum UAS monitored simultaneously"
+            condition: "Subject to operational complexity"
+
+          simplified_user_interaction:
+            type: "boolean"
+            value: true
+            description: "§108.210 - Limited direct control capability"
+            constraints: "FC cannot override autonomous systems except emergency"
+
+          no_continuous_manual_control:
+            type: "boolean"
+            value: true
+            description: "Part 108 prohibits continuous manual flight"
+
+  additional_personnel:
+    type: "record"
+    description: "§108.320 - Other required personnel"
+    fields:
+
+      maintenance_personnel:
+        qualification: "Manufacturer-certified or FAA approved training"
+        responsibilities: "Inspections, repairs, alterations per §108.600"
+
+      ground_handling_crew:
+        qualification: "Company-specific training"
+        responsibilities: "Loading, unloading, servicing operations"
+
+      flight_planning_specialists:
+        qualification: "Knowledge of airspace, weather, route planning"
+        responsibilities: "Establish flight paths, operational parameters"
+
+  tsa_security_requirements:
+    type: "record"
+    description: "CRITICAL - All personnel must have TSA approval"
+    fields:
+
+      background_check_required:
+        type: "boolean"
+        value: true
+        description: "All operational personnel require TSA background check"
+
+      fingerprinting_required:
+        type: "boolean"
+        value: true
+        description: "Fingerprinting mandatory for all Part 108 personnel"
+
+      security_threat_assessment:
+        type: "categorical"
+        requirements:
+          - citizenship_verification
+          - criminal_history_review
+          - terrorism_screening
+          - continuous_vetting
+
+      disqualifying_conditions:
+        type: "categorical"
+        values:
+          - felony_conviction_within_10_years
+          - terrorism_related_offenses
+          - failed_security_threat_assessment

@@ -1,0 +1,26 @@
+performance_metrics:
+  operational_metrics:
+    delivery_performance:
+      - metric: "On-time delivery rate"
+        target: "99.5%"
+        frequency: "Real-time"
+      - metric: "Average delivery time"
+        target: "< 30 minutes"
+        frequency: "Hourly"
+
+    system_performance:
+      - metric: "System uptime"
+        target: "99.99%"
+        frequency: "Continuous"
+      - metric: "Response time"
+        target: "< 100ms"
+        frequency: "Real-time"
+
+  business_metrics:
+    financial:
+      - metric: "Revenue per delivery"
+        target: "> $15"
+        frequency: "Daily"
+      - metric: "Operating margin"
+        target: "> 30%"
+        frequency: "Monthly"

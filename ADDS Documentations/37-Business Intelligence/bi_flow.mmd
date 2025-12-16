@@ -1,0 +1,18 @@
+%%BI Data Flow
+graph TD
+    subgraph Data_Sources
+        S1[Operational Data] --> E1[ETL Process]
+        S2[Customer Data] --> E1
+        S3[External Data] --> E1
+    end
+
+    subgraph Processing
+        E1 --> W1[Data Warehouse]
+        W1 --> A1[Analytics Engine]
+    end
+
+    subgraph Analysis
+        A1 --> R1[Reporting]
+        A1 --> R2[Dashboards]
+        A1 --> R3[Alerts]
+    end

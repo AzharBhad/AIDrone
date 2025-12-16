@@ -1,0 +1,29 @@
+%% 2.Communication Architecture Diagram
+graph TD
+    subgraph Ground_Control
+        GC[Ground Control Station] --> |Commands| CM[Communication Manager]
+        CM --> |Telemetry| GC
+    end
+
+    subgraph Communication_Layers
+        CM --> |Primary| PL[5G Network]
+        CM --> |Backup| BL[4G Network]
+        CM --> |Emergency| EL[Satellite Link]
+    end
+
+    subgraph Drone_Systems
+        PL --> |Real-time| DS[Drone Controller]
+        BL --> |Fallback| DS
+        EL --> |Emergency| DS
+        DS --> |Status| PL
+        DS --> |Critical| EL
+    end
+
+    subgraph Security_Layer
+        SEC[Security Module] --> |Encrypt| PL
+        SEC --> |Encrypt| BL
+        SEC --> |Encrypt| EL
+        PL --> |Decrypt| SEC
+        BL --> |Decrypt| SEC
+        EL --> |Decrypt| SEC
+    end

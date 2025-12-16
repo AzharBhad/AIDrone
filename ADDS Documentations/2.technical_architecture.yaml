@@ -1,0 +1,30 @@
+hardware_components:
+  drone_platform:
+    frame: "Carbon fiber composite"
+    propulsion: "Brushless DC motors"
+    battery: "High-capacity LiPo"
+    sensors:
+      - "GPS/GNSS"
+      - "LiDAR"
+      - "Cameras"
+      - "IMU"
+      - "Weather sensors"
+
+  ground_infrastructure:
+    - "Control stations"
+    - "Charging docks"
+    - "Communication relays"
+    - "Weather monitoring"
+
+software_stack:
+  flight_control:
+    - "Navigation system"
+    - "Mission planner"
+    - "Obstacle avoidance"
+    - "Emergency protocols"
+
+  backend_systems:
+    - "Order management"
+    - "Fleet control"
+    - "Analytics engine"
+    - "Maintenance tracker"

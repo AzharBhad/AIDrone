@@ -1,0 +1,17 @@
+graph TD
+    subgraph External
+        E1[Partners] --> G1[API Gateway]
+        E2[Clients] --> G1
+    end
+
+    subgraph Internal
+        G1 --> M1[Service Mesh]
+        M1 --> S1[Services]
+        S1 --> S2[Event Bus]
+    end
+
+    subgraph Processing
+        S2 --> P1[Stream Processing]
+        P1 --> P2[Data Storage]
+        P2 --> P3[Analytics]
+    end

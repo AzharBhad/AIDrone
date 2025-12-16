@@ -1,0 +1,18 @@
+%%Network Security Flow
+graph TD
+    subgraph Internet
+        I1[External Traffic] --> F1[DDoS Protection]
+        F1 --> F2[Edge Firewall]
+    end
+
+    subgraph DMZ
+        F2 --> D1[Load Balancer]
+        D1 --> D2[WAF]
+        D2 --> D3[API Gateway]
+    end
+
+    subgraph Internal
+        D3 --> N1[Internal Firewall]
+        N1 --> N2[Service Mesh]
+        N2 --> N3[Applications]
+    end

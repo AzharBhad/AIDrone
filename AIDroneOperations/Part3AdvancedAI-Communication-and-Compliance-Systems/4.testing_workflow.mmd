@@ -1,0 +1,13 @@
+%% 4. Testing Workflow Diagram
+stateDiagram-v2
+    [*] --> Development
+    Development --> UnitTesting: Code Complete
+    UnitTesting --> IntegrationTesting: Units Passed
+    UnitTesting --> Development: Failed
+    IntegrationTesting --> SimulationTesting: Integration Passed
+    IntegrationTesting --> Development: Failed
+    SimulationTesting --> FieldTesting: Simulation Passed
+    SimulationTesting --> Development: Failed
+    FieldTesting --> Certification: Field Passed
+    FieldTesting --> Development: Failed
+    Certification --> [*]: Approved

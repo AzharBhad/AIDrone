@@ -1,0 +1,17 @@
+graph TD
+    subgraph Definition
+        D1[Requirements] --> D2[SLA Design]
+        D2 --> D3[Agreement]
+    end
+
+    subgraph Monitoring
+        D3 --> M1[Performance Tracking]
+        M1 --> M2[Compliance Check]
+        M2 --> M3[Reporting]
+    end
+
+    subgraph Review
+        M3 --> R1[Analysis]
+        R1 --> R2[Improvement]
+        R2 --> R3[Update]
+    end

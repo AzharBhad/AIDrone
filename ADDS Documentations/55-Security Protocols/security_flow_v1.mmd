@@ -1,0 +1,17 @@
+graph TD
+    subgraph Authentication
+        A1[Identity Verification] --> A2[MFA]
+        A2 --> A3[Session Creation]
+    end
+
+    subgraph Authorization
+        A3 --> B1[Permission Check]
+        B1 --> B2[Access Grant]
+        B2 --> B3[Activity Log]
+    end
+
+    subgraph Monitoring
+        B3 --> M1[Threat Detection]
+        M1 --> M2[Alert Generation]
+        M2 --> M3[Response]
+    end

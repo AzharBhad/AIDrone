@@ -1,0 +1,24 @@
+%%Operation Flow Optimization
+graph TD
+    subgraph Order_Processing
+        O1[Order Receipt] --> O2[Validation]
+        O2 --> O3[Route Planning]
+    end
+
+    subgraph Resource_Allocation
+        O3 --> R1[Drone Assignment]
+        R1 --> R2[Load Planning]
+        R2 --> R3[Mission Briefing]
+    end
+
+    subgraph Execution
+        R3 --> E1[Takeoff]
+        E1 --> E2[Delivery]
+        E2 --> E3[Return]
+    end
+
+    subgraph Analytics
+        E3 --> A1[Performance Analysis]
+        A1 --> A2[Optimization]
+        A2 --> O1
+    end

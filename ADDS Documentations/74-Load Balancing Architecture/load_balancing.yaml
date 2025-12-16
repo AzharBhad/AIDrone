@@ -1,0 +1,30 @@
+load_balancing:
+  layer_7:
+    implementation: "Application Load Balancer"
+    configuration:
+      listeners:
+        - protocol: "HTTPS"
+          port: 443
+          certificates: ["ACM"]
+      routing:
+        - path: "/api/*"
+          target: "API Servers"
+        - path: "/ws/*"
+          target: "WebSocket Servers"
+
+  layer_4:
+    implementation: "Network Load Balancer"
+    configuration:
+      protocols: ["TCP", "UDP"]
+      health_checks:
+        interval: "10 seconds"
+        threshold: "2 failures"
+
+  algorithms:
+    methods:
+      - name: "Least Connection"
+        use_case: "Long-lived connections"
+      - name: "Round Robin"
+        use_case: "Stateless requests"
+      - name: "IP Hash"
+        use_case: "Session persistence"

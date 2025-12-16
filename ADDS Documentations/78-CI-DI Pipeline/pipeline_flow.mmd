@@ -1,0 +1,17 @@
+graph TD
+    subgraph Build
+        B1[Code Push] --> B2[Build]
+        B2 --> B3[Test]
+    end
+
+    subgraph Quality
+        B3 --> Q1[Code Analysis]
+        Q1 --> Q2[Security Scan]
+        Q2 --> Q3[Artifacts]
+    end
+
+    subgraph Deploy
+        Q3 --> D1[Staging]
+        D1 --> D2[Testing]
+        D2 --> D3[Production]
+    end

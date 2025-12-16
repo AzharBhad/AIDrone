@@ -1,0 +1,17 @@
+graph TD
+    subgraph Prevention
+        P1[Threat Intelligence] --> P2[Security Controls]
+        P2 --> P3[Access Management]
+    end
+
+    subgraph Detection
+        P3 --> D1[Monitoring]
+        D1 --> D2[Analysis]
+        D2 --> D3[Alerts]
+    end
+
+    subgraph Response
+        D3 --> R1[Incident Response]
+        R1 --> R2[Containment]
+        R2 --> R3[Recovery]
+    end

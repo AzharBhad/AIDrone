@@ -1,0 +1,508 @@
+# =============================================================================
+# ASAM OpenODD 1.0.0 - Operational Design Domain
+# AI Autonomous Drone Delivery System (sUAS)
+# =============================================================================
+# Created: 2025-10-29T20:40:58Z (UTC)
+# Author: AzharBhad
+# Version: 1.0.0
+# =============================================================================
+
+asam_openodd:
+  version: "1.0.0"
+
+metadata:
+  odd_name: "Autonomous_Drone_Delivery_System_ODD"
+  odd_id: "ADD-ODD-2025-001"
+  version: "1.0.0"
+  author: "AzharBhad"
+  creation_date: "2025-10-29T20:40:58Z"
+  last_modified: "2025-10-29T20:40:58Z"
+  description: >
+    ODD for an AI-powered autonomous drone delivery service operating primarily
+    in Class G airspace in urban/suburban environments for small parcel delivery.
+  intended_use:
+    - "Commercial package delivery (non-hazardous goods)"
+    - "Hub-to-home and hub-to-business routes"
+  regulatory_framework:
+    - "FAA 14 CFR Part 107 (US Small UAS)"
+    - "FAA Part 89 (Remote ID)"
+    - "EASA UAS Open/Specific categories (Europe)"
+    - "Local CAA airspace authorizations, NOTAM/TFR compliance"
+    - "ASTM F3548-21 (UTM USS Interoperability) or equivalent"
+  automation:
+    vehicle_type: "sUAS multirotor"
+    autonomy_level: "High automation (remote supervision; Level 4 analog)"
+    operation_mode: ["VLOS (where applicable)", "BVLOS with mitigations/approval"]
+  data_rights:
+    classification: "internal"
+    export: "subject to local regulations"
+
+# =============================================================================
+# SCENE (Static environment and airspace context)
+# =============================================================================
+scene:
+  geography:
+    operational_area:
+      geofence_type: "dynamic_polygon"
+      geofences:
+        - id: "HUB_A_PRIMARY"
+          description: "Primary operational polygon around Hub A"
+          coordinate_ref: "WGS84"
+          polygon_latlon: []  # Fill with coordinates [[lat,lon],...]
+          max_radius_km: 8.0
+        - id: "HUB_A_SECONDARY"
+          description: "Secondary extension subject to authorization"
+          coordinate_ref: "WGS84"
+          polygon_latlon: []
+          max_radius_km: 12.0
+      altitude_reference: "AGL"
+    terrain_type:
+      allowed: ["urban_residential", "suburban_residential", "light_commercial", "mixed_use_low_density"]
+      restricted: ["dense_urban_core", "heavy_industrial", "mountainous_terrain", "large_open_water"]
+    elevation_msl_m:
+      min: -50
+      max: 2000
+
+  airspace:
+    classification_primary: "Class G (uncontrolled)"
+    permitted_with_authorization: ["Class E < 120m AGL", "Class C/D per ATC authorization via LAANC or equivalent"]
+    constraints:
+      - "Comply with NOTAMs/TFRs; automatic exclusion of active TFRs"
+      - "Respect permanent and dynamic No-Fly Zones (NFZs)"
+    altitude_constraints_agl_m:
+      min: 15
+      nominal_cruise: 60
+      max: 120
+      vertical_clearance_m:
+        buildings: 10
+        trees: 8
+        power_lines: 15
+        people: 20
+    no_fly_zones:
+      permanent:
+        - "Airports/heliports (typ. 5 km buffer unless authorized)"
+        - "Military bases"
+        - "Prisons/correctional"
+        - "Critical infrastructure (e.g., nuclear plants)"
+      dynamic:
+        - "Stadiums/arenas during events"
+        - "Emergency response scenes"
+        - "Presidential/VIP TFRs"
+        - "Wildfire suppression areas"
+        - "Temporary cranes/construction (via notices)"
+
+  infrastructure:
+    takeoff_landing_zones:
+      hub_pads:
+        surface_type: ["concrete", "asphalt", "composite"]
+        min_dimensions_m: [3, 3]
+        surface_condition: "level,dry,clear"
+        lighting: "required for night ops"
+      customer_delivery_zones:
+        residential:
+          allowed_surfaces: ["designated_pad", "driveway", "patio", "lawn_clear"]
+          min_clear_radius_m: 3
+          obstacle_free_volume: "radius 3m; height 2m"
+        commercial:
+          allowed_surfaces: ["rooftop_pad", "designated_ground_pad"]
+          min_clear_radius_m: 4
+          markings: "visual markers required"
+    corridors:
+      type: "dynamic_flight_corridors"
+      principles:
+        - "Minimize overflight of uninvolved persons"
+        - "Prefer routing above roadways at safe altitude buffers"
+        - "Avoid schools/hospitals at sensitive times"
+        - "Buffer around critical infrastructure"
+      permitted_deviation:
+        - "Collision avoidance"
+        - "Weather/reroute"
+        - "UTM traffic deconfliction"
+
+# =============================================================================
+# ENVIRONMENT (Weather, lighting, EM spectrum)
+# =============================================================================
+environment:
+  weather:
+    wind_mps:
+      surface_max_sustained: 10
+      surface_max_gust: 13
+      cruise_level_max: 12
+      crosswind_component_max: 8
+    precipitation:
+      allowed:
+        - type: "none"
+        - type: "light_rain"
+          rate_mm_per_hr_max: 2.5
+      prohibited: ["moderate_rain", "heavy_rain", "snow", "sleet", "freezing_rain", "hail"]
+      icing_conditions:
+        status: "prohibited"
+        rule: "Visible moisture and OAT < 5°C"
+    visibility:
+      met_visibility_km_min: 5
+      obstructions:
+        fog: "prohibited if < 5 km"
+        smoke: "prohibited if < 5 km or AQI > 150"
+        dust: "prohibited if < 5 km"
+    temperature_c:
+      min: -10
+      max: 45
+      optimal: [15, 30]
+    density_altitude_m_max: 2500
+    thunderstorms:
+      proximity_min_km: 20
+      status: "suspend ops within proximity"
+    turbulence:
+      allowed_max: "light"
+
+  lighting:
+    time_of_day:
+      - period: "day"
+        restrictions: []
+      - period: "civil_twilight"
+        restrictions: ["enhanced nav lights"]
+      - period: "night"
+        restrictions:
+          - "anti-collision lights visible >= 3 SM"
+          - "position/nav lights"
+          - "illuminated landing zone or equivalent sensing"
+          - "enhanced detect-and-avoid active"
+
+  electromagnetic:
+    gnss:
+      constellations_required: ["GPS", "Galileo", "GLONASS (optional)"]
+      min_satellites: 8
+      horiz_accuracy_m_max: 5
+      degraded_ops:
+        urban_canyon:
+          backup: "Visual-Inertial Odometry (VIO)"
+          duration_s_max: 60
+        interference:
+          response: "RTH or safe land"
+    communications:
+      c2_links:
+        bands: ["2.4 GHz", "5.8 GHz", "LTE 4G/5G"]
+        redundancy: "dual-link preferred"
+        latency_ms_max: 100
+        packet_loss_pct_max: 1
+      utm_connectivity:
+        protocol: "ASTM F3548-21 or equivalent"
+        position_update_hz_min: 1
+      remote_id:
+        compliance: "FAA Part 89 or regional equivalent"
+        broadcast_fields: ["UAS ID", "position", "altitude", "velocity", "control_station_location"]
+    rf_interference:
+      prohibited_proximity:
+        - "High-power broadcast transmitters (< 500 m)"
+        - "Primary radar sites"
+        - "HV transmission lines (< 50 m lateral)"
+
+# =============================================================================
+# DYNAMIC OBJECTS (Aerial, ground, obstacles)
+# =============================================================================
+dynamic_objects:
+  aerial_traffic:
+    cooperative:
+      manned_aircraft:
+        detection: ["ADS-B IN (if installed)", "UTM tracks (if available)"]
+        response: "Always yield, maintain well-clear"
+        well_clear:
+          vertical_ft: 500
+          horizontal_ft: 2000
+      cooperative_uas:
+        detection: ["Remote ID receivers", "UTM"]
+        separation_min:
+          vertical_ft: 100
+          horizontal_ft: 500
+        coordination: "UTM trajectory negotiation"
+    non_cooperative:
+      detection: ["onboard vision", "acoustic (optional)", "radar (optional)"]
+      avoidance_min_distance_m: 200
+      maneuvers_priority: ["vertical", "horizontal", "hover"]
+    biological:
+      birds:
+        policy: "Avoid flocks; reroute"
+        nesting_areas: "avoid during season"
+      bats:
+        policy: "Avoid known roost corridors at dusk/dawn (night ops)"
+
+  ground_risks:
+    people:
+      rules:
+        - "No flight over open-air assemblies/crowds"
+        - "Avoid sustained flight over uninvolved persons"
+        - "Abort landing if person enters landing zone"
+      standoff_low_altitude_lateral_m_min: 10
+    animals:
+      pets: "Abort landing if detected"
+      wildlife: "Maintain altitude; use thermal aid if available"
+    vehicles:
+      moving_vehicles: "No landing in active parking/roadways"
+      emergency_vehicles: "Yield; clear area"
+
+  obstacles:
+    static:
+      buildings_clearance_m_min: 10
+      towers_poles_clearance_m_min: 20
+      wires:
+        challenge: "thin-wire detection limits"
+        mitigation: "corridor planning, altitude buffers, known crossings"
+    dynamic:
+      construction:
+        cranes: "consider via permits/NOTAM data"
+      kites_balloons: "visual avoidance"
+
+# =============================================================================
+# EGO VEHICLE (System state, capabilities, behaviors)
+# =============================================================================
+ego_vehicle:
+  system_requirements:
+    preflight:
+      battery:
+        min_takeoff_soc_pct: 90
+        landing_reserve_soc_pct_min: 20
+        planning_rule: "mission energy +30% + RTH reserve"
+      sensors_required:
+        - "GNSS receiver (multi-constellation)"
+        - "IMU and magnetometer"
+        - "Barometric altimeter"
+        - "Forward and downward cameras"
+        - "Obstacle sensing (vision/LiDAR/ultrasonic)"
+        - "Battery management system"
+      comms_required:
+        c2_link: "established; RSSI > threshold"
+        utm_link: "connected/authenticated"
+        remote_id: "active"
+      flight_control:
+        redundancy: ["dual IMU", "dual compass"]
+        gps_lock: "3D fix; HDOP < 2.0"
+        BIT: "all subsystems pass"
+    inflight_monitoring:
+      telemetry_hz: 1
+      monitor_params:
+        - "battery voltage/SOC"
+        - "motor current/temperature"
+        - "sensor validity flags"
+        - "link quality"
+        - "EPE/position accuracy"
+        - "wind estimate vs limits"
+      anomaly_detection:
+        checks: ["trajectory deviation", "sensor disagreement", "performance degradation"]
+        response: "graded contingency actions"
+
+  performance:
+    speeds_mps:
+      cruise: 15
+      max: 20
+      approach: 3
+      landing_vertical: 0.5
+    endurance_min:
+      typical: 30
+      max_with_reserve: 35
+    payload:
+      max_weight_kg: 2.5
+      volume_l: 35
+      securement: "auto-lock bay or tethered winch"
+    maneuver_limits:
+      max_bank_deg: 25
+      climb_rate_mps_max: 3
+      descent_rate_mps_max: 2
+      hover_accuracy_m: 0.5
+
+  autonomy:
+    normal_ops: "Fully autonomous with remote supervision"
+    remote_intervention: "remote pilot can assume control"
+    decision_making:
+      path_planning: "real-time 3D optimization with corridor adherence"
+      obstacle_avoidance: "autonomous detect-and-avoid"
+      weather_adaptation: "dynamic reroute/abort"
+      traffic_deconfliction: "UTM-coordinated"
+
+  detect_and_avoid:
+    sensors:
+      forward: "stereo vision"
+      omni: "multi-cam or fused sensing"
+      downward: "landing zone assessment"
+      upward: "optional"
+    detection_ranges:
+      cooperative_km: 10
+      non_cooperative_m: 100-500
+      ground_obstacles_m: 50
+    avoidance_priority:
+      - "manned aircraft"
+      - "other UAS"
+      - "terrain/obstacles"
+      - "weather"
+    avoidance_maneuvers: ["vertical", "horizontal", "speed reduction", "hover"]
+
+  contingencies:
+    gnss_loss:
+      trigger: "satellites < 6 or accuracy degraded"
+      response:
+        - "switch to VIO"
+        - "hover if uncertainty grows"
+        - "emergency land if EPE > 10 m"
+      max_vio_only_s: 60
+    c2_link_loss:
+      trigger_s: 3
+      response:
+        - "continue on plan up to 60 s"
+        - "initiate RTH if not restored"
+        - "nearest safe landing if RTH infeasible"
+    low_battery:
+      caution_pct: 25
+      action: "RTH and prioritize landing"
+      critical_pct: 15
+      critical_action: "immediate safe landing"
+    motor_failure:
+      capability: "single-motor compensation (if supported)"
+      action: "land immediately"
+    sensor_failure:
+      primary_off: "switch to backups, reduce speed to 5 m/s, RTH"
+      no_backup: "land at nearest safe zone"
+    weather_exceedance:
+      action: ["reroute", "RTH", "safe land"]
+    geofence_breach:
+      soft_limit: "warning at 80%"
+      action: "stop/hover; RTH"
+    emergency_landing_site:
+      priority_order: ["pre-designated sites", "open fields/parks (avoid people)", "empty parking areas", "residential yards (last resort)"]
+      assessment: "AI landing suitability scoring"
+    lost_link_RTH:
+      RTH_altitude_agl_m: 80
+      path: "direct unless obstacles/airspace conflicts"
+      timeout_policy: "land if time-to-home exceeded"
+    parachute_system:
+      availability: "optional"
+      trigger: "unrecoverable failure at > 30 m AGL"
+
+# =============================================================================
+# OPERATIONS (Scenarios, procedures)
+# =============================================================================
+operations:
+  nominal_delivery:
+    preconditions:
+      - "weather within ODD limits"
+      - "systems nominal"
+      - "delivery location verified"
+      - "airspace clear"
+    phases:
+      - "preflight: checks, package load, route+weather check"
+      - "takeoff: climb to corridor altitude"
+      - "cruise: follow corridor, traffic/weather monitoring"
+      - "approach: descend, assess landing zone, notify customer"
+      - "landing: precision land, release package"
+      - "depart: climb, return, land at hub"
+  contingencies:
+    weather_avoidance: "dynamic reroute or mission abort + RTH"
+    traffic_conflict: "UTM deconfliction or onboard avoidance"
+    landing_zone_blocked: "abort landing; hover and wait; alternate site"
+    degraded_system: "continue degraded if safe; else abort"
+
+# =============================================================================
+# LIMITATIONS AND EXCLUSIONS
+# =============================================================================
+limitations:
+  absolute:
+    - "no operations over crowds/open-air assemblies"
+    - "no hazardous material carriage"
+    - "no ops in restricted/Prohibited airspace without authorization"
+    - "no intentional flight over uninvolved people"
+  operational_bounds:
+    max_wind_gust_mps: 13
+    min_visibility_km: 5
+    max_altitude_agl_m: 120
+    max_range_km_from_base: 8
+    temperature_c: [-10, 45]
+  system_limitations:
+    - "requires GNSS for nominal ops (limited GNSS-denied tolerance)"
+    - "vision degraded in fog/heavy rain/low illumination"
+    - "thin wire detection unreliable"
+    - "performance degrades at high density altitude"
+  out_of_scope:
+    - "medical/emergency transport"
+    - "payload > 2.5 kg"
+    - "ops > 120 m AGL"
+    - "international border crossings"
+    - "dense urban canyon routine ops without special mitigations"
+
+# =============================================================================
+# SAFETY, RISK, VALIDATION
+# =============================================================================
+safety:
+  risk_assessment:
+    ground_risk:
+      sail_class_estimate: "SAIL II (typical Specific category; confirm per authority)"
+      mitigations:
+        - "prefer low-density areas and corridors"
+        - "emergency landing capability"
+        - "parachute (optional)"
+    air_risk:
+      arc_level: "low-to-moderate (depends on airspace mix)"
+      mitigations:
+        - "detect-and-avoid"
+        - "UTM integration"
+        - "geofencing and strategic deconfliction"
+  sms:
+    processes:
+      - "hazard identification and tracking"
+      - "incident/occurrence reporting"
+      - "trend analysis"
+      - "change management"
+    spis:
+      - "incidents per flight hour"
+      - "near-miss count"
+      - "unscheduled landings"
+      - "link-loss events"
+  human_factors:
+    remote_pilot:
+      qualification: "Part 107 or regional equivalent"
+      recurrent_training: "system-specific, annual"
+      max_concurrent_aircraft: 4
+    ground_crew:
+      training: "handling, loading, emergency procedures"
+
+validation:
+  verification_testing:
+    simulation:
+      - "SIL/HIL"
+      - "Monte Carlo scenarios (wind/traffic/failures)"
+      - "edge-case perception tests"
+    flight_testing:
+      - "functional verification"
+      - "envelope expansion"
+      - "contingency drills"
+      - "sensor performance validation"
+    operational_trials:
+      - "day/night"
+      - "varied weather within ODD"
+      - "progressive scaling"
+  compliance:
+    regulatory:
+      - "Part 107 compliance"
+      - "Remote ID compliance"
+      - "applicable waivers for BVLOS/night/over people (if sought)"
+    performance_targets:
+      reliability: "meet MTBF/dispatch reliability goals"
+      safety_objectives: "meet safety KPIs/SPIs"
+
+documentation:
+  references:
+    - standard: "ASAM OpenODD 1.0.0"
+      url: "https://www.asam.net/standards/detail/openodd/"
+    - regulation: "FAA 14 CFR Part 107"
+      url: "https://www.ecfr.gov/current/title-14/chapter-I/subchapter-F/part-107"
+    - regulation: "FAA Part 89 Remote ID"
+      url: "https://www.ecfr.gov/current/title-14/chapter-I/subchapter-F/part-89"
+    - standard: "ASTM F3548-21 (UTM)"
+      url: "https://www.astm.org/f3548-21.html"
+    - guidance: "EASA UAS (Open/Specific)"
+      url: "https://www.easa.europa.eu/en/domains/civil-drones-drones"
+  revision_history:
+    - version: "1.0.0"
+      date: "2025-10-29"
+      author: "AzharBhad"
+      changes: "Initial ODD baseline"
+  approvals:
+    status: "Draft"
+    required_roles: ["Chief Safety Officer", "Chief Pilot", "Compliance Lead"]

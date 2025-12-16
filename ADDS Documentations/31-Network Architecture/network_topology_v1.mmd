@@ -1,0 +1,18 @@
+graph TD
+    subgraph Core_Network
+        C1[Central Control] --> C2[Regional Hubs]
+        C2 --> C3[Edge Nodes]
+    end
+
+    subgraph Communication_Layers
+        C3 --> L1[5G/6G Network]
+        C3 --> L2[Mesh Network]
+        C3 --> L3[Satellite Network]
+    end
+
+    subgraph End_Points
+        L1 --> E1[Drones]
+        L2 --> E1
+        L3 --> E1
+        E1 --> E2[Ground Stations]
+    end

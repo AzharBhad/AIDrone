@@ -1,0 +1,17 @@
+graph TD
+    subgraph Collection
+        C1[Data Collection] --> C2[Processing]
+        C2 --> C3[Storage]
+    end
+
+    subgraph Analysis
+        C3 --> A1[Real-time Analysis]
+        A1 --> A2[Pattern Detection]
+        A2 --> A3[Alert Generation]
+    end
+
+    subgraph Response
+        A3 --> R1[Alert Handling]
+        R1 --> R2[Intervention]
+        R2 --> R3[Resolution]
+    end

@@ -1,0 +1,18 @@
+%%Capacity Management Flow
+graph TD
+    subgraph Monitoring
+        M1[Usage Metrics] --> M2[Capacity Analysis]
+        M2 --> M3[Demand Forecast]
+    end
+
+    subgraph Planning
+        M3 --> P1[Resource Planning]
+        P1 --> P2[Budget Allocation]
+        P2 --> P3[Implementation Plan]
+    end
+
+    subgraph Execution
+        P3 --> E1[Infrastructure Scaling]
+        E1 --> E2[Testing]
+        E2 --> E3[Optimization]
+    end

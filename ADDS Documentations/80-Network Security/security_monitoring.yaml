@@ -1,0 +1,28 @@
+security_monitoring:
+  detection_systems:
+    ids:
+      implementation: "Suricata"
+      mode: "Inline"
+      rules:
+        - source: "Emerging Threats"
+          update: "Daily"
+        - source: "Custom rules"
+          review: "Weekly"
+
+    siem:
+      platform: "Splunk Enterprise"
+      retention: "12 months"
+      correlation:
+        rules:
+          - "Brute force detection"
+          - "Lateral movement"
+          - "Data exfiltration"
+
+  response_procedures:
+    incidents:
+      critical:
+        response_time: "15 minutes"
+        team: "SOC + Network"
+      high:
+        response_time: "30 minutes"
+        team: "SOC"

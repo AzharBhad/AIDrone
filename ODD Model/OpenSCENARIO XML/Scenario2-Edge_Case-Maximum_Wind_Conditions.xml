@@ -1,0 +1,510 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+================================================================================
+ASAM OpenSCENARIO XML 1.3.1
+Scenario: Edge Case - Maximum Wind Conditions
+Description: Delivery mission at edge of ODD wind speed limits (12 m/s sustained, 15 m/s gusts)
+Based on ODD Module: M001 + M002 boundary conditions
+Test Objective: Validate flight stability and trajectory maintenance at wind limits
+================================================================================
+-->
+<OpenSCENARIO xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+               xsi:noNamespaceSchemaLocation="OpenSCENARIO.xsd">
+
+  <FileHeader revMajor="1"
+              revMinor="3"
+              date="2025-10-30T11:00:00"
+              description="Maximum wind conditions edge case scenario"
+              author="Autonomous Systems Test Team"/>
+
+  <ParameterDeclarations>
+    <ParameterDeclaration name="BaseWindSpeed" parameterType="double" value="11.5"/>
+    <ParameterDeclaration name="GustSpeed" parameterType="double" value="14.5"/>
+    <ParameterDeclaration name="WindDirection" parameterType="double" value="270.0"/>
+    <ParameterDeclaration name="CruiseAltitude" parameterType="double" value="50.0"/>
+    <ParameterDeclaration name="PayloadWeight" parameterType="double" value="3.0"/>
+    <ParameterDeclaration name="DroneMaxSpeed" parameterType="double" value="15.0"/>
+  </ParameterDeclarations>
+
+  <CatalogLocations>
+    <VehicleCatalog>
+      <Directory path="./Catalogs/Vehicles"/>
+    </VehicleCatalog>
+    <EnvironmentCatalog>
+      <Directory path="./Catalogs/Environment"/>
+    </EnvironmentCatalog>
+    <ManeuverCatalog>
+      <Directory path="./Catalogs/Maneuvers"/>
+    </ManeuverCatalog>
+  </CatalogLocations>
+
+  <RoadNetwork>
+    <LogicFile filepath="./RoadNetworks/UrbanResidential_01.xodr"/>
+    <SceneGraphFile filepath="./RoadNetworks/UrbanResidential_01.opt.osgb"/>
+  </RoadNetwork>
+
+  <Entities>
+    <ScenarioObject name="EgoDrone">
+      <CatalogReference catalogName="VehicleCatalog" entryName="DeliveryDrone_Model_X1">
+        <ParameterAssignments>
+          <ParameterAssignment parameterRef="MaxSpeed" value="$DroneMaxSpeed"/>
+          <ParameterAssignment parameterRef="MaxPayload" value="5.0"/>
+        </ParameterAssignments>
+      </CatalogReference>
+    </ScenarioObject>
+
+    <!-- Wind turbulence zone representation -->
+    <ScenarioObject name="WindTurbulenceZone">
+      <MiscObject miscObjectCategory="obstacle" mass="0.0" name="TurbulenceField">
+        <BoundingBox>
+          <Center x="2500.0" y="2400.0" z="50.0"/>
+          <Dimensions width="500.0" length="500.0" height="100.0"/>
+        </BoundingBox>
+        <Properties>
+          <Property name="windSpeed" value="$GustSpeed"/>
+          <Property name="turbulenceIntensity" value="high"/>
+        </Properties>
+      </MiscObject>
+    </ScenarioObject>
+  </Entities>
+
+  <Storyboard>
+    <Init>
+      <Actions>
+        <Private entityRef="EgoDrone">
+          <PrivateAction>
+            <TeleportAction>
+              <Position>
+                <WorldPosition x="1000.0" y="2000.0" z="2.0" h="0.0" p="0.0" r="0.0"/>
+              </Position>
+            </TeleportAction>
+          </PrivateAction>
+        </Private>
+
+        <Private entityRef="WindTurbulenceZone">
+          <PrivateAction>
+            <TeleportAction>
+              <Position>
+                <WorldPosition x="2500.0" y="2400.0" z="50.0" h="0.0" p="0.0" r="0.0"/>
+              </Position>
+            </TeleportAction>
+          </PrivateAction>
+        </Private>
+
+        <!-- Global Environment Settings -->
+        <GlobalAction>
+          <EnvironmentAction>
+            <Environment name="HighWindConditions">
+              <TimeOfDay animation="false" dateTime="2025-10-30T14:00:00"/>
+              <Weather cloudState="cloudy">
+                <Sun intensity="0.7" azimuth="3.14" elevation="0.52"/>
+                <Fog visualRange="5000.0"/>
+                <Precipitation precipitationType="dry" intensity="0.0"/>
+                <Wind speed="$BaseWindSpeed" direction="$WindDirection"/>
+              </Weather>
+              <RoadCondition frictionScaleFactor="1.0"/>
+            </Environment>
+          </EnvironmentAction>
+        </GlobalAction>
+      </Actions>
+    </Init>
+
+    <Story name="HighWindDeliveryMission">
+
+      <Act name="TakeoffInWind">
+        <ManeuverGroup maximumExecutionCount="1" name="DroneTakeoffWind">
+          <Actors selectTriggeringEntities="false">
+            <EntityRef entityRef="EgoDrone"/>
+          </Actors>
+
+          <Maneuver name="StabilizedTakeoff">
+            <Event name="InitiateTakeoff" priority="overwrite">
+              <Action name="ClimbWithWindCompensation">
+                <PrivateAction>
+                  <RoutingAction>
+                    <AcquirePositionAction>
+                      <Position>
+                        <RelativeWorldPosition entityRef="EgoDrone" dx="0.0" dy="0.0" dz="$CruiseAltitude"/>
+                      </Position>
+                    </AcquirePositionAction>
+                  </RoutingAction>
+                </PrivateAction>
+              </Action>
+              <StartTrigger>
+                <ConditionGroup>
+                  <Condition name="StartCondition" delay="2.0" conditionEdge="rising">
+                    <ByValueCondition>
+                      <SimulationTimeCondition value="0.0" rule="greaterThan"/>
+                    </ByValueCondition>
+                  </Condition>
+                </ConditionGroup>
+              </StartTrigger>
+            </Event>
+          </Maneuver>
+        </ManeuverGroup>
+
+        <StartTrigger>
+          <ConditionGroup>
+            <Condition name="ActStart" delay="0" conditionEdge="rising">
+              <ByValueCondition>
+                <SimulationTimeCondition value="0.0" rule="greaterThan"/>
+              </ByValueCondition>
+            </Condition>
+          </ConditionGroup>
+        </StartTrigger>
+
+        <StopTrigger>
+          <ConditionGroup>
+            <Condition name="TakeoffComplete" delay="0" conditionEdge="rising">
+              <ByEntityCondition>
+                <TriggeringEntities triggeringEntitiesRule="any">
+                  <EntityRef entityRef="EgoDrone"/>
+                </TriggeringEntities>
+                <EntityCondition>
+                  <ReachPositionCondition tolerance="3.0">
+                    <Position>
+                      <RelativeWorldPosition entityRef="EgoDrone" dx="0.0" dy="0.0" dz="$CruiseAltitude"/>
+                    </Position>
+                  </ReachPositionCondition>
+                </EntityCondition>
+              </ByEntityCondition>
+            </Condition>
+          </ConditionGroup>
+        </StopTrigger>
+      </Act>
+
+      <Act name="NavigateThroughWindField">
+        <ManeuverGroup maximumExecutionCount="1" name="WindFieldTraversal">
+          <Actors selectTriggeringEntities="false">
+            <EntityRef entityRef="EgoDrone"/>
+          </Actors>
+
+          <Maneuver name="CompensatedFlight">
+            <Event name="NavigateToTurbulence" priority="overwrite">
+              <Action name="ApproachWindField">
+                <PrivateAction>
+                  <RoutingAction>
+                    <FollowTrajectoryAction>
+                      <Trajectory name="WindFieldRoute" closed="false">
+                        <Shape>
+                          <Polyline>
+                            <Vertex time="0.0">
+                              <Position>
+                                <WorldPosition x="1000.0" y="2000.0" z="$CruiseAltitude"/>
+                              </Position>
+                            </Vertex>
+                            <Vertex time="60.0">
+                              <Position>
+                                <WorldPosition x="1750.0" y="2200.0" z="$CruiseAltitude"/>
+                              </Position>
+                            </Vertex>
+                            <Vertex time="120.0">
+                              <Position>
+                                <WorldPosition x="2250.0" y="2350.0" z="$CruiseAltitude"/>
+                              </Position>
+                            </Vertex>
+                          </Polyline>
+                        </Shape>
+                      </Trajectory>
+                      <TimeReference>
+                        <Timing domainAbsoluteRelative="relative" scale="1.0" offset="0.0"/>
+                      </TimeReference>
+                      <TrajectoryFollowingMode followingMode="position"/>
+                    </FollowTrajectoryAction>
+                  </RoutingAction>
+                </PrivateAction>
+              </Action>
+              <StartTrigger>
+                <ConditionGroup>
+                  <Condition name="StartNavigation" delay="0" conditionEdge="rising">
+                    <ByValueCondition>
+                      <SimulationTimeCondition value="20.0" rule="greaterThan"/>
+                    </ByValueCondition>
+                  </Condition>
+                </ConditionGroup>
+              </StartTrigger>
+            </Event>
+
+            <!-- Wind Gust Event -->
+            <Event name="EnterTurbulenceZone" priority="overwrite">
+              <Action name="WindGustImpact">
+                <GlobalAction>
+                  <EnvironmentAction>
+                    <Environment name="GustConditions">
+                      <TimeOfDay animation="false" dateTime="2025-10-30T14:00:00"/>
+                      <Weather cloudState="cloudy">
+                        <Sun intensity="0.7" azimuth="3.14" elevation="0.52"/>
+                        <Fog visualRange="5000.0"/>
+                        <Precipitation precipitationType="dry" intensity="0.0"/>
+                        <Wind speed="$GustSpeed" direction="$WindDirection"/>
+                      </Weather>
+                      <RoadCondition frictionScaleFactor="1.0"/>
+                    </Environment>
+                  </EnvironmentAction>
+                </GlobalAction>
+              </Action>
+              <StartTrigger>
+                <ConditionGroup>
+                  <Condition name="EnteringWindField" delay="0" conditionEdge="rising">
+                    <ByEntityCondition>
+                      <TriggeringEntities triggeringEntitiesRule="any">
+                        <EntityRef entityRef="EgoDrone"/>
+                      </TriggeringEntities>
+                      <EntityCondition>
+                        <DistanceCondition value="100.0" freespace="true" alongRoute="false" rule="lessThan">
+                          <Position>
+                            <WorldPosition x="2500.0" y="2400.0" z="$CruiseAltitude"/>
+                          </Position>
+                        </DistanceCondition>
+                      </EntityCondition>
+                    </ByEntityCondition>
+                  </Condition>
+                </ConditionGroup>
+              </StartTrigger>
+            </Event>
+
+            <!-- Trajectory Deviation Monitoring -->
+            <Event name="MonitorTrajectoryDeviation" priority="parallel">
+              <Action name="LogDeviationData">
+                <UserDefinedAction>
+                  <CustomCommandAction type="LogTrajectoryDeviation">
+                    <Property name="deviationThreshold" value="5.0"/>
+                    <Property name="logFrequency" value="1.0"/>
+                  </CustomCommandAction>
+                </UserDefinedAction>
+              </Action>
+              <StartTrigger>
+                <ConditionGroup>
+                  <Condition name="InTurbulenceZone" delay="0" conditionEdge="rising">
+                    <ByEntityCondition>
+                      <TriggeringEntities triggeringEntitiesRule="any">
+                        <EntityRef entityRef="EgoDrone"/>
+                      </TriggeringEntities>
+                      <EntityCondition>
+                        <DistanceCondition value="250.0" freespace="true" alongRoute="false" rule="lessThan">
+                          <Position>
+                            <WorldPosition x="2500.0" y="2400.0" z="$CruiseAltitude"/>
+                          </Position>
+                        </DistanceCondition>
+                      </EntityCondition>
+                    </ByEntityCondition>
+                  </Condition>
+                </ConditionGroup>
+              </StartTrigger>
+            </Event>
+
+            <!-- Exit Wind Field -->
+            <Event name="ExitTurbulenceZone" priority="overwrite">
+              <Action name="RestoreNormalWind">
+                <GlobalAction>
+                  <EnvironmentAction>
+                    <Environment name="NormalWindConditions">
+                      <TimeOfDay animation="false" dateTime="2025-10-30T14:00:00"/>
+                      <Weather cloudState="cloudy">
+                        <Sun intensity="0.7" azimuth="3.14" elevation="0.52"/>
+                        <Fog visualRange="5000.0"/>
+                        <Precipitation precipitationType="dry" intensity="0.0"/>
+                        <Wind speed="$BaseWindSpeed" direction="$WindDirection"/>
+                      </Weather>
+                      <RoadCondition frictionScaleFactor="1.0"/>
+                    </Environment>
+                  </EnvironmentAction>
+                </GlobalAction>
+              </Action>
+              <Action name="ContinueToDestination">
+                <PrivateAction>
+                  <RoutingAction>
+                    <AcquirePositionAction>
+                      <Position>
+                        <WorldPosition x="3500.0" y="2700.0" z="$CruiseAltitude"/>
+                      </Position>
+                    </AcquirePositionAction>
+                  </RoutingAction>
+                </PrivateAction>
+              </Action>
+              <StartTrigger>
+                <ConditionGroup>
+                  <Condition name="ClearedWindField" delay="0" conditionEdge="rising">
+                    <ByEntityCondition>
+                      <TriggeringEntities triggeringEntitiesRule="any">
+                        <EntityRef entityRef="EgoDrone"/>
+                      </TriggeringEntities>
+                      <EntityCondition>
+                        <DistanceCondition value="300.0" freespace="true" alongRoute="false" rule="greaterThan">
+                          <Position>
+                            <WorldPosition x="2500.0" y="2400.0" z="$CruiseAltitude"/>
+                          </Position>
+                        </DistanceCondition>
+                      </EntityCondition>
+                    </ByEntityCondition>
+                  </Condition>
+                </ConditionGroup>
+              </StartTrigger>
+            </Event>
+          </Maneuver>
+        </ManeuverGroup>
+
+        <StartTrigger>
+          <ConditionGroup>
+            <Condition name="StartCruise" delay="0" conditionEdge="rising">
+              <ByValueCondition>
+                <StoryboardElementStateCondition storyboardElementType="act"
+                                                 storyboardElementRef="TakeoffInWind"
+                                                 state="completeState"/>
+              </ByValueCondition>
+            </Condition>
+          </ConditionGroup>
+        </StartTrigger>
+
+        <StopTrigger>
+          <ConditionGroup>
+            <Condition name="DestinationReached" delay="0" conditionEdge="rising">
+              <ByEntityCondition>
+                <TriggeringEntities triggeringEntitiesRule="any">
+                  <EntityRef entityRef="EgoDrone"/>
+                </TriggeringEntities>
+                <EntityCondition>
+                  <ReachPositionCondition tolerance="10.0">
+                    <Position>
+                      <WorldPosition x="3500.0" y="2700.0" z="$CruiseAltitude"/>
+                    </Position>
+                  </ReachPositionCondition>
+                </EntityCondition>
+              </ByEntityCondition>
+            </Condition>
+          </ConditionGroup>
+        </StopTrigger>
+      </Act>
+
+      <Act name="WindCompensatedDelivery">
+        <ManeuverGroup maximumExecutionCount="1" name="StabilizedLanding">
+          <Actors selectTriggeringEntities="false">
+            <EntityRef entityRef="EgoDrone"/>
+          </Actors>
+
+          <Maneuver name="PrecisionLandingInWind">
+            <Event name="HoverAndStabilize" priority="overwrite">
+              <Action name="HoldPositionAboveTarget">
+                <PrivateAction>
+                  <LongitudinalAction>
+                    <SpeedAction>
+                      <SpeedActionDynamics dynamicsShape="linear" value="3.0" dynamicsDimension="time"/>
+                      <SpeedActionTarget>
+                        <AbsoluteTargetSpeed value="0.0"/>
+                      </SpeedActionTarget>
+                    </SpeedAction>
+                  </LongitudinalAction>
+                </PrivateAction>
+              </Action>
+              <StartTrigger>
+                <ConditionGroup>
+                  <Condition name="AboveTarget" delay="0" conditionEdge="rising">
+                    <ByValueCondition>
+                      <SimulationTimeCondition value="200.0" rule="greaterThan"/>
+                    </ByValueCondition>
+                  </Condition>
+                </ConditionGroup>
+              </StartTrigger>
+            </Event>
+
+            <Event name="ControlledDescent" priority="overwrite">
+              <Action name="DescendToLandingZone">
+                <PrivateAction>
+                  <RoutingAction>
+                    <AcquirePositionAction>
+                      <Position>
+                        <WorldPosition x="3500.0" y="2700.0" z="0.5"/>
+                      </Position>
+                    </AcquirePositionAction>
+                  </RoutingAction>
+                </PrivateAction>
+              </Action>
+              <StartTrigger>
+                <ConditionGroup>
+                  <Condition name="Stabilized" delay="5.0" conditionEdge="rising">
+                    <ByEntityCondition>
+                      <TriggeringEntities triggeringEntitiesRule="any">
+                        <EntityRef entityRef="EgoDrone"/>
+                      </TriggeringEntities>
+                      <EntityCondition>
+                        <SpeedCondition value="0.5" rule="lessThan"/>
+                      </EntityCondition>
+                    </ByEntityCondition>
+                  </Condition>
+                </ConditionGroup>
+              </StartTrigger>
+            </Event>
+
+            <Event name="CompleteDelivery" priority="overwrite">
+              <Action name="ReleasePackage">
+                <UserDefinedAction>
+                  <CustomCommandAction type="DeliverPackage">
+                    <Property name="packageId" value="PKG-2025-WIND-001"/>
+                    <Property name="windConditions" value="$BaseWindSpeed"/>
+                  </CustomCommandAction>
+                </UserDefinedAction>
+              </Action>
+              <StartTrigger>
+                <ConditionGroup>
+                  <Condition name="TouchdownComplete" delay="2.0" conditionEdge="rising">
+                    <ByEntityCondition>
+                      <TriggeringEntities triggeringEntitiesRule="any">
+                        <EntityRef entityRef="EgoDrone"/>
+                      </TriggeringEntities>
+                      <EntityCondition>
+                        <ReachPositionCondition tolerance="0.5">
+                          <Position>
+                            <WorldPosition x="3500.0" y="2700.0" z="0.5"/>
+                          </Position>
+                        </ReachPositionCondition>
+                      </EntityCondition>
+                    </ByEntityCondition>
+                  </Condition>
+                </ConditionGroup>
+              </StartTrigger>
+            </Event>
+          </Maneuver>
+        </ManeuverGroup>
+
+        <StartTrigger>
+          <ConditionGroup>
+            <Condition name="DeliveryPhaseStart" delay="0" conditionEdge="rising">
+              <ByValueCondition>
+                <StoryboardElementStateCondition storyboardElementType="act"
+                                                 storyboardElementRef="NavigateThroughWindField"
+                                                 state="completeState"/>
+              </ByValueCondition>
+            </Condition>
+          </ConditionGroup>
+        </StartTrigger>
+      </Act>
+    </Story>
+
+    <StopTrigger>
+      <ConditionGroup>
+        <Condition name="MissionComplete" delay="0" conditionEdge="rising">
+          <ByValueCondition>
+            <StoryboardElementStateCondition storyboardElementType="act"
+                                             storyboardElementRef="WindCompensatedDelivery"
+                                             state="completeState"/>
+          </ByValueCondition>
+        </Condition>
+      </ConditionGroup>
+      <ConditionGroup>
+        <Condition name="WindExceedsODD" delay="0" conditionEdge="rising">
+          <ByValueCondition>
+            <ParameterCondition parameterRef="GustSpeed" value="15.0" rule="greaterThan"/>
+          </ByValueCondition>
+        </Condition>
+      </ConditionGroup>
+      <ConditionGroup>
+        <Condition name="MaxSimTime" delay="0" conditionEdge="rising">
+          <ByValueCondition>
+            <SimulationTimeCondition value="400.0" rule="greaterThan"/>
+          </ByValueCondition>
+        </Condition>
+      </ConditionGroup>
+    </StopTrigger>
+  </Storyboard>
+
+</OpenSCENARIO>

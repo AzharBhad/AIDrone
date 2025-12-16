@@ -1,0 +1,17 @@
+graph TD
+    subgraph External
+        E1[Partner Systems] --> G1[API Gateway]
+        E2[Third Party] --> G1
+    end
+
+    subgraph Processing
+        G1 --> P1[Service Mesh]
+        P1 --> P2[Message Broker]
+        P2 --> P3[Event Bus]
+    end
+
+    subgraph Internal
+        P3 --> I1[Core Services]
+        P3 --> I2[Support Services]
+        P3 --> I3[Analytics]
+    end

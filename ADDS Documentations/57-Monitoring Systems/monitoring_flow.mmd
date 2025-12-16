@@ -1,0 +1,17 @@
+graph TD
+    subgraph Collection
+        C1[Metrics] --> C2[Logs]
+        C2 --> C3[Traces]
+    end
+
+    subgraph Analysis
+        C3 --> A1[Processing]
+        A1 --> A2[Aggregation]
+        A2 --> A3[Analysis]
+    end
+
+    subgraph Action
+        A3 --> AC1[Alerting]
+        AC1 --> AC2[Response]
+        AC2 --> AC3[Resolution]
+    end

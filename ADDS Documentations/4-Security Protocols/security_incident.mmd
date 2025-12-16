@@ -1,0 +1,18 @@
+%%Security Incident Response
+graph TD
+    subgraph Detection
+        D1[Monitoring] --> D2[Alert Generation]
+        D2 --> D3[Initial Assessment]
+    end
+
+    subgraph Response
+        D3 --> R1[Incident Classification]
+        R1 --> R2[Containment]
+        R2 --> R3[Investigation]
+    end
+
+    subgraph Recovery
+        R3 --> C1[System Recovery]
+        C1 --> C2[Validation]
+        C2 --> C3[Normal Operations]
+    end

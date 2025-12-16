@@ -1,0 +1,15 @@
+graph TD
+    subgraph External
+        C1[Client] --> D1[DNS]
+        D1 --> LB1[Global LB]
+    end
+
+    subgraph Regional
+        LB1 --> LB2[Application LB]
+        LB1 --> LB3[Network LB]
+    end
+
+    subgraph Backend
+        LB2 --> S1[API Servers]
+        LB3 --> S2[TCP Services]
+    end

@@ -1,0 +1,15 @@
+%%Recovery Process Flow
+stateDiagram-v2
+    [*] --> Normal_Operations
+    Normal_Operations --> Incident_Detection: Event Detected
+    Incident_Detection --> Impact_Assessment
+    Impact_Assessment --> Minor_Disruption
+    Impact_Assessment --> Major_Disruption
+    Impact_Assessment --> Disaster
+    Minor_Disruption --> Recovery_Procedures
+    Major_Disruption --> DR_Plan_Activation
+    Disaster --> BC_Plan_Activation
+    Recovery_Procedures --> Normal_Operations
+    DR_Plan_Activation --> Recovery_Procedures
+    BC_Plan_Activation --> Alternative_Site_Activation
+    Alternative_Site_Activation --> Normal_Operations

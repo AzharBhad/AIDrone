@@ -1,0 +1,30 @@
+testing_levels:
+  unit_testing:
+    scope:
+      - "Individual components"
+      - "Function validation"
+      - "Error handling"
+    tools:
+      - "JUnit"
+      - "PyTest"
+      - "Mocha"
+
+  integration_testing:
+    scope:
+      - "Component interaction"
+      - "API validation"
+      - "Data flow"
+    tools:
+      - "Postman"
+      - "SoapUI"
+      - "JMeter"
+
+  system_testing:
+    scope:
+      - "End-to-end workflows"
+      - "Performance validation"
+      - "Security testing"
+    tools:
+      - "Selenium"
+      - "LoadRunner"
+      - "Gatling"

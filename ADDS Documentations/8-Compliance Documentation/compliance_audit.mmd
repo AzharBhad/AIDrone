@@ -1,0 +1,10 @@
+%%Compliance Audit Process
+stateDiagram-v2
+    [*] --> Preparation
+    Preparation --> Documentation_Review
+    Documentation_Review --> On_Site_Audit
+    On_Site_Audit --> Findings_Report
+    Findings_Report --> Corrective_Actions
+    Corrective_Actions --> Follow_Up
+    Follow_Up --> Certification
+    Certification --> [*]

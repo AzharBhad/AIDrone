@@ -1,0 +1,23 @@
+graph TD
+    subgraph External_Zone
+        E1[Internet] --> E2[DDoS Protection]
+        E2 --> E3[Edge Security]
+    end
+
+    subgraph DMZ_Zone
+        E3 --> D1[Load Balancers]
+        D1 --> D2[Web Services]
+        D2 --> D3[API Gateway]
+    end
+
+    subgraph Secure_Zone
+        D3 --> S1[Application Tier]
+        S1 --> S2[Database Tier]
+        S2 --> S3[Storage Tier]
+    end
+
+    subgraph Management_Zone
+        M1[Jump Hosts] --> S1
+        M1 --> S2
+        M1 --> S3
+    end

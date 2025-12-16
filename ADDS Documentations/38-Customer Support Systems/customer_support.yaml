@@ -1,0 +1,31 @@
+#Support Framework
+customer_support:
+  support_channels:
+    digital:
+      - name: "AI Chatbot"
+        availability: "24/7"
+        response_time: "Instant"
+      - name: "Mobile App Support"
+        availability: "24/7"
+        response_time: "< 5 minutes"
+      - name: "Email Support"
+        availability: "24/7"
+        response_time: "< 2 hours"
+
+    human:
+      - name: "Phone Support"
+        availability: "Business hours"
+        response_time: "< 1 minute"
+      - name: "Video Support"
+        availability: "On demand"
+        response_time: "< 15 minutes"
+
+  issue_management:
+    categorization:
+      priority_levels:
+        - name: "Critical"
+          response_time: "5 minutes"
+        - name: "High"
+          response_time: "15 minutes"
+        - name: "Normal"
+          response_time: "1 hour"

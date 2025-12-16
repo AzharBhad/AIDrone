@@ -1,0 +1,30 @@
+authentication_systems:
+  identity_providers:
+    primary:
+      type: "OAuth 2.0 + OIDC"
+      implementation: "Keycloak"
+      features:
+        - "SSO"
+        - "MFA"
+        - "Social login"
+
+    backup:
+      type: "SAML 2.0"
+      providers:
+        - "Azure AD"
+        - "Okta"
+
+  access_control:
+    rbac:
+      roles:
+        - name: "System Admin"
+          permissions: ["full_access"]
+        - name: "Operator"
+          permissions: ["read", "execute"]
+
+    mfa:
+      methods:
+        - type: "TOTP"
+          provider: "Google Authenticator"
+        - type: "Hardware Key"
+          provider: "YubiKey"

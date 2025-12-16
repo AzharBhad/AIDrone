@@ -1,0 +1,2655 @@
+# ============================================================================
+# ASAM OpenODD 1.0.0 Specification
+# FAA Part 108 BVLOS Autonomous Drone Delivery System
+# Operational Design Domain - Full Regulatory Compliance
+# ============================================================================
+# Version: 2.0.0
+# Date: 2025-11-04
+# Regulation Basis: FAA Part 108 NPRM (August 7, 2025)
+# AI Standard: EUROCAE ED-324 (AI Certification for Aviation)
+# Domain: BVLOS Urban/Suburban Aerial Delivery Operations
+# System: AI-Powered Autonomous Drone Delivery Platform
+# Authorization: Part 108 Operating Certificate/Permit
+# ============================================================================
+
+odd_specification:
+  metadata:
+    title: "Part 108 BVLOS Autonomous Drone Delivery System ODD"
+    version: "2.0.0"
+    release_date: "2025-11-04"
+    standard: "ASAM OpenODD 1.0.0"
+    description: "Comprehensive Operational Design Domain for FAA Part 108 BVLOS autonomous drone delivery operations with ED-324 AI compliance"
+    author: "Part 108 Compliance & Safety Engineering Team"
+    system_type: "Unmanned Aircraft (UA) - Part 108 BVLOS Delivery Platform"
+    automation_level: "Highly Automated (Part 108 Simplified User Interface)"
+    safety_classification: "Safety-critical BVLOS aerial delivery system"
+    regulatory_framework:
+      primary: "FAA Part 108 - BVLOS Operations"
+      supporting:
+        - "FAA Part 146 - Automated Data Service Providers"
+        - "EUROCAE ED-324 - AI Certification for Aviation"
+        - "ED-313 - Detect and Avoid Requirements"
+        - "ED-269 - Geo-Fencing Performance Standards"
+        - "TSA Security Requirements for UAS"
+        - "ASTM F3411-22 - Remote ID and Tracking"
+        - "ASTM F3322 - Detect and Avoid"
+        - "ASTM F3364-20 - Command and Control Systems"
+        - "RTCA DO-365 - MOPS for DAA Systems"
+
+  # ============================================================================
+  # PART 108 OPERATIONAL AUTHORIZATION
+  # ============================================================================
+  part_108_authorization:
+    type: "record"
+    description: "§108.100 - Operating authorization requirements"
+
+    authorization_type:
+      type: "categorical"
+      description: "Two-tier authorization framework"
+      selected: "operating_certificate"
+      justification: "Package delivery operations over populated areas require Operating Certificate per §108.105"
+
+      certificate_requirements:
+        applicability:
+          - operations_over_category_3_or_4_airspace
+          - fleet_size_greater_than_25_aircraft
+          - operations_above_400ft_agl
+          - multi_state_operations
+          - higher_risk_cargo_operations
+
+        application_contents:
+          - operations_manual_part_108_400
+          - training_program_part_108_500
+          - maintenance_program_part_108_600
+          - safety_management_system_part_108_455
+          - cybersecurity_plan
+          - privacy_protection_plan
+          - contingency_procedures_part_108_240
+          - airworthiness_acceptance_proof_part_108_700
+          - insurance_documentation
+          - tsa_security_program_approval
+
+      operations_specifications:
+        type: "record"
+        description: "§108.140 - FAA-approved operating limitations and authorizations"
+        fields:
+          authorized_geographic_area:
+            description: "Specific metropolitan areas, corridors, or regions"
+            format: "ESRI_Shapefile or GeoJSON"
+            coordinate_system: "WGS84-EPSG:4326"
+
+          authorized_altitudes:
+            minimum: 10
+            maximum: 400
+            unit: "feet_agl"
+            special_authorization_above_400ft: "Requires additional approval"
+
+          authorized_aircraft_types:
+            - "DeliveryDrone_Model_X1 (Airworthiness Acceptance AA-2025-XXXXX)"
+            - "Maximum takeoff weight: 55 lbs"
+            - "Kinetic energy category: ≤25,000 ft-lbs"
+
+          authorized_operations:
+            - point_to_point_package_delivery
+            - multi_stop_delivery_routes
+            - return_to_depot
+            - maintenance_ferry_flights
+
+          operational_limitations:
+            - daylight_operations_only  # For initial authorization
+            - civil_twilight_with_lighting  # Phase 2
+            - visibility_minimum_3_statute_miles
+            - cloud_clearance_500ft_below_2000ft_horizontal
+
+          special_authorizations:
+            - category_4_airspace_operations
+            - operations_near_class_b_airspace
+            - multiple_concurrent_aircraft_5_per_fc
+
+    principal_base_of_operations:
+      type: "spatial"
+      description: "§108.30 - Required U.S. physical location"
+      address: "123 Drone Operations Center, City, State, ZIP"
+      faa_contact_information:
+        accountable_executive: "Name, Title, Phone, Email"
+        director_of_operations: "Name, Title, Phone, Email"
+        director_of_safety: "Name, Title, Phone, Email"
+      operational_control_center:
+        location: "Same as principal base or alternate approved location"
+        staffing: "24/7 operational control capability"
+        emergency_contact: "24/7 emergency response line"
+
+  # ============================================================================
+  # TAXONOMY DEFINITION - COMPREHENSIVE BVLOS PARAMETERS
+  # ============================================================================
+  taxonomy:
+    name: "Part108_BVLOS_DroneDelivery_Taxonomy"
+    version: "2.0.0"
+    description: "Comprehensive taxonomy for Part 108 BVLOS drone delivery"
+    language: "en-US"
+
+    # ========================================================================
+    # GEOGRAPHIC DOMAIN - Part 108 Specific
+    # ========================================================================
+    geographic_domain:
+      type: "record"
+      description: "Spatial boundaries per Part 108 requirements"
+      concepts:
+
+        operational_area_category:
+          type: "categorical"
+          description: "§108.175 - Operational area population categories"
+          values:
+            - category_1_unpopulated
+            - category_2_sparsely_populated
+            - category_3_lightly_populated
+            - category_4_populated
+
+          authorized_operations:
+            category_1:
+              population: "No people"
+              examples: "Remote areas, private property with no people"
+              requirements: "Minimal - basic safety equipment"
+
+            category_2:
+              population: "Sparse - isolated individuals"
+              examples: "Rural areas, agricultural land"
+              requirements: "Basic detect and avoid, geofencing"
+
+            category_3:
+              population: "Light - small groups possible"
+              examples: "Suburban residential, small towns"
+              requirements: "Enhanced DAA, strategic deconfliction, Part 146 services"
+              authorized_for_operations: true
+
+            category_4:
+              population: "Populated - sustained assemblies possible"
+              examples: "Urban areas, commercial districts"
+              requirements: "Full DAA, strategic deconfliction, heightened safety systems"
+              authorized_for_operations: true
+              note: "Primary delivery area - requires Operating Certificate"
+
+        altitude_operations:
+          type: "record"
+          description: "§108.180 - Altitude limitations and authorizations"
+          fields:
+
+            standard_altitude_limit:
+              type: "numeric"
+              value: 400
+              unit: "feet_agl"
+              description: "Standard maximum altitude for Part 108 operations"
+              regulatory_basis: "§108.180(a)"
+
+            obstacle_clearance:
+              type: "numeric"
+              value: 10
+              unit: "feet"
+              description: "Minimum clearance from obstacles except during landing"
+
+            shielded_operations:
+              type: "record"
+              description: "§108.200 - Operations near vertical structures"
+              fields:
+                definition:
+                  description: "Operations within 400 feet laterally of a structure"
+                  vertical_limit: "Up to 400 feet above structure top"
+
+                authorized_structures:
+                  type: "categorical"
+                  values:
+                    - buildings
+                    - towers
+                    - utility_poles
+                    - bridges
+                    - antennas
+                    - cranes_stationary
+
+                operational_advantages:
+                  - reduced_air_traffic_risk
+                  - uas_may_have_right_of_way_over_non_broadcasting_aircraft
+                  - simplified_conformance_monitoring
+
+                requirements:
+                  lateral_distance_max: 400
+                  unit: "feet"
+                  maintain_visual_conspicuity: true
+
+            controlled_airspace_operations:
+              type: "record"
+              description: "§108.180(c)(d) - Operations in controlled airspace"
+              fields:
+
+                class_b_airspace:
+                  authorization_required: true
+                  altitude_limit: 400
+                  unit: "feet_agl"
+                  note: "Requires explicit authorization in OpSpecs"
+
+                class_c_airspace:
+                  authorization_required: false  # If below 400ft AGL
+                  altitude_limit: 400
+                  unit: "feet_agl"
+                  must_avoid_airport_traffic_patterns: true
+
+                class_d_airspace:
+                  authorization_required: false  # If below 400ft AGL
+                  altitude_limit: 400
+                  unit: "feet_agl"
+                  coordination_with_tower_recommended: true
+
+                class_e_surface_area:
+                  authorization_required: true  # Within lateral boundaries
+                  altitude_limit: 400
+                  unit: "feet_agl"
+
+                class_g_airspace:
+                  authorization_required: false
+                  primary_operating_environment: true
+
+        geofence_system:
+          type: "record"
+          description: "§108.185 - Geofencing requirements per ED-269"
+          fields:
+
+            geofence_implementation:
+              type: "categorical"
+              required: true
+              description: "Automated geofence enforcement system"
+              compliance_standard: "ED-269 UAS Geo-Fencing MOPS"
+
+            geofence_layers:
+              type: "record"
+              fields:
+
+                regulatory_geofences:
+                  type: "spatial"
+                  description: "FAA-mandated no-fly zones"
+                  sources:
+                    - faa_uas_facility_maps
+                    - part_146_airspace_status_service
+                    - temporary_flight_restrictions_tfr
+                  update_frequency: "Real-time via Part 146 service"
+
+                operational_geofences:
+                  type: "spatial"
+                  description: "Operator-defined boundaries"
+                  includes:
+                    - authorized_operating_area_per_opspecs
+                    - delivery_corridor_boundaries
+                    - contingency_landing_zones
+                    - maintenance_exclusion_areas
+
+                dynamic_geofences:
+                  type: "spatial"
+                  description: "Real-time constraint zones"
+                  sources:
+                    - part_146_strategic_deconfliction_service
+                    - weather_avoidance_areas
+                    - emergency_temporary_restrictions
+                  update_latency_max: 1.0
+                  unit: "seconds"
+
+            geofence_buffer_zones:
+              type: "record"
+              fields:
+                warning_buffer:
+                  distance: 50
+                  unit: "feet"
+                  action: "Alert Flight Coordinator, reduce speed"
+
+                critical_buffer:
+                  distance: 20
+                  unit: "feet"
+                  action: "Automatic path replan or hover"
+
+                breach_prevention:
+                  distance: 0
+                  unit: "feet"
+                  action: "Automatic hold position or emergency land"
+
+            geofence_breach_response:
+              type: "categorical"
+              description: "§108.245 - Automated contingency if breach occurs"
+              responses:
+                - automatic_return_to_authorized_area
+                - hold_position_if_safe
+                - land_immediately_if_necessary
+              notification: "Immediate alert to FC and Operations Supervisor"
+
+        landing_zones:
+          type: "record"
+          description: "Part 108 delivery destination requirements"
+          fields:
+
+            landing_zone_types:
+              type: "categorical"
+              values:
+                - ground_level_designated_pad
+                - rooftop_landing_zone
+                - balcony_delivery_point
+                - dedicated_delivery_station
+                - contingency_emergency_site
+
+            landing_zone_specifications:
+              type: "record"
+              fields:
+                minimum_size:
+                  type: "numeric"
+                  value: 16
+                  unit: "square_feet"
+                  description: "4ft x 4ft minimum clear area"
+
+                clearance_radius:
+                  type: "numeric"
+                  value: 10
+                  unit: "feet"
+                  description: "Obstacle-free radius around pad"
+
+                surface_requirements:
+                  type: "categorical"
+                  acceptable:
+                    - concrete
+                    - asphalt
+                    - composite_landing_pad
+                    - grass_if_level_and_firm
+                  unacceptable:
+                    - loose_gravel
+                    - sand
+                    - water_surfaces
+                    - ice_snow_covered
+
+                approach_departure_paths:
+                  type: "record"
+                  fields:
+                    approach_angle: 15
+                    unit: "degrees_from_horizontal"
+                    clear_approach_corridor_width: 20
+                    corridor_unit: "feet"
+
+            rtk_gps_landing_requirements:
+              type: "record"
+              description: "§108.910 - Precision landing capability"
+              fields:
+                rtk_gps_required: true
+                landing_accuracy_requirement: 1.0
+                unit: "feet_cep"
+                description: "Circular Error Probable for landing"
+                rtk_base_station_required: true
+                rtk_correction_source: "NTRIP network or dedicated base"
+
+    # ========================================================================
+    # ENVIRONMENTAL DOMAIN - Part 108 Weather Minimums
+    # ========================================================================
+    environmental_domain:
+      type: "record"
+      description: "Part 108 environmental operating conditions"
+      concepts:
+
+        weather_conditions:
+          type: "record"
+          description: "§108.190 - Weather minimums for BVLOS operations"
+          fields:
+
+            visibility_requirements:
+              type: "record"
+              fields:
+                minimum_visibility:
+                  type: "numeric"
+                  value: 3
+                  unit: "statute_miles"
+                  description: "Minimum ground visibility for operations"
+                  regulatory_basis: "§108.190(a)"
+
+                visibility_determination:
+                  type: "categorical"
+                  methods:
+                    - automated_weather_observation_awos
+                    - automated_surface_observation_asos
+                    - part_146_weather_information_service
+                    - onboard_visibility_sensor
+                  preferred: "Automated weather station data"
+
+            cloud_clearance_requirements:
+              type: "record"
+              description: "§108.190(b) - Cloud separation minimums"
+              fields:
+                below_clouds:
+                  value: 500
+                  unit: "feet"
+
+                horizontal_from_clouds:
+                  value: 2000
+                  unit: "feet"
+
+                operating_ceiling:
+                  description: "Must remain clear of clouds"
+                  practical_limit: 400
+                  unit: "feet_agl"
+
+            precipitation:
+              type: "categorical"
+              description: "Precipitation limitations"
+              authorized:
+                - none
+                - light_rain  # <0.1 inch/hour
+                - light_drizzle
+                - mist
+              prohibited:
+                - moderate_heavy_rain
+                - thunderstorms
+                - hail
+                - snow
+                - sleet
+                - freezing_precipitation
+                - ice_pellets
+
+              operational_note: "Aircraft must have water ingress protection rating IP54 minimum"
+
+            wind_conditions:
+              type: "record"
+              description: "Wind limitations based on aircraft performance"
+              fields:
+                maximum_sustained_wind:
+                  type: "numeric"
+                  value: 25
+                  unit: "knots"
+                  note: "Per aircraft limitations in airworthiness acceptance"
+
+                maximum_gust_speed:
+                  type: "numeric"
+                  value: 35
+                  unit: "knots"
+
+                crosswind_limitation:
+                  type: "numeric"
+                  value: 15
+                  unit: "knots"
+                  applies_to: "Landing and takeoff operations"
+
+                wind_monitoring:
+                  type: "categorical"
+                  sources:
+                    - onboard_wind_sensors
+                    - local_weather_stations
+                    - part_146_weather_service
+                  update_frequency: 1
+                  unit: "minute"
+
+            temperature_range:
+              type: "record"
+              fields:
+                minimum_operating_temperature:
+                  value: -10
+                  unit: "celsius"
+                  note: "Battery performance limitation"
+
+                maximum_operating_temperature:
+                  value: 45
+                  unit: "celsius"
+                  note: "Motor thermal management limitation"
+
+                temperature_compensation:
+                  description: "Automatic performance adjustment"
+                  systems_affected:
+                    - battery_capacity_estimation
+                    - motor_power_limits
+                    - sensor_calibration
+
+        lighting_conditions:
+          type: "record"
+          description: "§108.225 - Operating time limitations"
+          fields:
+
+            authorized_operating_times:
+              type: "categorical"
+              description: "Time of day operations authorization"
+              current_authorization:
+                - day_operations
+                - morning_civil_twilight
+                - evening_civil_twilight
+              future_authorization:
+                - night_operations_with_special_equipment
+
+            day_operations:
+              type: "record"
+              fields:
+                definition: "From local sunrise to local sunset"
+                lighting_requirements:
+                  - position_lights_recommended
+                  - anti_collision_lights_recommended
+                additional_requirements: "None beyond standard equipment"
+
+            civil_twilight_operations:
+              type: "record"
+              fields:
+                morning_civil_twilight:
+                  begins: "30 minutes before local sunrise"
+                  ends: "Local sunrise"
+
+                evening_civil_twilight:
+                  begins: "Local sunset"
+                  ends: "30 minutes after local sunset"
+
+                required_equipment:
+                  type: "categorical"
+                  values:
+                    - position_lights_visible_3_statute_miles
+                    - anti_collision_lights_visible_3_statute_miles
+                    - illuminated_landing_pad_required
+
+                minimum_illuminance:
+                  value: 10
+                  unit: "lux"
+                  measurement: "Ambient light at operating altitude"
+
+            night_operations:
+              type: "record"
+              description: "Future capability - requires special authorization"
+              fields:
+                authorization_required: true
+                opspecs_amendment_needed: true
+
+                additional_equipment_required:
+                  - enhanced_lighting_system
+                  - night_vision_capable_sensors
+                  - terrain_awareness_warning_system
+                  - increased_remote_id_broadcast_power
+
+                operational_limitations:
+                  - reduced_operational_area
+                  - increased_traffic_separation_requirements
+                  - enhanced_fc_training_required
+                  - weather_minimums_increased
+
+    # ========================================================================
+    # DYNAMIC ELEMENTS - Part 108 Traffic Management
+    # ========================================================================
+    dynamic_elements:
+      type: "record"
+      description: "Part 108 traffic integration and dynamic airspace management"
+      concepts:
+
+        aerial_traffic_integration:
+          type: "record"
+          description: "§108.195 - Right-of-way and traffic separation"
+          fields:
+
+            right_of_way_rules:
+              type: "record"
+              description: "Revolutionary Part 108 right-of-way framework"
+              fields:
+
+                uas_must_yield_to:
+                  type: "categorical"
+                  description: "Aircraft with absolute priority"
+                  values:
+                    - all_ads_b_out_broadcasting_aircraft
+                    - all_aircraft_departing_arriving_airports
+                    - all_helicopters_regardless_of_broadcast
+                    - emergency_aircraft_any_type
+                    - balloons_airships
+
+                  separation_requirements:
+                    from_broadcasting_aircraft:
+                      horizontal: 500
+                      vertical: 500
+                      unit: "feet"
+                      description: "Well Clear boundary per §108.195"
+
+                    from_airport_traffic:
+                      lateral: 2
+                      unit: "nautical_miles"
+                      description: "From runway centerline"
+
+                uas_right_of_way_over_non_broadcasting:
+                  type: "record"
+                  description: "Part 108 innovation - UAS priority in specific scenarios"
+                  fields:
+
+                    applicable_conditions:
+                      type: "categorical"
+                      all_must_be_true:
+                        - uas_in_shielded_operations_below_400ft
+                        - uas_broadcasting_position_via_remote_id
+                        - manned_aircraft_not_broadcasting_ads_b_out
+                        - not_near_airport_traffic_pattern
+
+                    rationale:
+                      description: "Manned aircraft extremely unlikely in shielded areas"
+                      risk_assessment: "Low probability encounter, UAS has better situational awareness"
+
+                    limitations:
+                      - uas_must_still_detect_and_avoid
+                      - does_not_exempt_from_see_and_avoid_responsibility
+                      - right_of_way_lost_if_leaving_shielded_area
+
+            detect_and_avoid_system:
+              type: "record"
+              description: "§108.910 - DAA requirements per ASTM F3322 and ED-313"
+              fields:
+
+                cooperative_detect_and_avoid:
+                  type: "record"
+                  fields:
+                    ads_b_in_receiver:
+                      required: true
+                      standard: "ASTM F3322 / DO-365"
+                      detection_range: 3
+                      unit: "nautical_miles"
+                      update_rate: 1
+                      rate_unit: "hertz"
+
+                    remote_id_receiver:
+                      required: true
+                      standard: "ASTM F3411-22"
+                      detection_range: 1
+                      unit: "nautical_miles"
+                      description: "Detect other Part 108 UAS"
+
+                    traffic_information_service:
+                      type: "categorical"
+                      sources:
+                        - part_146_traffic_information_service
+                        - faa_swim_feed
+                        - ads_b_ground_stations
+                      latency_max: 2
+                      unit: "seconds"
+
+                non_cooperative_detect_and_avoid:
+                  type: "record"
+                  description: "Detection of non-broadcasting aircraft"
+                  fields:
+
+                    sensor_suite:
+                      type: "categorical"
+                      description: "Multi-sensor DAA system"
+                      required_sensors:
+                        - stereo_cameras_forward_facing
+                        - lidar_360_degree_coverage
+                        - radar_forward_sector
+                        - acoustic_sensors_optional
+
+                    detection_performance:
+                      type: "record"
+                      fields:
+                        detection_range:
+                          type: "numeric"
+                          value: 2
+                          unit: "nautical_miles"
+                          description: "For aircraft-sized intruders"
+                          standard: "ED-313 / DO-365"
+
+                        detection_probability:
+                          value: 90
+                          unit: "percent"
+                          description: "Pdet ≥90% at maximum range"
+
+                        false_alarm_rate:
+                          value: 1
+                          unit: "per_hour"
+                          description: "Maximum acceptable false alarms"
+
+                        tracking_accuracy:
+                          horizontal: 100
+                          vertical: 50
+                          unit: "feet"
+
+                    visual_observer_not_required:
+                      description: "Part 108 eliminates visual observer requirement"
+                      rationale: "Automated DAA systems provide equivalent safety"
+
+                collision_avoidance_logic:
+                  type: "record"
+                  description: "Automated conflict resolution"
+                  fields:
+
+                    conflict_detection_threshold:
+                      time_to_closest_point: 60
+                      unit: "seconds"
+                      description: "Alert threshold for potential conflicts"
+
+                    avoidance_strategies:
+                      type: "categorical"
+                      description: "Automated maneuver selection"
+                      priority_order:
+                        1: "vertical_separation_climb_or_descend"
+                        2: "horizontal_avoidance_if_vertical_constrained"
+                        3: "speed_reduction_if_overtaking"
+                        4: "loiter_or_return_if_persistent_conflict"
+                        5: "emergency_land_as_last_resort"
+
+                    vertical_avoidance_preference:
+                      description: "Vertical maneuvers preferred over horizontal"
+                      rationale: "More predictable, less airspace impact"
+                      typical_offset: 100
+                      unit: "feet"
+
+                    avoidance_execution_time:
+                      type: "numeric"
+                      value: 5
+                      unit: "seconds"
+                      description: "Maximum time from detection to maneuver initiation"
+
+                    fc_notification:
+                      automatic: true
+                      description: "Flight Coordinator notified of all DAA events"
+                      fc_can_override: true
+                      override_rationale_required: true
+
+        part_146_service_integration:
+          type: "record"
+          description: "§Part 146 - Automated Data Service Providers"
+          mandatory: true
+          regulatory_basis: "Part 146 services required for Category 3 and 4 operations"
+
+          fields:
+            strategic_deconfliction_service:
+              type: "record"
+              description: "Pre-flight conflict identification and resolution"
+              fields:
+                service_provider:
+                  certification_required: "Part 146 certified provider"
+                  service_level_agreement: "Required with operator"
+
+                service_capabilities:
+                  type: "categorical"
+                  required_functions:
+                    - four_dimensional_trajectory_analysis
+                    - conflict_prediction_30_minutes_ahead
+                    - automated_conflict_resolution_suggestions
+                    - geospatial_constraint_checking
+                    - weather_integration
+                    - special_use_airspace_status
+                    - temporary_flight_restriction_integration
+
+                data_exchange:
+                  type: "record"
+                  fields:
+                    flight_plan_submission:
+                      format: "Part 146 standardized API"
+                      required_data:
+                        - four_dimensional_trajectory
+                        - aircraft_performance_envelope
+                        - contingency_volumes
+                        - operator_contact_information
+                      submission_timing: "Minimum 5 minutes before takeoff"
+
+                    conflict_alerts:
+                      latency_max: 5
+                      unit: "seconds"
+                      delivery_method: "Push notification to operator system"
+
+                    trajectory_approval:
+                      required: true
+                      approval_validity: "Duration of mission"
+                      re_approval_if_deviation: true
+
+            conformance_monitoring_service:
+              type: "record"
+              description: "Real-time flight path adherence monitoring"
+              fields:
+                service_provider:
+                  certification_required: "Part 146 certified provider"
+
+                monitoring_parameters:
+                  type: "categorical"
+                  tracked_data:
+                    - position_latitude_longitude_altitude
+                    - velocity_ground_speed_vertical_rate
+                    - heading_track
+                    - deviation_from_planned_trajectory
+
+                position_reporting:
+                  type: "record"
+                  fields:
+                    update_frequency:
+                      value: 1
+                      unit: "hertz"
+                      description: "Minimum 1 Hz position updates"
+
+                    position_accuracy:
+                      horizontal: 50
+                      vertical: 25
+                      unit: "feet"
+                      standard: "WAAS/SBAS augmented GNSS"
+
+                deviation_alerting:
+                  type: "record"
+                  fields:
+                    lateral_deviation_threshold:
+                      value: 100
+                      unit: "feet"
+                      action: "Alert to FC and strategic deconfliction service"
+
+                    vertical_deviation_threshold:
+                      value: 50
+                      unit: "feet"
+
+                    alert_distribution:
+                      - to_flight_coordinator_immediate
+                      - to_operations_supervisor
+                      - to_strategic_deconfliction_service
+                      - to_faa_if_safety_critical
+
+            supplemental_data_services:
+              type: "record"
+              description: "Optional but recommended Part 146 services"
+              fields:
+
+                weather_information_service:
+                  provider: "Part 146 meteorological data service"
+                  coverage:
+                    - current_conditions_real_time
+                    - forecast_4_hours_ahead
+                    - nowcast_severe_weather
+                  resolution:
+                    spatial: 1
+                    spatial_unit: "kilometer"
+                    temporal: 5
+                    temporal_unit: "minutes"
+
+                terrain_obstacle_database:
+                  provider: "Part 146 geo-spatial service"
+                  accuracy:
+                    horizontal: 3.3
+                    vertical: 1.6
+                    unit: "feet"
+                  update_frequency: "Daily for dynamic obstacles"
+                  includes:
+                    - buildings
+                    - towers
+                    - power_lines
+                    - construction_cranes
+                    - temporary_obstacles
+
+                airspace_status_service:
+                  provider: "Part 146 airspace information service"
+                  includes:
+                    - temporary_flight_restrictions_tfr
+                    - special_use_airspace_sua_status
+                    - airport_operations_status
+                    - emergency_airspace_closures
+                    - presidential_tfrs
+                  update_latency: 30
+                  unit: "seconds"
+
+    # ========================================================================
+    # OPERATIONAL DOMAIN - Part 108 Operations Requirements
+    # ========================================================================
+    operational_domain:
+      type: "record"
+      description: "Part 108 operational characteristics and limitations"
+      concepts:
+
+        aircraft_specifications:
+          type: "record"
+          description: "§108.1 / §108.700 - Aircraft requirements"
+          fields:
+
+            maximum_weight:
+              type: "numeric"
+              value: 1320
+              unit: "pounds"
+              description: "Part 108 maximum aircraft weight limit"
+              equivalent_to: "Light Sport Aircraft category"
+              note: "Based on kinetic energy and risk assessment"
+
+            actual_configuration:
+              empty_weight: 35
+              battery_weight: 12
+              payload_capacity: 8
+              maximum_takeoff_weight: 55
+              unit: "pounds"
+              margin_to_part_108_limit: 1265
+              margin_unit: "pounds"
+
+            kinetic_energy_category:
+              calculated_ke: 22000
+              unit: "foot_pounds"
+              threshold: 25000
+              description: "Below high-energy threshold"
+
+            propulsion_system:
+              type: "categorical"
+              value: "electric_multirotor"
+              configuration: "Hexacopter (6 motors)"
+              redundancy: "Can sustain flight with one motor failure"
+              motor_type: "Brushless DC motors"
+              propeller_type: "Carbon fiber, self-tightening"
+
+            airworthiness_acceptance:
+              type: "record"
+              description: "§108.700 - Airworthiness acceptance documentation"
+              fields:
+
+                manufacturer_declaration:
+                  document: "Declaration of Compliance (DOC)"
+                  doc_number: "DOC-2025-XXXXX"
+                  manufacturer: "DroneManufacturer Inc."
+                  manufacturer_location: "United States"
+                  eligibility: "US-based manufacturer or bilateral agreement country"
+
+                means_of_compliance:
+                  type: "categorical"
+                  description: "Compliance demonstration methods"
+                  standards_used:
+                    - standard: "ASTM F3411-22"
+                      title: "Remote ID and Tracking"
+                      compliance_status: "Full compliance demonstrated"
+
+                    - standard: "ASTM F3322/F3322M"
+                      title: "Detect and Avoid Systems"
+                      compliance_status: "Full compliance demonstrated"
+
+                    - standard: "ASTM F3364-20"
+                      title: "Command and Control Systems"
+                      compliance_status: "Full compliance demonstrated"
+
+                    - standard: "ASTM F3389-21"
+                      title: "Quality Assurance Schemes"
+                      compliance_status: "Manufacturing process certified"
+
+                safety_documentation:
+                  type: "categorical"
+                  required_documents:
+                    - system_safety_assessment
+                    - failure_modes_effects_analysis_fmea
+                    - fault_tree_analysis_fta
+                    - hazard_analysis
+                    - design_verification_reports
+                    - flight_test_data_envelope_expansion
+                    - environmental_qualification_testing
+
+                faa_acceptance:
+                  acceptance_number: "AA-2025-XXXXX"
+                  acceptance_date: "2025-09-15"
+                  valid_through: "2030-09-15"
+                  conditions: "Subject to continued operational safety monitoring"
+
+            required_equipment:
+              type: "record"
+              description: "§108.205 - Mandatory equipment list"
+              fields:
+
+                remote_identification:
+                  type: "record"
+                  description: "§108.205(a) - Remote ID compliance"
+                  fields:
+                    broadcast_method:
+                      type: "categorical"
+                      values: [wifi_aware_nan, bluetooth_5_extended_advertising]
+                      implemented: "Both for redundancy"
+
+                    network_method:
+                      type: "categorical"
+                      values: [cellular_lte, cellular_5g]
+                      implemented: "Cellular LTE with 5G fallback"
+
+                    message_elements:
+                      type: "categorical"
+                      description: "Required broadcast data per ASTM F3411"
+                      transmitted_data:
+                        - uas_id_serial_number
+                        - operator_id
+                        - control_station_location
+                        - uas_location_latitude_longitude_geodetic_altitude
+                        - uas_altitude_above_takeoff
+                        - uas_velocity_ground_speed_vertical_speed
+                        - heading
+                        - timestamp_utc
+                        - emergency_status
+                        - system_status
+
+                    broadcast_frequency:
+                      value: 1
+                      unit: "hertz"
+                      description: "Minimum 1 Hz broadcast rate"
+                      actual_implementation: 2
+
+                    broadcast_range:
+                      minimum_required: 400
+                      actual_capability: 500
+                      unit: "meters"
+
+                electronic_conspicuity:
+                  type: "record"
+                  description: "§108.205(b) - Position broadcasting for traffic integration"
+                  fields:
+                    ads_b_out_capability:
+                      type: "boolean"
+                      value: true
+                      description: "UAS broadcasts position on 1090 MHz or 978 MHz UAT"
+                      standard: "DO-260B (1090ES) or DO-282B (UAT)"
+                      note: "Part 108 may authorize UAS ADS-B Out"
+
+                    broadcast_elements:
+                      - icao_24_bit_address
+                      - position_latitude_longitude
+                      - pressure_altitude
+                      - geometric_altitude
+                      - ground_speed
+                      - track_angle
+                      - vertical_rate
+                      - emitter_category_uas
+
+                detect_and_avoid_equipment:
+                  type: "record"
+                  description: "§108.910 - DAA system requirements"
+                  fields:
+                    ads_b_in_receiver:
+                      standard: "DO-282B (978 MHz UAT) or DO-260B (1090ES)"
+                      reception_range: 3
+                      unit: "nautical_miles"
+                      update_rate: 1
+                      rate_unit: "hertz"
+
+                    non_cooperative_sensors:
+                      stereo_cameras:
+                        quantity: 2
+                        field_of_view: 120
+                        fov_unit: "degrees"
+                        resolution: "1920x1080"
+                        frame_rate: 30
+                        detection_range: 1000
+                        range_unit: "meters"
+
+                      lidar:
+                        type: "360_degree_scanning"
+                        range: 150
+                        unit: "meters"
+                        angular_resolution: 0.25
+                        angle_unit: "degrees"
+                        update_rate: 10
+                        rate_unit: "hertz"
+
+                      radar:
+                        type: "Forward_looking_FMCW"
+                        frequency: 24
+                        freq_unit: "GHz"
+                        range: 300
+                        range_unit: "meters"
+                        field_of_view: 90
+                        fov_unit: "degrees"
+
+                navigation_systems:
+                  type: "record"
+                  description: "§108.910 - Navigation equipment"
+                  fields:
+
+                    gnss_receivers:
+                      type: "record"
+                      fields:
+                        primary_gnss:
+                          constellations: [gps, galileo, glonass]
+                          augmentation: "WAAS/SBAS"
+                          accuracy_horizontal: 5
+                          accuracy_vertical: 10
+                          unit: "meters"
+
+                        rtk_gps:
+                          required_for: "Precision landing operations"
+                          accuracy_horizontal: 0.3
+                          accuracy_vertical: 0.5
+                          unit: "meters"
+                          correction_source: "NTRIP network or base station"
+
+                        backup_positioning:
+                          type: "categorical"
+                          methods:
+                            - visual_odometry
+                            - optical_flow_sensors
+                            - inertial_navigation_system
+                          description: "Used if GNSS degraded or lost"
+
+                    inertial_measurement_unit:
+                      type: "MEMS IMU"
+                      axes: 9
+                      description: "3-axis gyro, 3-axis accelerometer, 3-axis magnetometer"
+                      update_rate: 100
+                      unit: "hertz"
+
+                    barometric_altimeter:
+                      accuracy: 3
+                      unit: "feet"
+                      description: "Pressure altitude for traffic separation"
+
+                    radar_altimeter:
+                      range: 500
+                      unit: "feet_agl"
+                      accuracy: 1
+                      acc_unit: "feet"
+                      used_for: "Precision altitude hold near ground"
+
+                communication_systems:
+                  type: "record"
+                  description: "§108.910 - C2 link requirements per ASTM F3364"
+                  fields:
+
+                    primary_c2_link:
+                      type: "categorical"
+                      technology: "Cellular LTE (4G)"
+                      frequency_bands: [700_MHz, 850_MHz, 1900_MHz]
+                      carrier: "Primary commercial cellular carrier"
+
+                    backup_c2_link:
+                      type: "categorical"
+                      technology: "Satellite L-band"
+                      provider: "Satellite communications provider"
+                      description: "Independent of terrestrial infrastructure"
+
+                    link_performance_requirements:
+                      type: "record"
+                      fields:
+                        availability:
+                          value: 99.9
+                          unit: "percent"
+                          description: "Link availability over operational area"
+
+                        latency_max:
+                          value: 200
+                          unit: "milliseconds"
+                          description: "Maximum round-trip latency"
+
+                        throughput_minimum:
+                          uplink: 100
+                          downlink: 500
+                          unit: "kilobits_per_second"
+
+                        continuity:
+                          dropout_max_duration: 3
+                          unit: "seconds"
+                          description: "Maximum acceptable temporary dropout"
+
+                    lost_link_capability:
+                      autonomous_operation: true
+                      timeout_before_contingency: 30
+                      unit: "seconds"
+                      description: "Can complete mission autonomously if link lost"
+
+                lighting_equipment:
+                  type: "record"
+                  description: "Position and anti-collision lights"
+                  fields:
+
+                    position_lights:
+                      required: "Civil twilight and night operations"
+                      colors: "Red (port), Green (starboard), White (aft)"
+                      visibility: 3
+                      unit: "statute_miles"
+
+                    anti_collision_light:
+                      type: "Strobe or flashing red/white"
+                      visibility: 3
+                      unit: "statute_miles"
+                      flash_rate: 40
+                      rate_unit: "flashes_per_minute"
+
+                    illuminated_landing_aid:
+                      type: "Downward-facing spotlight"
+                      intensity: 500
+                      unit: "lumens"
+                      used_for: "Landing zone illumination at night"
+
+        mission_profiles:
+          type: "record"
+          description: "Authorized mission types and parameters"
+          fields:
+
+            point_to_point_delivery:
+              type: "record"
+              description: "Single package delivery mission"
+              fields:
+                maximum_range:
+                  value: 15
+                  unit: "kilometers"
+                  description: "Maximum mission distance one-way"
+
+                typical_flight_time:
+                  value: 25
+                  unit: "minutes"
+                  includes: "Takeoff, cruise, landing, delivery, return"
+
+                payload_capacity:
+                  minimum: 0.5
+                  maximum: 8
+                  unit: "pounds"
+
+            multi_stop_delivery:
+              type: "record"
+              description: "Multiple delivery points per mission"
+              fields:
+                maximum_stops:
+                  value: 3
+                  description: "Maximum delivery points per mission"
+
+                total_mission_distance:
+                  maximum: 20
+                  unit: "kilometers"
+
+                mission_duration:
+                  maximum: 35
+                  unit: "minutes"
+                  includes_battery_reserve: true
+
+            battery_management:
+              type: "record"
+              description: "Energy management requirements"
+              fields:
+
+                battery_capacity:
+                  total: 15000
+                  unit: "milliamp_hours"
+                  voltage: 22.2
+                  voltage_unit: "volts"
+                  chemistry: "Lithium Polymer (LiPo)"
+
+                minimum_battery_reserve:
+                  value: 20
+                  unit: "percent"
+                  description: "Minimum reserve at end of mission"
+                  regulatory_basis: "Safety margin for contingencies"
+
+                low_battery_threshold:
+                  value: 25
+                  unit: "percent"
+                  action: "Initiate return to base or nearest safe landing"
+
+                critical_battery_threshold:
+                  value: 15
+                  unit: "percent"
+                  action: "Immediate emergency landing at nearest safe site"
+
+                battery_health_monitoring:
+                  parameters_monitored:
+                    - state_of_charge_soc
+                    - voltage_per_cell
+                    - current_draw
+                    - temperature
+                    - cycle_count
+                    - internal_resistance
+                  replacement_criteria: "Per manufacturer specifications"
+
+        personnel_requirements:
+          type: "record"
+          description: "§108.300-320 - Part 108 personnel framework"
+
+          operations_supervisor:
+            type: "record"
+            description: "§108.305 - Operations Supervisor qualifications"
+            fields:
+
+              minimum_qualifications:
+                type: "categorical"
+                requirements:
+                  - hold_valid_part_107_remote_pilot_certificate
+                  - minimum_100_hours_uas_operational_experience
+                  - completed_manufacturer_type_specific_training
+                  - knowledge_of_part_108_regulations
+                  - passed_operations_supervisor_assessment
+                  - tsa_security_threat_assessment_approved
+
+              responsibilities:
+                type: "categorical"
+                duties:
+                  - ensure_compliance_with_part_108_and_opspecs
+                  - supervise_flight_coordinators
+                  - approve_daily_operational_plans
+                  - manage_emergency_response
+                  - maintain_operational_records
+                  - ensure_aircraft_airworthiness
+                  - coordinate_with_faa_fsdo
+                  - oversee_safety_management_system
+
+              recurrent_requirements:
+                training_frequency: 12
+                unit: "months"
+                description: "Annual recurrent training mandatory"
+
+                currency_requirements:
+                  active_supervision: "Must maintain active role"
+                  minimum_oversight_hours: 20
+                  period: "90 days"
+
+              limitations:
+                maximum_concurrent_operations:
+                  value: 10
+                  description: "Maximum simultaneous operations under one supervisor"
+
+          flight_coordinator:
+            type: "record"
+            description: "§108.310 - Flight Coordinator requirements (not traditional pilot)"
+            fields:
+
+              minimum_qualifications:
+                type: "record"
+                description: "Reduced from traditional pilot requirements"
+                fields:
+
+                  experience_requirement:
+                    value: 5
+                    unit: "hours"
+                    description: "Minimum 5 hours with specific aircraft type"
+                    context: "Under supervision of qualified FC or Ops Supervisor"
+                    note: "Much lower than Part 107's requirements"
+
+                  training_requirements:
+                    type: "categorical"
+                    required_training:
+                      - manufacturer_type_specific_training
+                      - part_108_regulations_knowledge
+                      - emergency_procedures_certification
+                      - simplified_user_interface_proficiency
+                      - conformance_monitoring_training
+                      - part_146_service_interaction
+                      - geofence_management
+                      - weather_assessment
+
+                  no_part_107_certificate_required:
+                    description: "Part 108 eliminates Part 107 requirement for FCs"
+                    rationale: "Highly automated systems reduce manual piloting skills needed"
+
+                  currency_requirements:
+                    hours_required: 5
+                    period: 12
+                    unit: "hours per year"
+                    description: "Must log 5 hours in 12 months to remain current"
+
+              responsibilities:
+                type: "categorical"
+                description: "Tactical oversight, not continuous manual control"
+                duties:
+                  - monitor_aircraft_status_displays
+                  - monitor_conformance_with_flight_plan
+                  - respond_to_system_alerts_and_warnings
+                  - initiate_contingency_procedures_when_needed
+                  - coordinate_with_atc_when_required
+                  - manage_simplified_user_interface
+                  - approve_minor_flight_plan_adjustments
+                  - document_anomalies_and_incidents
+
+              operational_limitations:
+                type: "record"
+                fields:
+
+                  maximum_concurrent_aircraft:
+                    value: 5
+                    description: "Maximum UAS monitored simultaneously per FC"
+                    note: "Varies based on operational complexity"
+
+                  simplified_user_interaction:
+                    type: "boolean"
+                    value: true
+                    description: "§108.210 - Limited direct control capability"
+                    details: "FC cannot continuously manually fly; system highly automated"
+
+                  no_stick_and_rudder_control:
+                    description: "Traditional piloting skills not primary requirement"
+                    interface_type: "High-level commands (go to waypoint, land, return home)"
+
+                  override_capability:
+                    type: "boolean"
+                    value: true
+                    description: "FC can override automation in emergencies"
+                    requires: "Justification and logging"
+
+          maintenance_personnel:
+            type: "record"
+            description: "§108.320 - Maintenance personnel requirements"
+            fields:
+
+              qualifications:
+                type: "categorical"
+                acceptable:
+                  - manufacturer_certified_technician
+                  - faa_certified_mechanic_with_uas_training
+                  - company_trained_personnel_for_routine_tasks
+
+              responsibilities:
+                - conduct_inspections_per_schedule
+                - perform_repairs_and_alterations
+                - maintain_airworthiness_records
+                - track_component_life_limits
+                - report_discrepancies
+
+              training_requirements:
+                initial: "Manufacturer-specific training"
+                recurrent: "Annual refresher training"
+                specialized: "For major repairs and alterations"
+
+          tsa_security_requirements:
+            type: "record"
+            description: "All operational personnel security vetting"
+            fields:
+
+              security_threat_assessment:
+                required_for: "All personnel with operational access"
+                process:
+                  - fingerprint_based_criminal_history_check
+                  - citizenship_immigration_status_verification
+                  - terrorism_database_screening
+                  - continuous_vetting_enrollment
+
+              disqualifying_offenses:
+                permanent:
+                  - espionage_treason_sedition
+                  - terrorism_related_crimes
+                  - aircraft_piracy
+                  - interference_with_flight_crew
+
+                temporary_10_years:
+                  - felony_convictions
+                  - violent_crimes
+                  - fraud_misrepresentation
+
+              recurrent_checks:
+                frequency: 60
+                unit: "months"
+                description: "Background checks every 5 years"
+
+              continuous_vetting:
+                enrolled: true
+                description: "Ongoing monitoring of criminal databases"
+
+    # ========================================================================
+    # AI SYSTEM DOMAIN - ED-324 Compliance
+    # ========================================================================
+    ai_system_domain:
+      type: "record"
+      description: "EUROCAE ED-324 AI/ML system requirements for aviation certification"
+
+      ai_component_architecture:
+        type: "record"
+        description: "AI/ML components in the autonomous system"
+        fields:
+
+          perception_ai:
+            type: "record"
+            description: "Computer vision and object detection AI"
+            fields:
+
+              algorithm_type:
+                type: "categorical"
+                values:
+                  - deep_learning_convolutional_neural_network
+                  - yolo_v8_object_detection
+                  - semantic_segmentation_unet
+
+              training_methodology:
+                type: "categorical"
+                value: "supervised_learning_offline_only"
+                training_data_size: 500000
+                unit: "labeled_images"
+                data_diversity: "All weather, lighting, obstacle types in ODD"
+
+              performance_metrics:
+                type: "record"
+                fields:
+                  detection_accuracy:
+                    value: 99.2
+                    unit: "percent"
+                    description: "Validated on independent test set"
+
+                  false_positive_rate:
+                    value: 0.08
+                    unit: "percent"
+
+                  inference_latency:
+                    value: 35
+                    unit: "milliseconds"
+                    hardware: "NVIDIA Jetson Xavier NX"
+
+                  minimum_confidence_threshold:
+                    value: 95
+                    unit: "percent"
+                    description: "Detection only acted upon above threshold"
+
+              development_assurance_level:
+                value: "DAL-B"
+                description: "ED-324 assurance level for safety-critical AI"
+                justification: "Hazardous failure condition - DAA failure could lead to collision"
+
+          decision_making_ai:
+            type: "record"
+            description: "Path planning and collision avoidance AI"
+            fields:
+
+              algorithm_type:
+                type: "categorical"
+                values:
+                  - reinforcement_learning_dqn
+                  - model_predictive_control_with_ml
+
+              learning_mode:
+                type: "categorical"
+                value: "offline_trained_only"
+                online_learning: false
+                description: "No learning during operational flights"
+                rationale: "ED-324 requires demonstrated stability"
+
+              performance_validation:
+                type: "record"
+                fields:
+                  successful_avoidance_rate:
+                    value: 99.98
+                    unit: "percent"
+                    test_scenarios: 10000
+
+                  false_alarm_tolerance:
+                    value: 0.5
+                    unit: "per_hour"
+
+                  decision_latency:
+                    value: 100
+                    unit: "milliseconds"
+                    description: "From detection to maneuver command"
+
+              development_assurance_level:
+                value: "DAL-A"
+                description: "Catastrophic failure condition"
+                justification: "Collision avoidance failure could cause fatality"
+
+          route_optimization_ai:
+            type: "record"
+            description: "Mission planning and efficiency AI"
+            fields:
+
+              algorithm_type:
+                type: "categorical"
+                values:
+                  - genetic_algorithm
+                  - multi_objective_optimization
+
+              learning_mode:
+                value: "offline_trained_continuously_updated"
+                description: "Model updated monthly based on operational data"
+
+              development_assurance_level:
+                value: "DAL-C"
+                description: "Major failure condition - affects efficiency not safety"
+
+      ai_operational_monitoring:
+        type: "record"
+        description: "ED-324 runtime monitoring requirements"
+        fields:
+
+          performance_degradation_detection:
+            type: "boolean"
+            value: true
+            description: "Real-time AI health monitoring"
+
+            monitored_parameters:
+              - inference_latency_increasing
+              - detection_accuracy_declining
+              - confidence_scores_lower_than_baseline
+              - unexpected_output_patterns
+              - computational_resource_saturation
+
+            degradation_response:
+              type: "categorical"
+              actions:
+                - alert_flight_coordinator
+                - increase_monitoring_frequency
+                - reduce_operational_tempo
+                - transition_to_degraded_mode_if_available
+                - abort_mission_if_critical
+
+          out_of_distribution_detection:
+            type: "boolean"
+            value: true
+            description: "Detect scenarios outside training distribution"
+
+            methods:
+              - statistical_distribution_comparison
+              - uncertainty_quantification
+              - novelty_detection_algorithms
+
+            response_to_ood:
+              - increase_human_oversight
+              - request_fc_approval_for_decisions
+              - log_data_for_future_training
+              - reduce_confidence_in_ai_outputs
+
+          ai_uncertainty_quantification:
+            type: "boolean"
+            value: true
+            description: "AI provides confidence levels with decisions"
+
+            implementation:
+              method: "Bayesian neural networks"
+              output: "Mean prediction with standard deviation"
+
+            usage:
+              low_confidence_threshold: 85
+              unit: "percent"
+              action_below_threshold: "Human review required"
+
+          fallback_to_non_ai:
+            type: "record"
+            description: "Non-AI backup systems"
+            fields:
+
+              rule_based_backup:
+                available: true
+                description: "Classical rule-based control algorithms"
+                performance: "Degraded but safe operation"
+
+              trigger_conditions:
+                - ai_confidence_below_threshold
+                - performance_degradation_detected
+                - out_of_distribution_detected
+                - computational_hardware_failure
+                - fc_commanded_fallback
+
+      ai_data_requirements:
+        type: "record"
+        description: "ED-324 training data and quality requirements"
+        fields:
+
+          training_data_coverage:
+            type: "categorical"
+            description: "Training data must span entire ODD"
+            requirements:
+              - all_weather_conditions_in_odd_represented
+              - all_lighting_conditions_represented
+              - all_obstacle_types_included
+              - all_traffic_scenarios_covered
+              - edge_cases_adequately_sampled
+              - failure_modes_simulated
+
+          data_quality_assurance:
+            type: "categorical"
+            processes:
+              - labeled_by_certified_annotators
+              - multi_reviewer_consensus_labeling
+              - validation_set_completely_independent
+              - adversarial_testing_performed
+              - bias_testing_across_demographics
+
+          model_versioning:
+            type: "record"
+            fields:
+              version_control_required: true
+              current_version: "v3.2.1"
+
+              traceability:
+                - training_data_version
+                - hyperparameters_documented
+                - training_logs_retained
+                - validation_results_archived
+
+              regression_testing_mandatory:
+                description: "All previous test cases re-run on new model"
+                pass_criteria: "No performance degradation on any scenario"
+
+          continuous_learning_restrictions:
+            online_learning_prohibited: true
+            model_updates: "Only through controlled process"
+            update_approval_required: "Operations Supervisor and FAA notification"
+            re_validation_required: true
+
+      explainability_requirements:
+        type: "record"
+        description: "ED-324 AI transparency and explainability"
+        fields:
+
+          decision_transparency:
+            type: "categorical"
+            capabilities:
+              - attention_maps_for_vision_ai
+              - feature_importance_scoring
+              - decision_tree_approximation
+              - counterfactual_explanations
+
+          human_oversight:
+            type: "record"
+            fields:
+              fc_can_override_ai:
+                value: true
+                description: "Flight Coordinator ultimate decision authority"
+
+              ai_decisions_logged:
+                value: true
+                description: "Complete audit trail"
+                retention: 90
+                unit: "days"
+
+              explanation_on_demand:
+                value: true
+                description: "FC can query why AI made decision"
+
+          safety_case_documentation:
+            type: "categorical"
+            required_documents:
+              - ai_safety_assurance_case
+              - ai_development_lifecycle_documentation
+              - ai_verification_validation_reports
+              - ai_performance_monitoring_plan
+              - ai_incident_response_procedures
+
+    # ========================================================================
+    # SAFETY DOMAIN - Part 108 Safety Requirements
+    # ========================================================================
+    safety_domain:
+      type: "record"
+      description: "Part 108 safety systems and emergency procedures"
+      concepts:
+
+        contingency_management:
+          type: "record"
+          description: "§108.240 - Contingency procedures"
+          fields:
+
+            contingency_triggers:
+              type: "categorical"
+              description: "Events requiring contingency response"
+              triggers:
+                - c2_link_loss_timeout_exceeded
+                - gps_loss_or_degradation
+                - low_battery_threshold_reached
+                - critical_battery_threshold_reached
+                - detect_and_avoid_system_failure
+                - geofence_breach_or_approach
+                - weather_deterioration_below_minimums
+                - traffic_conflict_unresolvable
+                - propulsion_system_failure
+                - payload_release_failure
+                - ground_control_commanded_abort
+
+            lost_link_behavior:
+              type: "record"
+              description: "§108.240(a) - C2 link loss response"
+              fields:
+
+                link_loss_detection:
+                  timeout: 30
+                  unit: "seconds"
+                  description: "Contingency activates after 30s link loss"
+
+                autonomous_operation:
+                  capable: true
+                  description: "Can complete mission without C2 link"
+
+                contingency_actions:
+                  type: "categorical"
+                  priority_order:
+                    1: "loiter_and_attempt_reconnection"
+                    2: "continue_mission_if_within_contingency_volume"
+                    3: "return_to_home_if_mission_completion_uncertain"
+                    4: "land_at_pre_designated_safe_site"
+
+                fc_notification:
+                  method: "Via Part 146 conformance monitoring service"
+                  escalation: "To Operations Supervisor if unresolved"
+
+            contingency_volumes:
+              type: "spatial"
+              description: "§108.245 - Pre-defined safe operating volumes"
+              fields:
+
+                definition:
+                  description: "3D volumes where UA can safely operate during contingency"
+                  format: "GeoJSON 3D polygons"
+
+                volume_characteristics:
+                  minimum_ground_clearance: 50
+                  clearance_unit: "feet"
+                  avoid_populated_areas: true
+                  avoid_critical_infrastructure: true
+
+                volume_approval:
+                  submitted_with: "Operating Certificate application"
+                  approved_by: "FAA in Operations Specifications"
+
+            emergency_landing_procedures:
+              type: "record"
+              description: "§108.250 - Emergency landing requirements"
+              fields:
+
+                safe_landing_site_selection:
+                  type: "record"
+                  fields:
+
+                    ai_based_site_identification:
+                      enabled: true
+                      description: "AI evaluates potential landing sites"
+
+                    site_criteria:
+                      minimum_size: 16
+                      size_unit: "square_feet"
+                      no_people_within: 30
+                      people_distance_unit: "feet"
+                      surface_firmness: "Solid, level surface"
+                      accessibility: "Retrievable by ground crew"
+
+                    pre_designated_sites:
+                      type: "spatial"
+                      description: "Pre-surveyed emergency landing zones"
+                      quantity: 50
+                      coverage: "Throughout operational area"
+                      spacing: 1
+                      spacing_unit: "kilometer"
+
+                landing_procedure:
+                  type: "categorical"
+                  steps:
+                    - assess_landing_zone_suitability
+                    - clear_area_of_people_if_possible
+                    - reduce_altitude_slowly
+                    - final_approach_at_reduced_speed
+                    - soft_touchdown
+                    - disarm_propulsion_system
+                    - activate_retrieval_beacon
+
+                post_landing_actions:
+                  - notify_fc_and_operations_supervisor
+                  - transmit_precise_location
+                  - secure_aircraft_and_cargo
+                  - dispatch_ground_recovery_team
+                  - preserve_flight_data_recorder
+
+        flight_termination_system:
+          type: "record"
+          description: "Optional but available emergency system"
+          fields:
+
+            fts_available:
+              type: "boolean"
+              value: true
+              description: "Rapid descent parachute system"
+
+            activation_conditions:
+              type: "categorical"
+              triggers:
+                - catastrophic_propulsion_failure
+                - uncontrolled_flight_condition
+                - imminent_collision_unavoidable
+                - fc_commanded_emergency_termination
+
+            system_specifications:
+              type: "parachute_deployment"
+              deployment_altitude_min: 50
+              altitude_unit: "feet_agl"
+              descent_rate: 15
+              descent_unit: "feet_per_second"
+              impact_energy_reduction: 90
+              energy_unit: "percent"
+
+        safety_management_system:
+          type: "record"
+          description: "§108.455 - SMS requirements for certificate holders"
+          fields:
+
+            safety_policy:
+              type: "record"
+              fields:
+                accountable_executive:
+                  name: "CEO Name"
+                  responsibility: "Ultimate accountability for safety"
+
+                safety_objectives:
+                  - zero_injuries_to_people
+                  - zero_collisions_with_aircraft
+                  - 99_9_percent_mission_success_rate
+                  - continuous_safety_improvement
+
+            risk_management:
+              type: "record"
+              fields:
+                hazard_identification:
+                  methods:
+                    - operational_hazard_reporting
+                    - safety_data_analysis
+                    - audits_and_inspections
+                    - predictive_analysis
+
+                risk_assessment:
+                  methodology: "FAA SMS risk matrix"
+                  frequency: "Quarterly and after incidents"
+
+                risk_mitigation:
+                  tracking_system: "Safety risk register"
+                  responsibility_assignment: true
+                  effectiveness_monitoring: true
+
+            safety_assurance:
+              type: "record"
+              fields:
+                performance_monitoring:
+                  metrics:
+                    - mission_completion_rate
+                    - contingency_activation_rate
+                    - daa_event_frequency
+                    - maintenance_discrepancy_rate
+                    - personnel_currency_compliance
+
+                audits:
+                  internal_audits: "Quarterly"
+                  external_audits: "Annual by independent auditor"
+                  faa_surveillance: "As required by FSDO"
+
+            safety_promotion:
+              type: "record"
+              fields:
+                training_programs:
+                  - initial_safety_training
+                  - recurrent_safety_awareness
+                  - emergency_procedures_drills
+                  - sms_participation_training
+
+                safety_communication:
+                  - monthly_safety_bulletins
+                  - safety_committee_meetings
+                  - incident_lessons_learned
+                  - industry_safety_information_sharing
+
+    # ========================================================================
+    # CYBERSECURITY DOMAIN - Part 108 Security Requirements
+    # ========================================================================
+    cybersecurity_domain:
+      type: "record"
+      description: "§108.500 - Cybersecurity and information security"
+
+      system_security:
+        type: "record"
+        fields:
+
+          access_control:
+            type: "record"
+            fields:
+              authentication:
+                method: "Multi-factor authentication (MFA)"
+                factors:
+                  - something_you_know_password
+                  - something_you_have_security_token
+                  - something_you_are_biometric_optional
+
+              authorization:
+                model: "Role-Based Access Control (RBAC)"
+                roles:
+                  - operations_supervisor_full_access
+                  - flight_coordinator_operational_access
+                  - maintenance_technician_limited_access
+                  - read_only_observer
+
+              session_management:
+                timeout: 30
+                unit: "minutes"
+                re_authentication_required: true
+
+          data_protection:
+            type: "record"
+            fields:
+              encryption_at_rest:
+                algorithm: "AES-256"
+                key_storage: "Hardware Security Module (HSM)"
+
+              encryption_in_transit:
+                protocol: "TLS 1.3"
+                certificate_authority: "Commercial CA"
+                mutual_tls: true
+
+              data_classification:
+                levels:
+                  - public_remote_id_broadcasts
+                  - internal_operational_data
+                  - confidential_customer_information
+                  - restricted_safety_data
+
+          network_security:
+            type: "record"
+            fields:
+              perimeter_defense:
+                - next_generation_firewall
+                - intrusion_detection_system_ids
+                - intrusion_prevention_system_ips
+
+              network_segmentation:
+                - flight_operations_network_isolated
+                - corporate_network_separate
+                - maintenance_network_separate
+                - dmz_for_external_interfaces
+
+              monitoring:
+                - 24_7_security_operations_center
+                - automated_threat_detection
+                - security_information_event_management_siem
+
+      operational_security:
+        type: "record"
+        fields:
+
+          c2_link_security:
+            type: "record"
+            fields:
+              authentication:
+                method: "Mutual certificate-based authentication"
+                certificate_lifecycle: "Annual renewal"
+
+              confidentiality:
+                encryption: "AES-256-GCM"
+                key_exchange: "Elliptic Curve Diffie-Hellman (ECDH)"
+
+              integrity:
+                method: "HMAC-SHA256"
+                message_authentication: true
+
+              anti_jamming:
+                technique: "Frequency Hopping Spread Spectrum (FHSS)"
+                frequency_range: "Multiple cellular bands"
+
+          gnss_security:
+            type: "record"
+            fields:
+              spoofing_detection:
+                enabled: true
+                methods:
+                  - multi_constellation_comparison
+                  - signal_to_noise_ratio_monitoring
+                  - consistency_checks_with_inertial
+
+              jamming_detection:
+                enabled: true
+                response: "Switch to backup positioning (vision, inertial)"
+
+          remote_id_security:
+            type: "record"
+            fields:
+              message_authentication:
+                enabled: true
+                method: "Cryptographic signature per ASTM F3411"
+
+              replay_attack_prevention:
+                timestamp_validation: true
+                nonce_implementation: true
+
+      incident_response:
+        type: "record"
+        fields:
+
+          incident_detection:
+            type: "categorical"
+            monitored_events:
+              - unauthorized_access_attempts
+              - malware_detection
+              - unusual_network_activity
+              - c2_link_tampering_detected
+              - gnss_spoofing_detected
+              - data_exfiltration_attempts
+
+          incident_classification:
+            type: "categorical"
+            levels:
+              - level_1_informational
+              - level_2_minor_incident
+              - level_3_moderate_incident
+              - level_4_major_incident
+              - level_5_critical_incident_safety_impact
+
+          response_procedures:
+            type: "record"
+            fields:
+              containment:
+                - isolate_affected_systems
+                - ground_affected_aircraft_if_necessary
+                - switch_to_backup_systems
+
+              eradication:
+                - remove_malware_or_unauthorized_access
+                - patch_vulnerabilities
+                - update_security_controls
+
+              recovery:
+                - restore_systems_from_known_good_state
+                - verify_system_integrity
+                - resume_operations_gradually
+
+              notification:
+                internal: "Immediate to Operations Supervisor and Director of Safety"
+                faa: "Within 24 hours for safety-impacting incidents"
+                law_enforcement: "If criminal activity suspected"
+
+    # ========================================================================
+    # MAINTENANCE & AIRWORTHINESS DOMAIN
+    # ========================================================================
+    maintenance_domain:
+      type: "record"
+      description: "§108.600 - Maintenance and airworthiness continuation"
+
+      maintenance_program:
+        type: "record"
+        fields:
+
+          inspection_schedule:
+            type: "record"
+            fields:
+
+              pre_flight_inspection:
+                frequency: "Before every flight"
+                duration: 15
+                unit: "minutes"
+                checklist_items:
+                  - visual_inspection_airframe_propellers
+                  - motor_rotation_check_all_motors
+                  - battery_health_voltage_balance
+                  - sensor_calibration_status_valid
+                  - c2_link_connectivity_test
+                  - remote_id_broadcast_verification
+                  - daa_system_self_test_pass
+                  - gnss_fix_quality_check
+                  - rtk_correction_available
+                  - geofence_loaded_and_active
+
+              post_flight_inspection:
+                frequency: "After every flight"
+                duration: 10
+                unit: "minutes"
+                actions:
+                  - download_flight_logs
+                  - review_any_anomalies
+                  - inspect_for_damage
+                  - note_discrepancies
+                  - update_maintenance_logs
+
+              25_hour_inspection:
+                interval: 25
+                interval_unit: "flight_hours"
+                tasks:
+                  - detailed_visual_inspection
+                  - propeller_balance_check
+                  - motor_bearing_play_check
+                  - landing_gear_wear_inspection
+                  - fastener_torque_verification
+                  - battery_capacity_test
+
+              100_hour_inspection:
+                interval: 100
+                interval_unit: "flight_hours"
+                tasks:
+                  - complete_system_diagnostic
+                  - sensor_recalibration_all_systems
+                  - structural_integrity_assessment
+                  - electrical_system_resistance_check
+                  - software_version_verification
+                  - c2_link_performance_test
+
+              annual_inspection:
+                interval: 12
+                interval_unit: "months"
+                tasks:
+                  - comprehensive_structural_inspection
+                  - non_destructive_testing_ndt_if_required
+                  - complete_system_overhaul
+                  - airworthiness_acceptance_revalidation
+
+          component_life_limits:
+            type: "record"
+            fields:
+
+              propellers:
+                life_limit: 500
+                unit: "flight_hours"
+                action: "Replace regardless of condition"
+
+              motors:
+                life_limit: 1000
+                unit: "flight_hours"
+                action: "Overhaul or replace"
+
+              batteries:
+                life_limit: 300
+                unit: "charge_cycles"
+                or_calendar: 24
+                calendar_unit: "months"
+                action: "Replace"
+
+              flight_controller:
+                life_limit: 5000
+                unit: "flight_hours"
+                action: "Replace"
+
+          airworthiness_directives:
+            type: "record"
+            fields:
+              ad_compliance_required:
+                type: "boolean"
+                value: true
+                description: "Must comply with all manufacturer and FAA ADs"
+
+              ad_tracking:
+                system: "Digital AD tracking system"
+                notification: "Automatic alerts when ADs issued"
+                compliance_deadline_tracking: true
+
+          maintenance_records:
+            type: "record"
+            description: "§108.620 - Record keeping requirements"
+            fields:
+
+              permanent_records:
+                type: "categorical"
+                must_retain_indefinitely:
+                  - total_time_in_service
+                  - current_status_life_limited_parts
+                  - time_since_last_overhaul_components
+                  - current_inspection_status
+                  - modifications_and_alterations_log
+                  - airworthiness_acceptance_certificate
+                  - major_repairs_history
+
+              temporary_records:
+                retention_period: 12
+                unit: "months"
+                includes:
+                  - routine_maintenance_performed
+                  - inspection_results_detailed
+                  - discrepancies_found_and_corrected
+                  - parts_replacement_history
+                  - consumables_usage_tracking
+
+              digital_maintenance_system:
+                type: "boolean"
+                value: true
+                features:
+                  - automated_inspection_due_alerts
+                  - electronic_work_orders
+                  - parts_inventory_management
+                  - maintenance_cost_tracking
+                  - regulatory_compliance_monitoring
+                  - integration_with_flight_operations
+
+    # ========================================================================
+    # REGULATORY COMPLIANCE & DOCUMENTATION
+    # ========================================================================
+    regulatory_compliance:
+      type: "record"
+      description: "Complete regulatory framework compliance"
+
+      part_108_compliance:
+        type: "record"
+        fields:
+
+          operating_certificate:
+            certificate_number: "P108-2025-XXXX"
+            certificate_holder: "Drone Delivery Company LLC"
+            issue_date: "2025-10-01"
+            expiration: "Not applicable - continuous compliance"
+
+          operations_specifications:
+            opspecs_number: "P108-2025-XXXX-001"
+            issue_date: "2025-10-01"
+            revision: "A"
+
+            authorizations:
+              - bvlos_operations_category_3_4_areas
+              - operations_below_400ft_agl
+              - shielded_operations_authorized
+              - operations_in_class_g_airspace
+              - operations_in_class_c_d_coordination
+              - fleet_operations_up_to_25_aircraft
+              - package_delivery_services
+
+          operations_manual:
+            manual_revision: "Rev 3.0"
+            approval_date: "2025-09-15"
+            approved_by: "FAA Flight Standards District Office"
+
+            sections:
+              - general_information_organization
+              - personnel_qualifications_training
+              - aircraft_specifications_limitations
+              - operating_procedures_normal_emergency
+              - routes_areas_authorized_operations
+              - maintenance_program
+              - safety_management_system
+              - cybersecurity_program
+              - training_program
+              - record_keeping_procedures
+
+      part_146_compliance:
+        type: "record"
+        fields:
+
+          service_providers:
+            strategic_deconfliction:
+              provider: "SkyPath Technologies Inc."
+              certification: "Part 146-SDC-2025-001"
+              contract_start: "2025-08-01"
+              sla_uptime: 99.9
+              unit: "percent"
+
+            conformance_monitoring:
+              provider: "SkyPath Technologies Inc."
+              certification: "Part 146-CM-2025-001"
+              contract_start: "2025-08-01"
+              position_update_rate: 1
+              rate_unit: "hertz"
+
+            weather_information:
+              provider: "AeroWeather Services LLC"
+              certification: "Part 146-WX-2025-003"
+              contract_start: "2025-08-01"
+              coverage: "Continental United States"
+
+      tsa_security_compliance:
+        type: "record"
+        fields:
+
+          security_program:
+            program_number: "TSA-UAS-2025-XXXX"
+            approval_date: "2025-07-15"
+            program_coordinator: "Security Director Name"
+
+          personnel_vetting:
+            all_personnel_vetted: true
+            current_as_of: "2025-10-01"
+            continuous_vetting_enrolled: true
+
+          cargo_screening:
+            screening_procedures_approved: true
+            screening_equipment: "X-ray and ETD systems"
+            screener_training_current: true
+
+      insurance_compliance:
+        type: "record"
+        fields:
+
+          liability_insurance:
+            carrier: "Aviation Insurance Company"
+            policy_number: "AIC-DRONE-2025-XXXXX"
+            effective_date: "2025-10-01"
+            expiration_date: "2026-10-01"
+
+            coverage_amounts:
+              bodily_injury_per_occurrence: 2000000
+              property_damage_per_occurrence: 1000000
+              aggregate_limit: 5000000
+              unit: "USD"
+
+          hull_insurance:
+            fleet_value: 500000
+            unit: "USD"
+            deductible: 5000
+            deductible_unit: "USD"
+
+          faa_filing:
+            form: "FAA Form 5100-1 (adapted for Part 108)"
+            filed_date: "2025-09-01"
+
+      astm_standards_compliance:
+        type: "record"
+        fields:
+
+          astm_f3411:
+            title: "Remote ID and Tracking"
+            version: "F3411-22"
+            compliance: "Full compliance"
+            test_report: "TR-2025-F3411-001"
+
+          astm_f3322:
+            title: "Detect and Avoid Systems"
+            version: "F3322/F3322M"
+            compliance: "Full compliance"
+            test_report: "TR-2025-F3322-001"
+
+          astm_f3364:
+            title: "Command and Control Systems"
+            version: "F3364-20"
+            compliance: "Full compliance"
+            test_report: "TR-2025-F3364-001"
+
+  # ============================================================================
+  # ODD MODULES - BOUNDARY CONDITIONS
+  # ============================================================================
+  modules:
+
+    - module_id: "M001"
+      name: "Part_108_Primary_Operating_Conditions"
+      description: "Nominal BVLOS operating envelope per Part 108"
+      type: "INCLUDE"
+      priority: 1
+      regulatory_basis: "§108.100-190"
+
+      conditions:
+        INCLUDE_AND:
+          - part_108_authorization.authorization_type == "operating_certificate"
+          - geographic_domain.operational_area_category IN [category_3, category_4]
+          - geographic_domain.altitude_operations.standard_altitude_limit <= 400
+          - environmental_domain.weather_conditions.visibility_requirements.minimum_visibility >= 3
+          - environmental_domain.weather_conditions.cloud_clearance_requirements.below_clouds >= 500
+          - environmental_domain.weather_conditions.precipitation IN [none, light_rain, light_drizzle]
+          - environmental_domain.lighting_conditions.authorized_operating_times IN [day_operations, morning_civil_twilight, evening_civil_twilight]
+          - operational_domain.personnel_requirements.operations_supervisor.minimum_qualifications == "met"
+          - operational_domain.personnel_requirements.flight_coordinator.minimum_qualifications == "met"
+          - operational_domain.aircraft_specifications.airworthiness_acceptance.faa_acceptance == "valid"
+          - dynamic_elements.part_146_service_integration.strategic_deconfliction_service.service_provider == "certified"
+          - dynamic_elements.part_146_service_integration.conformance_monitoring_service.service_provider == "certified"
+
+    - module_id: "M002"
+      name: "Part_108_Weather_Exclusions"
+      description: "Weather conditions prohibited by Part 108"
+      type: "EXCLUDE"
+      priority: 1
+      regulatory_basis: "§108.190"
+
+      conditions:
+        EXCLUDE_OR:
+          - environmental_domain.weather_conditions.visibility_requirements.minimum_visibility < 3
+          - environmental_domain.weather_conditions.cloud_clearance_requirements.below_clouds < 500
+          - environmental_domain.weather_conditions.precipitation IN [moderate_heavy_rain, thunderstorms, hail, snow, sleet, freezing_precipitation]
+          - environmental_domain.weather_conditions.wind_conditions.maximum_sustained_wind > 25
+          - environmental_domain.weather_conditions.wind_conditions.maximum_gust_speed > 35
+
+    - module_id: "M003"
+      name: "Part_108_Airspace_Exclusions"
+      description: "Prohibited airspace and geographic restrictions"
+      type: "EXCLUDE"
+      priority: 1
+      regulatory_basis: "§108.180, §108.185"
+
+      conditions:
+        EXCLUDE_OR:
+          - geographic_domain.altitude_operations.controlled_airspace_operations.class_b_airspace.authorization_required == false
+          - geographic_domain.geofence_system.geofence_layers.regulatory_geofences IN [airports, military_zones, restricted_airspace, tfr_active]
+          - part_108_authorization.operations_specifications.authorized_geographic_area == "outside_boundary"
+
+    - module_id: "M004"
+      name: "Part_108_DAA_Requirements"
+      description: "Detect and Avoid system operational requirements"
+      type: "INCLUDE"
+      priority: 1
+      regulatory_basis: "§108.195, §108.910"
+
+      conditions:
+        INCLUDE_AND:
+          - dynamic_elements.aerial_traffic_integration.detect_and_avoid_system.cooperative_detect_and_avoid.ads_b_in_receiver.required == true
+          - dynamic_elements.aerial_traffic_integration.detect_and_avoid_system.non_cooperative_detect_and_avoid.sensor_suite.required_sensors >= 2
+          - dynamic_elements.aerial_traffic_integration.detect_and_avoid_system.non_cooperative_detect_and_avoid.detection_performance.detection_probability >= 90
+          - dynamic_elements.aerial_traffic_integration.collision_avoidance_logic.avoidance_execution_time <= 5
+          - operational_domain.aircraft_specifications.required_equipment.detect_and_avoid_equipment.ads_b_in_receiver == "operational"
+
+    - module_id: "M005"
+      name: "Part_108_Communication_Requirements"
+      description: "C2 link and connectivity requirements"
+      type: "INCLUDE"
+      priority: 1
+      regulatory_basis: "§108.910"
+
+      conditions:
+        INCLUDE_AND:
+          - operational_domain.aircraft_specifications.required_equipment.communication_systems.primary_c2_link == "operational"
+          - operational_domain.aircraft_specifications.required_equipment.communication_systems.backup_c2_link == "operational"
+          - operational_domain.aircraft_specifications.required_equipment.communication_systems.link_performance_requirements.availability >= 99.9
+          - operational_domain.aircraft_specifications.required_equipment.communication_systems.link_performance_requirements.latency_max <= 200
+
+    - module_id: "M006"
+      name: "Part_108_Personnel_Requirements"
+      description: "Qualified personnel must be on duty"
+      type: "INCLUDE"
+      priority: 1
+      regulatory_basis: "§108.300-320"
+
+      conditions:
+        INCLUDE_AND:
+          - operational_domain.personnel_requirements.operations_supervisor.minimum_qualifications == "current"
+          - operational_domain.personnel_requirements.flight_coordinator.minimum_qualifications == "current"
+          - operational_domain.personnel_requirements.flight_coordinator.operational_limitations.maximum_concurrent_aircraft <= 5
+          - operational_domain.personnel_requirements.tsa_security_requirements.security_threat_assessment == "approved"
+
+    - module_id: "M007"
+      name: "ED_324_AI_Assurance_Requirements"
+      description: "AI system operational assurance per ED-324"
+      type: "INCLUDE"
+      priority: 1
+      regulatory_basis: "EUROCAE ED-324"
+
+      conditions:
+        INCLUDE_AND:
+          - ai_system_domain.ai_component_architecture.perception_ai.performance_metrics.detection_accuracy >= 99.0
+          - ai_system_domain.ai_component_architecture.perception_ai.performance_metrics.minimum_confidence_threshold >= 95
+          - ai_system_domain.ai_operational_monitoring.performance_degradation_detection == true
+          - ai_system_domain.ai_operational_monitoring.out_of_distribution_detection == true
+          - ai_system_domain.ai_operational_monitoring.ai_uncertainty_quantification == true
+          - ai_system_domain.ai_operational_monitoring.fallback_to_non_ai.rule_based_backup.available == true
+        EXCLUDE_OR:
+          - ai_system_domain.ai_component_architecture.perception_ai.training_methodology == "unsupervised_online_learning"
+          - ai_system_domain.ai_operational_monitoring.performance_degradation_detection == false
+
+    - module_id: "M008"
+      name: "Part_108_Safety_System_Requirements"
+      description: "Mandatory safety systems and contingency capabilities"
+      type: "INCLUDE"
+      priority: 1
+      regulatory_basis: "§108.240-250"
+
+      conditions:
+        INCLUDE_AND:
+          - safety_domain.contingency_management.lost_link_behavior.autonomous_operation.capable == true
+          - safety_domain.contingency_management.contingency_volumes == "approved_in_opspecs"
+          - safety_domain.contingency_management.emergency_landing_procedures.safe_landing_site_selection.ai_based_site_identification.enabled == true
+          - safety_domain.safety_management_system.safety_policy.accountable_executive == "assigned"
+          - maintenance_domain.maintenance_program.inspection_schedule.pre_flight_inspection == "completed"
+
+    - module_id: "M009"
+      name: "Part_146_Service_Requirements"
+      description: "Mandatory Part 146 service provider integration"
+      type: "INCLUDE"
+      priority: 1
+      regulatory_basis: "Part 146"
+
+      conditions:
+        INCLUDE_AND:
+          - dynamic_elements.part_146_service_integration.strategic_deconfliction_service.service_provider.certification_required == "Part 146 certified"
+          - dynamic_elements.part_146_service_integration.conformance_monitoring_service.service_provider.certification_required == "Part 146 certified"
+          - dynamic_elements.part_146_service_integration.strategic_deconfliction_service.data_exchange.flight_plan_submission == "approved"
+          - dynamic_elements.part_146_service_integration.conformance_monitoring_service.position_reporting.update_frequency >= 1
+
+    - module_id: "M010"
+      name: "Cybersecurity_Requirements"
+      description: "Information security and cyber protection requirements"
+      type: "INCLUDE"
+      priority: 2
+      regulatory_basis: "§108.500"
+
+      conditions:
+        INCLUDE_AND:
+          - cybersecurity_domain.system_security.access_control.authentication.method == "multi_factor"
+          - cybersecurity_domain.system_security.data_protection.encryption_at_rest.algorithm == "AES-256"
+          - cybersecurity_domain.system_security.data_protection.encryption_in_transit.protocol == "TLS 1.3"
+          - cybersecurity_domain.operational_security.c2_link_security.authentication.method == "mutual_certificate"
+          - cybersecurity_domain.operational_security.gnss_security.spoofing_detection.enabled == true
+
+  # ============================================================================
+  # VALIDATION FRAMEWORK
+  # ============================================================================
+  validation_framework:
+    type: "record"
+    description: "Comprehensive testing and validation program"
+
+    simulation_testing:
+      environment: "High-fidelity Part 108 compliant simulation"
+      scenarios:
+        - nominal_bvlos_delivery_all_weather
+        - edge_case_maximum_wind_conditions
+        - edge_case_minimum_visibility_3sm
+        - c2_link_loss_recovery
+        - daa_cooperative_encounter
+        - daa_non_cooperative_encounter
+        - geofence_approach_and_avoidance
+        - low_battery_contingency
+        - weather_deterioration_abort
+        - emergency_landing_site_selection
+        - traffic_conflict_resolution
+        - part_146_service_failure_handling
+
+      coverage_requirements:
+        nominal_scenario_coverage: 100
+        edge_case_coverage: 95
+        failure_mode_coverage: 100
+        unit: "percent"
+
+    flight_testing:
+      phases:
+        phase_1_controlled_environment:
+          location: "FAA-approved test range"
+          duration: "3 months"
+          flights: 200
+          objectives:
+            - validate_basic_flight_operations
+            - test_daa_systems
+            - verify_contingency_procedures
+
+        phase_2_operational_environment:
+          location: "Limited operational area"
+          duration: "6 months"
+          flights: 1000
+          objectives:
+            - validate_part_146_integration
+            - test_real_world_scenarios
+            - demonstrate_safety_record
+
+        phase_3_full_authorization:
+          location: "Full operational area per OpSpecs"
+          flights: "Ongoing"
+          objectives:
+            - commercial_operations
+            - continuous_monitoring
+            - safety_data_collection
+
+    success_criteria:
+      - 1000_successful_missions_phase_2
+      - zero_safety_critical_failures
+      - 99_9_percent_delivery_success_rate
+      - daa_performance_meets_astm_f3322
+      - contingency_procedures_validated
+      - part_146_integration_validated
+      - ai_systems_perform_within_odd
+
+  # ============================================================================
+  # NOTES AND REFERENCES
+  # ============================================================================
+  notes:
+    - "This ODD is based on FAA Part 108 NPRM published August 7, 2025"
+    - "Incorporates EUROCAE ED-324 AI certification requirements"
+    - "Designed for Part 108 Operating Certificate holder operations"
+    - "Requires Part 146 certified service provider integration"
+    - "All personnel must pass TSA security threat assessment"
+    - "Airworthiness Acceptance from aircraft manufacturer required"
+    - "Insurance per Part 108 requirements mandatory"
+    - "Geographic coordinates use WGS84-EPSG:4326 reference system"
+    - "This ODD must be reviewed after any safety incident or regulatory change"
+    - "Part 108 final rule expected Q2 2026 - ODD will be updated accordingly"
+
+  references:
+    - "FAA Part 108 NPRM - BVLOS Operations (August 7, 2025)"
+    - "FAA Part 146 - Automated Data Service Providers"
+    - "EUROCAE ED-324 - AI Certification for Aeronautical Products"
+    - "EUROCAE ED-313 - Detect and Avoid Requirements"
+    - "EUROCAE ED-269 - Geo-Fencing Performance Standards"
+    - "ASTM F3411-22 - Remote ID and Tracking"
+    - "ASTM F3322 - Detect and Avoid Systems"
+    - "ASTM F3364-20 - Command and Control Systems"
+    - "ASTM F3389-21 - Quality Assurance Schemes"
+    - "RTCA DO-365 - MOPS for Detect and Avoid"
+    - "TSA Security Requirements for UAS Operations"
+    - "ASAM OpenODD 1.0.0 Specification"

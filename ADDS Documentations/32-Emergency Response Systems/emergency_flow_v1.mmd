@@ -1,0 +1,20 @@
+%%Emergency Response flow
+graph TD
+    subgraph Detection
+        D1[Incident Detection] --> D2[Assessment]
+        D2 --> D3[Classification]
+    end
+
+    subgraph Response
+        D3 --> R1[Automated Response]
+        D3 --> R2[Manual Intervention]
+        R1 --> R3[Status Monitoring]
+        R2 --> R3
+    end
+
+    subgraph Recovery
+        R3 --> C1[Situation Control]
+        C1 --> C2[System Recovery]
+        C2 --> C3[Documentation]
+    end
+

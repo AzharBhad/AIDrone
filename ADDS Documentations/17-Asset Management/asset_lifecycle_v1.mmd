@@ -1,0 +1,24 @@
+%%Asset Lifecycle Flow
+graph TD
+    subgraph Planning
+        P1[Need Assessment] --> P2[Budget Allocation]
+        P2 --> P3[Procurement Plan]
+    end
+
+    subgraph Acquisition
+        P3 --> A1[Vendor Selection]
+        A1 --> A2[Purchase]
+        A2 --> A3[Asset Reception]
+    end
+
+    subgraph Operation
+        A3 --> O1[Deployment]
+        O1 --> O2[Maintenance]
+        O2 --> O3[Performance Monitoring]
+    end
+
+    subgraph Retirement
+        O3 --> R1[End-of-Life Assessment]
+        R1 --> R2[Decommissioning]
+        R2 --> R3[Disposal]
+    end

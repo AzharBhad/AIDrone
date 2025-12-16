@@ -1,0 +1,17 @@
+websocket_endpoints:
+  telemetry_stream:
+    path: "/ws/telemetry"
+    message_format: "Protocol Buffers"
+    subscription_topics:
+      - "position"
+      - "battery"
+      - "system_health"
+      - "alerts"
+
+  real_time_updates:
+    path: "/ws/updates"
+    message_format: "JSON"
+    subscription_topics:
+      - "delivery_status"
+      - "weather_updates"
+      - "system_notifications"

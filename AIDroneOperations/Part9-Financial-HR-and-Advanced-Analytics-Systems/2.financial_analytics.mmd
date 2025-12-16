@@ -1,0 +1,20 @@
+%%2. Financial Analytics Dashboard
+graph TD
+    subgraph Revenue_Analysis
+        R1[Delivery Income] --> RA[Revenue Analytics]
+        R2[Special Services] --> RA
+        R3[Value-Added Services] --> RA
+    end
+
+    subgraph Cost_Analysis
+        C1[Operating Costs] --> CA[Cost Analytics]
+        C2[Maintenance Costs] --> CA
+        C3[Infrastructure Costs] --> CA
+    end
+
+    subgraph Performance_Metrics
+        RA --> PM[Performance Dashboard]
+        CA --> PM
+        PM --> KPI[KPI Tracking]
+        KPI --> F1[Financial Reports]
+    end

@@ -1,0 +1,24 @@
+graph TD
+    subgraph Data_Sources
+        D1[Drone Telemetry] --> P1[Processing Layer]
+        D2[User Interactions] --> P1
+        D3[System Logs] --> P1
+    end
+
+    subgraph Processing
+        P1 --> P2[Data Validation]
+        P2 --> P3[Data Transformation]
+        P3 --> P4[Data Storage]
+    end
+
+    subgraph Storage
+        P4 --> S1[Real-time DB]
+        P4 --> S2[Data Warehouse]
+        P4 --> S3[Archive]
+    end
+
+    subgraph Analytics
+        S1 --> A1[Real-time Analytics]
+        S2 --> A2[Business Intelligence]
+        S3 --> A3[Historical Analysis]
+    end

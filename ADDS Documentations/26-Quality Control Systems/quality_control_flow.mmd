@@ -1,0 +1,18 @@
+%%Quality Control Flow
+graph TD
+    subgraph Testing
+        T1[Requirements] --> T2[Test Planning]
+        T2 --> T3[Test Execution]
+    end
+
+    subgraph Validation
+        T3 --> V1[Results Analysis]
+        V1 --> V2[Quality Metrics]
+        V2 --> V3[Compliance Check]
+    end
+
+    subgraph Improvement
+        V3 --> I1[Issue Resolution]
+        I1 --> I2[Process Update]
+        I2 --> T1
+    end

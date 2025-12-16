@@ -1,0 +1,199 @@
+# ============================================================================
+# PART 108 AIRWORTHINESS ACCEPTANCE (§108.700 - §108.750)
+# ============================================================================
+airworthiness_acceptance:
+  type: "record"
+  description: "§108.700 - Airworthiness acceptance requirements"
+
+  manufacturer_requirements:
+    type: "record"
+    description: "§108.705 - Manufacturer obligations"
+    fields:
+
+      declaration_of_compliance:
+        type: "boolean"
+        value: true
+        description: "Manufacturer must provide Declaration of Compliance"
+        reference: "§108.715"
+
+      means_of_compliance:
+        type: "record"
+        description: "Documentation showing compliance with standards"
+        fields:
+          industry_consensus_standards:
+            type: "categorical"
+            values:
+              - ASTM_F3411_remote_id
+              - ASTM_F3322_detect_and_avoid
+              - ASTM_F3364_command_and_control
+              - ASTM_F3389_quality_assurance
+            required: true
+
+          safety_documentation:
+            type: "categorical"
+            required_documents:
+              - system_safety_assessment
+              - failure_modes_and_effects_analysis
+              - hazard_analysis
+              - design_verification_reports
+              - flight_test_data
+
+      manufacturer_location:
+        type: "categorical"
+        description: "Manufacturer eligibility requirements"
+        values:
+          - us_based_manufacturer
+          - country_with_bilateral_agreement
+        exclude:
+          - non_bilateral_foreign_manufacturers
+        note: "DJI and similar manufacturers currently EXCLUDED from Part 108"
+
+      safety_program:
+        type: "record"
+        fields:
+          safety_bulletin_system:
+            type: "boolean"
+            value: true
+            description: "Must maintain safety notification system"
+
+          continued_operational_safety:
+            type: "boolean"
+            value: true
+            description: "§108.730 - Ongoing safety responsibility"
+
+          faa_access_rights:
+            type: "boolean"
+            value: true
+            description: "Unrestricted FAA access to facilities and data"
+
+  aircraft_specifications:
+    type: "record"
+    description: "Aircraft must meet Part 108 technical requirements"
+    fields:
+
+      maximum_weight:
+        type: "numeric"
+        unit: "pounds"
+        maximum: 1320.0
+        description: "§108.1 - Part 108 weight limitation"
+        note: "Based on Light Sport Aircraft equivalency"
+
+      automation_requirements:
+        type: "record"
+        fields:
+          autonomous_capability:
+            type: "boolean"
+            value: true
+            description: "Highly automated systems required"
+
+          minimal_human_intervention:
+            type: "boolean"
+            value: true
+            description: "Must operate with limited FC input"
+
+          automated_contingency_management:
+            type: "categorical"
+            required_capabilities:
+              - automated_lost_link_handling
+              - automated_low_battery_management
+              - automated_weather_detection
+              - automated_conflict_detection
+              - automated_emergency_landing
+
+      required_equipment:
+        type: "record"
+        description: "§108.205 - Mandatory equipment"
+        fields:
+
+          remote_identification:
+            type: "categorical"
+            values: [standard_remote_id, network_remote_id]
+            required: true
+            standard: "ASTM F3411"
+            broadcast_frequency: "1 Hz minimum"
+
+          electronic_conspicuity:
+            type: "categorical"
+            description: "Position broadcasting capability"
+            values:
+              - ads_b_out_capable  # NEW REQUIREMENT
+              - alternative_approved_system
+            note: "Part 108 may allow UAS to broadcast via ADS-B Out"
+
+          detect_and_avoid:
+            type: "record"
+            fields:
+              ads_b_in_required:
+                type: "boolean"
+                value: true
+                description: "Must receive ADS-B from manned aircraft"
+
+              cooperative_detect:
+                sensors: [ads_b_in, remote_id_receiver]
+                range: "3 nautical miles minimum"
+
+              non_cooperative_detect:
+                sensors: [radar, electro_optical, acoustic]
+                range: "2 nautical miles minimum"
+
+              automated_avoidance:
+                type: "boolean"
+                value: true
+                description: "System must autonomously avoid conflicts"
+
+          navigation_systems:
+            type: "record"
+            fields:
+              redundant_positioning:
+                minimum_systems: 2
+                types: [gnss, vision_based, inertial]
+
+              rtk_gps_for_precision:
+                type: "boolean"
+                value: true
+                description: "RTK-GPS required for landing operations"
+
+          communication_systems:
+            type: "record"
+            fields:
+              command_and_control_link:
+                standard: "ASTM F3364"
+                redundancy: "Dual independent links"
+                latency_max: 200
+                unit: "millisecond"
+
+              lost_link_capability:
+                autonomous_operation_capable: true
+                timeout_before_contingency: 30
+                unit: "second"
+
+  conformance_monitoring:
+    type: "record"
+    description: "§108.215 - Real-time conformance monitoring"
+    fields:
+
+      flight_path_monitoring:
+        type: "boolean"
+        value: true
+        description: "Continuous monitoring of planned vs actual position"
+
+      deviation_alerting:
+        type: "record"
+        fields:
+          lateral_deviation_threshold:
+            value: 100
+            unit: "feet"
+          vertical_deviation_threshold:
+            value: 50
+            unit: "feet"
+          alert_to_fc_immediately: true
+
+      performance_monitoring:
+        type: "categorical"
+        monitored_parameters:
+          - battery_status
+          - propulsion_system_health
+          - sensor_system_status
+          - communication_link_quality
+          - gps_accuracy
+          - automation_system_status

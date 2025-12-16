@@ -1,0 +1,37 @@
+#Testing Framework
+automated_testing:
+  test_levels:
+    unit_testing:
+      frameworks:
+        - name: "JUnit"
+          scope: "Backend services"
+        - name: "PyTest"
+          scope: "AI components"
+      coverage_target: "95%"
+
+    integration_testing:
+      types:
+        - name: "API Testing"
+          tools: ["Postman", "REST Assured"]
+        - name: "Service Integration"
+          tools: ["Cucumber", "Karate"]
+      automation_level: "100%"
+
+    system_testing:
+      components:
+        - name: "Flight Control"
+          simulation: "Hardware-in-loop"
+        - name: "Navigation"
+          simulation: "Software-in-loop"
+        - name: "Communication"
+          simulation: "Network simulation"
+
+  continuous_testing:
+    pipeline:
+      triggers:
+        - "Code commits"
+        - "Scheduled runs"
+        - "Manual activation"
+      reporting:
+        format: "JUnit XML"
+        dashboard: "Test Analytics"

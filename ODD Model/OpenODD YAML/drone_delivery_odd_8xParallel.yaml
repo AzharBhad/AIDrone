@@ -1,0 +1,167 @@
+# ASAM OpenODD 1.0.0 Specification for an AI Autonomous Drone Delivery System
+# Date: 2025-10-29
+
+metadata:
+  odd_spec_version: '1.0.0'
+  name: [["AI Drone Delivery ODD - Urban/Suburban Operations", "en"]]
+  author: "Autonomous Systems Corp."
+  version: "2.1.3"
+  date: "2025-10-29T12:00:00Z"
+
+# ------------------------------------------------------------------
+# Section 1: Custom Taxonomy for Drone Delivery Operations
+# ------------------------------------------------------------------
+taxonomy:
+ # Regulatory and Jurisdictional Context
+  - id: regulatory
+    concepts:
+    - id: jurisdiction
+    type: enum
+    literals: [FAA, EASA, CAA_UK]
+    - id: approval_basis
+    type: enum
+    literals: [FAA_Part_135, EASA_Specific_SORA, UK_PDRA]
+
+ # Airspace and Geospatial Environment
+  - id: airspace
+    concepts:
+    - id: class
+    type: enum
+    literals: [B, C, D, E, G]
+    - id: in_geofenced_corridor
+    type: boolean
+    - id: population_density
+ type: enum
+ literals: [unpopulated, sparse, populated, dense_urban]
+ - id: sensitive_zone_proximity_m
+ type: float
+ unit: meters
+
+ # Environmental Conditions
+ - id: environment
+ concepts:
+ - id: wind_speed_kts
+ type: float
+ unit: knots
+ - id: wind_gust_kts
+ type: float
+ unit: knots
+ - id: precipitation_type
+ type: enum
+ literals: [none, light_rain, moderate_rain, heavy_rain, snow, hail]
+ - id: icing_conditions
+ type: boolean
+ - id: visibility_sm
+ type: float
+ unit: statute_miles
+ - id: cloud_base_agl_ft
+ type: float
+ unit: feet
+ - id: ambient_temp_c
+ type: float
+ unit: celsius
+ - id: illumination
+ type: enum
+ literals: [day, civil_twilight, night]
+
+ # Aircraft Systems and State
+ - id: aircraft_systems
+ concepts:
+ - id: daa_status
+ type: enum
+ literals: [inactive, active_rtca_do365, degraded]
+ - id: c2_link_status
+ type: enum
+ literals: [nominal_encrypted, degraded, lost]
+ - id: pnt_status
+ type: enum
+ literals: [rtk_fixed, rtk_float, standard_gps, degraded, lost]
+ - id: remote_id_status
+ type: enum
+ literals: [inactive, active_astm_f3411]
+ - id: battery_soc_percent
+ type: float
+ unit: percent
+ - id: motor_health
+ type: enum
+ literals: [nominal, warning, fault]
+ - id: payload_mass_kg
+ type: float
+ unit: kilograms
+
+ # UTM / U-space Service Integration
+ - id: utm_services
+ concepts:
+ - id: flight_authorization_status
+ type: enum
+ literals: [not_required, authorized, rejected]
+ - id: strategic_deconfliction
+ type: enum
+ literals: [not_required, deconflicted, conflict_detected]
+
+# ------------------------------------------------------------------
+# Section 2: ODD Module Definitions
+# ------------------------------------------------------------------
+odd_modules:
+ # Module defining a high-capability BVLOS operation under FAA rules
+ - id: FAA_Part135_BVLOS_Urban
+ definition_type: module
+ INCLUDE_OR:
+ - condition:
+ regulatory:
+ jurisdiction: "FAA"
+ approval_basis: "FAA_Part_135"
+ airspace:
+ in_geofenced_corridor: true
+ population_density: "in [populated, dense_urban]"
+ environment:
+ wind_speed_kts: "< 25"
+ wind_gust_kts: "< 35"
+ precipitation_type: "in [none, light_rain]"
+ visibility_sm: ">= 3"
+ ambient_temp_c: "[-10.. 40]"
+ illumination: "in [day, civil_twilight, night]"
+ aircraft_systems:
+ daa_status: "active_rtca_do365"
+ c2_link_status: "nominal_encrypted"
+ pnt_status: "in [rtk_fixed, rtk_float]"
+ remote_id_status: "active_astm_f3411"
+ battery_soc_percent: "> 25"
+ payload_mass_kg: "<= 5.0"
+ utm_services:
+ flight_authorization_status: "authorized"
+ strategic_deconfliction: "deconflicted"
+
+ # Module for universal safety exclusions that override any INCLUDE conditions
+ - id: Global_Exclusions
+ definition_type: module
+ EXCLUDE_OR:
+ # Hazardous Weather
+ - condition:
+ environment:
+ icing_conditions: true
+ - condition:
+ environment:
+ precipitation_type: "in [moderate_rain, heavy_rain, snow, hail]"
+
+ # Critical System Failures
+ - condition:
+ aircraft_systems:
+ c2_link_status: "lost"
+ - condition:
+ aircraft_systems:
+ pnt_status: "lost"
+ - condition:
+ aircraft_systems:
+ motor_health: "fault"
+ - condition:
+ aircraft_systems:
+ battery_soc_percent: "< 15" # Emergency reserve threshold
+
+ # Airspace and Geofence Breach
+ - condition:
+ airspace:
+ in_geofenced_corridor: false
+ - condition:
+ airspace:
+ sensitive_zone_proximity_m: "< 50" # e.g., schools, hospitals

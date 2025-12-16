@@ -1,0 +1,29 @@
+#Operator Training Program
+training_modules:
+  basic_operations:
+    duration: "40 hours"
+    modules:
+      - name: "System Introduction"
+        duration: "4 hours"
+        topics:
+          - "System architecture"
+          - "Safety protocols"
+          - "Regulatory requirements"
+
+      - name: "Flight Operations"
+        duration: "16 hours"
+        topics:
+          - "Pre-flight checks"
+          - "Flight monitoring"
+          - "Emergency procedures"
+
+  advanced_operations:
+    duration: "80 hours"
+    prerequisites: ["basic_operations"]
+    modules:
+      - name: "Complex Scenarios"
+        duration: "24 hours"
+      - name: "System Administration"
+        duration: "32 hours"
+      - name: "Maintenance Operations"
+        duration: "24 hours"

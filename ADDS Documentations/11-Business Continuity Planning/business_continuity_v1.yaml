@@ -1,0 +1,31 @@
+#BCP Framework
+continuity_planning:
+  risk_assessment:
+    critical_systems:
+      - name: "Flight Control System"
+        rto: "15 minutes"  # Recovery Time Objective
+        rpo: "0 minutes"   # Recovery Point Objective
+        impact: "Critical"
+      - name: "Order Management"
+        rto: "1 hour"
+        rpo: "5 minutes"
+        impact: "High"
+      - name: "Analytics Platform"
+        rto: "4 hours"
+        rpo: "1 hour"
+        impact: "Medium"
+
+  disaster_recovery:
+    primary_site:
+      location: "US-EAST"
+      capabilities: ["Full Operations"]
+
+    backup_sites:
+      hot_site:
+        location: "US-WEST"
+        readiness: "Immediate"
+        capabilities: ["Critical Operations"]
+      warm_site:
+        location: "EU-CENTRAL"
+        readiness: "6 hours"
+        capabilities: ["Basic Operations"]

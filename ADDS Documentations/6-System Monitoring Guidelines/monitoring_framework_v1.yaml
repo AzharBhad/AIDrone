@@ -1,0 +1,36 @@
+monitoring_components:
+  real_time_monitoring:
+    metrics:
+      system_health:
+        - name: "CPU Usage"
+          threshold: "80%"
+          alert_level: "Warning"
+        - name: "Memory Usage"
+          threshold: "85%"
+          alert_level: "Warning"
+        - name: "Network Latency"
+          threshold: "100ms"
+          alert_level: "Critical"
+
+      drone_telemetry:
+        - name: "Battery Level"
+          threshold: "20%"
+          alert_level: "Critical"
+        - name: "GPS Signal"
+          threshold: "4 satellites"
+          alert_level: "Warning"
+        - name: "Communication Signal"
+          threshold: "-85 dBm"
+          alert_level: "Warning"
+
+  alerting_system:
+    priority_levels:
+      critical:
+        response_time: "5 minutes"
+        notification_channels: ["SMS", "Email", "Dashboard"]
+      warning:
+        response_time: "15 minutes"
+        notification_channels: ["Email", "Dashboard"]
+      info:
+        response_time: "1 hour"
+        notification_channels: ["Dashboard"]

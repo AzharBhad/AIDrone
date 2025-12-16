@@ -1,0 +1,17 @@
+graph TD
+    subgraph Ingress
+        I1[API Gateway] --> I2[Ingress Gateway]
+        I2 --> I3[Service Mesh]
+    end
+
+    subgraph Mesh_Services
+        I3 --> M1[Service A]
+        I3 --> M2[Service B]
+        M1 --> M3[Service C]
+    end
+
+    subgraph Observability
+        M1 --> O1[Metrics]
+        M2 --> O2[Traces]
+        M3 --> O3[Logs]
+    end

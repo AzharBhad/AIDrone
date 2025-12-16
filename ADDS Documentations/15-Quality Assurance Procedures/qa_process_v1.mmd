@@ -1,0 +1,25 @@
+%%QA Process Flow
+graph TD
+    subgraph Planning
+        P1[Requirements Analysis] --> P2[Test Planning]
+        P2 --> P3[Test Design]
+    end
+
+    subgraph Execution
+        P3 --> E1[Unit Testing]
+        E1 --> E2[Integration Testing]
+        E2 --> E3[System Testing]
+        E3 --> E4[Acceptance Testing]
+    end
+
+    subgraph Reporting
+        E4 --> R1[Results Analysis]
+        R1 --> R2[Defect Tracking]
+        R2 --> R3[Quality Reports]
+    end
+
+    subgraph Improvement
+        R3 --> I1[Process Review]
+        I1 --> I2[Recommendations]
+        I2 --> P1
+    end

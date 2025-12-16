@@ -1,0 +1,18 @@
+graph TD
+    subgraph Inspection
+        I1[Pre-inspection] --> I2[Visual Check]
+        I2 --> I3[System Diagnostics]
+        I3 --> I4[Performance Test]
+    end
+
+    subgraph Service
+        I4 --> S1[Required Service]
+        S1 --> S2[Parts Replacement]
+        S2 --> S3[System Update]
+    end
+
+    subgraph Validation
+        S3 --> V1[Testing]
+        V1 --> V2[Certification]
+        V2 --> V3[Documentation]
+    end

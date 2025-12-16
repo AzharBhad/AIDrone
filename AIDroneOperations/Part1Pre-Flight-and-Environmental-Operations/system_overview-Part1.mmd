@@ -1,0 +1,27 @@
+graph TD
+    subgraph Pre_Flight
+        A[Order Reception] -->|Validate| B[ODD Check]
+        B -->|Pass| C[Drone Assignment]
+        B -->|Fail| D[Order Rejection]
+        C --> E[System Initialize]
+    end
+
+    subgraph Flight_Ops
+        E -->|Ready| F[Take Off]
+        F --> G[En Route Navigation]
+        G --> H[Delivery Approach]
+        H --> I[Package Delivery]
+        I --> J[Return Flight]
+    end
+
+    subgraph Monitoring
+        K[Weather Monitor] -->|Update| G
+        L[Battery Monitor] -->|Status| G
+        M[Telemetry] -->|Data| N[Control Center]
+    end
+
+    subgraph Emergency
+        G -->|Alert| O[Emergency Protocol]
+        O -->|Critical| P[Emergency Landing]
+        O -->|Minor| Q[Route Adjustment]
+    end

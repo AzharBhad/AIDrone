@@ -1,0 +1,17 @@
+%%Security Operational flow
+graph TD
+    subgraph Prevention
+        P1[Threat Intelligence] --> P2[Security Controls]
+        P2 --> P3[Access Management]
+    end
+
+    subgraph Detection
+        D1[Monitoring] --> D2[Analysis]
+        D2 --> D3[Alert Generation]
+    end
+
+    subgraph Response
+        D3 --> R1[Incident Response]
+        R1 --> R2[Containment]
+        R2 --> R3[Recovery]
+    end

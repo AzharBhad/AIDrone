@@ -1,0 +1,19 @@
+%% 6. Knowledge Management System
+graph TD
+    subgraph Knowledge_Capture
+        K1[Documentation] --> |Store| KM[Knowledge Base]
+        K2[Experience] --> |Record| KM
+        K3[Training] --> |Document| KM
+    end
+
+    subgraph Knowledge_Processing
+        KM --> |Categorize| P1[Classification]
+        P1 --> |Index| P2[Search Engine]
+        P2 --> |Access| P3[User Interface]
+    end
+
+    subgraph Knowledge_Distribution
+        P3 --> |Deliver| D1[Training]
+        P3 --> |Support| D2[Operations]
+        P3 --> |Guide| D3[Maintenance]
+    end

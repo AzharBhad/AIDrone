@@ -1,0 +1,16 @@
+%% 2. Change Management Workflow
+stateDiagram-v2
+    [*] --> Request_Submission
+    Request_Submission --> Initial_Review
+    Initial_Review --> Impact_Assessment
+    Impact_Assessment --> Technical_Review
+    Technical_Review --> Change_Advisory
+    Change_Advisory --> Scheduling
+    Scheduling --> Implementation
+    Implementation --> Testing
+    Testing --> Validation
+    Validation --> Documentation
+    Documentation --> [*]
+    Technical_Review --> Request_Submission: Rejected
+    Change_Advisory --> Request_Submission: Rejected
+    Testing --> Implementation: Failed

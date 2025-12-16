@@ -1,0 +1,17 @@
+%%3. Operational Procedures
+sequenceDiagram
+    participant CS as Customer System
+    participant OMS as Order Management
+    participant FC as Flight Control
+    participant Drone as Drone
+    participant GS as Ground Station
+
+    CS->>OMS: Place Order
+    OMS->>FC: Request Delivery
+    FC->>GS: Check Conditions
+    GS->>FC: Conditions OK
+    FC->>Drone: Assign Mission
+    Drone->>FC: Accept Mission
+    Drone->>GS: Regular Updates
+    Drone->>CS: Deliver Package
+    Drone->>GS: Return to Base

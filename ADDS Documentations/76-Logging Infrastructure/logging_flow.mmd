@@ -1,0 +1,17 @@
+graph TD
+    subgraph Sources
+        S1[Applications] --> C1[Collectors]
+        S2[Systems] --> C1
+    end
+
+    subgraph Processing
+        C1 --> P1[Aggregation]
+        P1 --> P2[Enrichment]
+        P2 --> P3[Indexing]
+    end
+
+    subgraph Analysis
+        P3 --> A1[Search]
+        A1 --> A2[Analytics]
+        A2 --> A3[Alerting]
+    end

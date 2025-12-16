@@ -1,0 +1,18 @@
+%% 6.Maintenance Schedule Diagram
+gantt
+    title Drone Maintenance Schedule
+    dateFormat  YYYY-MM-DD
+    section Daily Checks
+    Visual Inspection    :daily1, 2025-10-13, 1d
+    System Diagnostics   :daily2, after daily1, 1d
+    Battery Health Check :daily3, after daily2, 1d
+
+    section Weekly Tasks
+    Motor Performance    :weekly1, 2025-10-13, 7d
+    Sensor Calibration  :weekly2, 2025-10-13, 7d
+    Software Updates    :weekly3, 2025-10-13, 7d
+
+    section Monthly Service
+    Full System Check   :monthly1, 2025-10-13, 30d
+    Component Replace   :monthly2, 2025-10-13, 30d
+    Certification      :monthly3, 2025-10-13, 30d

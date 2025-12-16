@@ -1,0 +1,17 @@
+graph TD
+    subgraph Monitoring
+        M1[Metrics Collection] --> M2[Analysis]
+        M2 --> M3[Bottleneck Detection]
+    end
+
+    subgraph Optimization
+        M3 --> O1[Strategy Development]
+        O1 --> O2[Implementation]
+        O2 --> O3[Validation]
+    end
+
+    subgraph Review
+        O3 --> R1[Performance Testing]
+        R1 --> R2[Results Analysis]
+        R2 --> M1
+    end

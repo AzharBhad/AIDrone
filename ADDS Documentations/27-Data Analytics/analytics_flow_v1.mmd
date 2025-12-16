@@ -1,0 +1,17 @@
+graph TD
+    subgraph Collection
+        C1[Data Sources] --> C2[Integration]
+        C2 --> C3[Storage]
+    end
+
+    subgraph Processing
+        C3 --> P1[Data Cleaning]
+        P1 --> P2[Analysis]
+        P2 --> P3[Model Training]
+    end
+
+    subgraph Output
+        P3 --> O1[Visualization]
+        O1 --> O2[Reporting]
+        O2 --> O3[Actions]
+    end

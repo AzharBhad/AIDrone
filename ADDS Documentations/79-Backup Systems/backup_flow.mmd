@@ -1,0 +1,17 @@
+graph TD
+    subgraph Source
+        S1[Production DB] --> B1[Backup Agent]
+        S2[File Systems] --> B1
+    end
+
+    subgraph Processing
+        B1 --> P1[Compression]
+        P1 --> P2[Encryption]
+        P2 --> P3[Verification]
+    end
+
+    subgraph Storage
+        P3 --> ST1[Primary Storage]
+        ST1 --> ST2[Secondary Site]
+        ST2 --> ST3[Cold Storage]
+    end

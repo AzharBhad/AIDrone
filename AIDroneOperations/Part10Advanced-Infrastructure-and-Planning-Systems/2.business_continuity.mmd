@@ -1,0 +1,16 @@
+%%2. Business Continuity Workflow
+stateDiagram-v2
+    [*] --> Normal_Operations
+    Normal_Operations --> Incident_Detection: Event Detected
+    Incident_Detection --> Impact_Assessment
+    Impact_Assessment --> Minor_Incident
+    Impact_Assessment --> Major_Incident
+    Impact_Assessment --> Disaster
+    Minor_Incident --> Recovery_Procedures
+    Major_Incident --> Crisis_Management
+    Disaster --> DR_Plan_Activation
+    Recovery_Procedures --> Normal_Operations
+    Crisis_Management --> Recovery_Procedures
+    DR_Plan_Activation --> Crisis_Management
+    Recovery_Procedures --> Post_Incident_Review
+    Post_Incident_Review --> Normal_Operations

@@ -1,0 +1,40 @@
+api_specifications:
+  version: "2.0"
+  base_url: "https://api.adds.com/v2"
+  authentication:
+    methods:
+      - type: "OAuth 2.0"
+      - type: "API Key"
+      - type: "Client Certificates"
+
+endpoints:
+  order_management:
+    create_order:
+      path: "/orders"
+      method: "POST"
+      parameters:
+        - name: "pickup_location"
+          type: "GeoJSON"
+          required: true
+        - name: "delivery_location"
+          type: "GeoJSON"
+          required: true
+        - name: "package_details"
+          type: "Object"
+          required: true
+      responses:
+        200: "Order created successfully"
+        400: "Invalid parameters"
+        401: "Unauthorized"
+
+  flight_control:
+    get_drone_status:
+      path: "/drones/{drone_id}/status"
+      method: "GET"
+      parameters:
+        - name: "drone_id"
+          type: "string"
+          required: true
+      responses:
+        200: "Drone status retrieved"
+        404: "Drone not found"

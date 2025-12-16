@@ -1,0 +1,18 @@
+graph TD
+    subgraph Login
+        U1[User] --> L1[Login Request]
+        L1 --> L2[Identity Provider]
+        L2 --> L3[MFA Verification]
+    end
+
+    subgraph Authorization
+        L3 --> A1[Token Generation]
+        A1 --> A2[Permission Check]
+        A2 --> A3[Access Grant]
+    end
+
+    subgraph Session
+        A3 --> S1[Session Creation]
+        S1 --> S2[Activity Monitor]
+        S2 --> S3[Session Termination]
+    end

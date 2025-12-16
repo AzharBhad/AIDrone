@@ -1,0 +1,33 @@
+financial_operations:
+  revenue_streams:
+    delivery_services:
+      standard:
+        base_rate: "15.00 USD"
+        per_km: "2.00 USD"
+        weight_multiplier: "1.5x per kg"
+      premium:
+        base_rate: "25.00 USD"
+        per_km: "3.00 USD"
+        weight_multiplier: "2x per kg"
+
+  cost_management:
+    operational_costs:
+      fixed:
+        - category: "Infrastructure"
+          monthly: "250,000 USD"
+        - category: "Personnel"
+          monthly: "400,000 USD"
+      variable:
+        - category: "Maintenance"
+          per_flight: "5.00 USD"
+        - category: "Energy"
+          per_km: "0.50 USD"
+
+  financial_controls:
+    auditing:
+      internal:
+        frequency: "Monthly"
+        scope: ["Revenue", "Expenses", "Compliance"]
+      external:
+        frequency: "Yearly"
+        auditor: "Big Four Firm"

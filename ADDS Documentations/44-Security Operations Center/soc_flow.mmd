@@ -1,0 +1,17 @@
+graph TD
+    subgraph Monitoring
+        M1[Log Collection] --> M2[Analysis]
+        M2 --> M3[Alert Generation]
+    end
+
+    subgraph Response
+        M3 --> R1[Triage]
+        R1 --> R2[Investigation]
+        R2 --> R3[Remediation]
+    end
+
+    subgraph Recovery
+        R3 --> C1[Containment]
+        C1 --> C2[Eradication]
+        C2 --> C3[Documentation]
+    end

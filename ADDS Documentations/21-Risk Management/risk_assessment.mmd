@@ -1,0 +1,24 @@
+%%Risk Assessment Flow
+graph TD
+    subgraph Identification
+        I1[Risk Discovery] --> I2[Risk Analysis]
+        I2 --> I3[Risk Classification]
+    end
+
+    subgraph Assessment
+        I3 --> A1[Impact Analysis]
+        A1 --> A2[Probability Assessment]
+        A2 --> A3[Risk Rating]
+    end
+
+    subgraph Mitigation
+        A3 --> M1[Strategy Development]
+        M1 --> M2[Implementation]
+        M2 --> M3[Monitoring]
+    end
+
+    subgraph Review
+        M3 --> R1[Performance Review]
+        R1 --> R2[Strategy Adjustment]
+        R2 --> I1
+    end

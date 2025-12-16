@@ -1,0 +1,28 @@
+monitoring_framework:
+  metrics_collection:
+    system_metrics:
+      infrastructure:
+        - name: "CPU Usage"
+          threshold: "80%"
+          interval: "1 minute"
+        - name: "Memory Usage"
+          threshold: "85%"
+          interval: "1 minute"
+
+    business_metrics:
+      operations:
+        - name: "Delivery Success Rate"
+          target: "99.9%"
+          window: "24 hours"
+        - name: "Average Delivery Time"
+          target: "< 30 minutes"
+          window: "1 hour"
+
+  alerting:
+    rules:
+      critical:
+        response_time: "5 minutes"
+        channels: ["PagerDuty", "SMS", "Email"]
+      warning:
+        response_time: "30 minutes"
+        channels: ["Email", "Slack"]

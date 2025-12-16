@@ -1,0 +1,16 @@
+graph TD
+    subgraph Core_Systems
+        C1[Flight Control] --> C2[Data Center]
+        C2 --> C3[Backup Systems]
+    end
+
+    subgraph Edge_Computing
+        E1[Drone Systems] --> E2[Local Processing]
+        E2 --> E3[Edge Servers]
+    end
+
+    subgraph Cloud_Services
+        E3 --> S1[Cloud Storage]
+        S1 --> S2[Analytics]
+        S2 --> S3[API Services]
+    end

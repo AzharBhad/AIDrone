@@ -1,0 +1,35 @@
+deployment_architecture:
+  environments:
+    production:
+      regions:
+        - name: "us-east"
+          type: "Primary"
+          components: ["All services"]
+        - name: "us-west"
+          type: "DR"
+          components: ["Critical services"]
+
+    non_production:
+      environments:
+        - name: "Development"
+          refresh: "Daily"
+        - name: "Staging"
+          refresh: "Weekly"
+        - name: "QA"
+          refresh: "On-demand"
+
+  deployment_strategies:
+    methodologies:
+      blue_green:
+        use_case: "Major releases"
+        rollback_time: "< 1 minute"
+      canary:
+        use_case: "Feature releases"
+        increment: "10% traffic"
+
+    automation:
+      tools:
+        - name: "ArgoCD"
+          purpose: "GitOps deployments"
+        - name: "Terraform"
+          purpose: "Infrastructure as Code"

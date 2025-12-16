@@ -1,0 +1,10 @@
+%%7. Emergency Procedures
+stateDiagram-v2
+    [*] --> Normal_Operation
+    Normal_Operation --> Warning_State: Issue Detected
+    Warning_State --> Emergency_State: Escalation
+    Warning_State --> Normal_Operation: Resolved
+    Emergency_State --> Recovery_Mode
+    Recovery_Mode --> Normal_Operation
+    Emergency_State --> Critical_Failure
+    Critical_Failure --> [*]

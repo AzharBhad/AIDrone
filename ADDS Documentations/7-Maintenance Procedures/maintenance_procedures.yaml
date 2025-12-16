@@ -1,0 +1,30 @@
+maintenance_types:
+  routine_maintenance:
+    daily_checks:
+      - task: "Visual inspection"
+        duration: "15 minutes"
+        tools_required: ["Inspection checklist", "Camera"]
+      - task: "System diagnostics"
+        duration: "30 minutes"
+        tools_required: ["Diagnostic software", "Testing equipment"]
+
+    weekly_service:
+      - task: "Component testing"
+        duration: "2 hours"
+        tools_required: ["Test equipment", "Calibration tools"]
+      - task: "Software updates"
+        duration: "1 hour"
+        tools_required: ["Update software", "Backup system"]
+
+  preventive_maintenance:
+    schedule:
+      - interval: "100 flight hours"
+        tasks:
+          - "Motor inspection"
+          - "Battery performance test"
+          - "Sensor calibration"
+      - interval: "500 flight hours"
+        tasks:
+          - "Full system overhaul"
+          - "Component replacement"
+          - "Certification renewal"

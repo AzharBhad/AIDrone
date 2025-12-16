@@ -1,0 +1,17 @@
+graph TD
+    subgraph Pipeline
+        P1[Code Commit] --> P2[Build]
+        P2 --> P3[Test]
+    end
+
+    subgraph Deployment
+        P3 --> D1[Staging]
+        D1 --> D2[Canary]
+        D2 --> D3[Production]
+    end
+
+    subgraph Monitoring
+        D3 --> M1[Performance]
+        M1 --> M2[Health Check]
+        M2 --> M3[Rollback if needed]
+    end

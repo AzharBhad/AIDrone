@@ -1,0 +1,16 @@
+graph TD
+    subgraph Collection
+        S1[Services] --> E1[Exporters]
+        E1 --> C1[Collectors]
+    end
+
+    subgraph Storage
+        C1 --> D1[Time Series DB]
+        D1 --> D2[Long-term Storage]
+    end
+
+    subgraph Visualization
+        D1 --> V1[Dashboards]
+        V1 --> V2[Alerts]
+        V2 --> V3[Reports]
+    end

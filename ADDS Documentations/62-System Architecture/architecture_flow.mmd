@@ -1,0 +1,17 @@
+graph TD
+    subgraph Frontend
+        F1[Mobile App] --> F2[Web Interface]
+        F2 --> F3[Admin Console]
+    end
+
+    subgraph Services
+        F3 --> S1[API Gateway]
+        S1 --> S2[Service Mesh]
+        S2 --> S3[Microservices]
+    end
+
+    subgraph Backend
+        S3 --> B1[Data Layer]
+        B1 --> B2[Storage]
+        B2 --> B3[Analytics]
+    end

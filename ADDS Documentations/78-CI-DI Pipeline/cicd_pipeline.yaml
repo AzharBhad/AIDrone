@@ -1,0 +1,28 @@
+cicd_pipeline:
+  pipeline_stages:
+    build:
+      steps:
+        - name: "Code checkout"
+          tool: "Git"
+        - name: "Dependency check"
+          tool: "SonarQube"
+        - name: "Compilation"
+          tool: "Maven/Gradle"
+
+    test:
+      stages:
+        - name: "Unit tests"
+          coverage: "95%"
+        - name: "Integration tests"
+          coverage: "90%"
+        - name: "Security scan"
+          tool: "Snyk"
+
+    deployment:
+      environments:
+        - name: "Development"
+          strategy: "Direct"
+        - name: "Staging"
+          strategy: "Blue-Green"
+        - name: "Production"
+          strategy: "Canary"

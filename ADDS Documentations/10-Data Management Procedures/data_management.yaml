@@ -1,0 +1,31 @@
+#Data Architecture
+data_management:
+  data_classification:
+    sensitive_data:
+      - "Customer information"
+      - "Payment details"
+      - "Location data"
+      - retention_period: "2 years"
+
+    operational_data:
+      - "Flight logs"
+      - "System telemetry"
+      - "Maintenance records"
+      - retention_period: "5 years"
+
+    analytical_data:
+      - "Performance metrics"
+      - "Usage statistics"
+      - "Trend analysis"
+      - retention_period: "3 years"
+
+  data_processing:
+    real_time:
+      - "Position tracking"
+      - "System monitoring"
+      - "Alert generation"
+
+    batch:
+      - "Performance analysis"
+      - "Reporting"
+      - "Trend calculation"

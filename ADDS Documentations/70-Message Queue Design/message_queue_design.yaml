@@ -1,0 +1,36 @@
+message_queue:
+  queue_systems:
+    primary:
+      technology: "Apache Kafka"
+      configuration:
+        brokers: 5
+        replication_factor: 3
+        partitions: "Dynamic"
+      topics:
+        - name: "flight-telemetry"
+          retention: "24 hours"
+        - name: "delivery-events"
+          retention: "7 days"
+
+    secondary:
+      technology: "RabbitMQ"
+      configuration:
+        clusters: 3
+        queues:
+          - name: "notifications"
+            type: "Fanout"
+          - name: "tasks"
+            type: "Direct"
+
+  message_patterns:
+    pub_sub:
+      implementation: "Kafka Streams"
+      guarantees:
+        delivery: "At-least-once"
+        ordering: "Per partition"
+
+    point_to_point:
+      implementation: "RabbitMQ"
+      guarantees:
+        delivery: "Exactly-once"
+        acknowledgment: "Required"

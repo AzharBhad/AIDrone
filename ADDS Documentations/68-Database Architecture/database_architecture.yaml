@@ -1,0 +1,47 @@
+database_architecture:
+  data_stores:
+    operational:
+      primary:
+        type: "PostgreSQL"
+        version: "16.2"
+        setup:
+          replication: "Multi-AZ"
+          read_replicas: 3
+          backup: "Continuous"
+
+      caching:
+        type: "Redis Cluster"
+        configuration:
+          nodes: 6
+          sharding: "Hash slots"
+          persistence: "RDB + AOF"
+
+    analytical:
+      data_warehouse:
+        type: "Snowflake"
+        architecture:
+          warehouses:
+            - name: "ETL"
+              size: "X-Large"
+            - name: "Analytics"
+              size: "Large"
+          storage: "Multi-cluster"
+
+  data_management:
+    partitioning:
+      strategy:
+        temporal:
+          interval: "Monthly"
+          retention: "24 months"
+        spatial:
+          method: "Geohash"
+          precision: 6
+
+    optimization:
+      indexes:
+        - type: "B-tree"
+          for: "Primary keys"
+        - type: "GiST"
+          for: "Spatial data"
+        - type: "BRIN"
+          for: "Time-series data"
