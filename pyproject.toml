@@ -1,0 +1,25 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "aidrone"
+version = "0.1.0"
+description = "All-weather urban precision-delivery drone autonomy stack (PX4 + ROS 2 companion computer) with closed-loop simulator"
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "Proprietary" }
+authors = [{ name = "AzharBhad" }]
+dependencies = ["numpy>=1.24", "pyyaml>=6.0", "cryptography>=41"]
+
+[project.optional-dependencies]
+dev = ["pytest>=7"]
+
+[project.scripts]
+aidrone = "aidrone.__main__:main"
+
+[tool.setuptools]
+packages = ["aidrone", "aidrone.sim"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
