@@ -1,0 +1,28 @@
+# Vehicle profile for the all-weather urban courier (see aidrone/config.py).
+# Any field of VehicleProfile / WeatherLimits can be overridden here.
+vehicle:
+  base: urban_courier          # or heavy_lift_50kg (Documentation/Custom recommendation.md)
+  max_payload_kg: 5.0
+  motor_count: 6               # hexacopter: survives a single motor failure
+  cruise_speed: 15.0           # m/s
+  cruise_altitude_agl: 100.0
+  max_altitude_agl: 120.0      # regulatory ceiling; raise only with an approved waiver/SORA
+  battery_wh: 1600
+  reserve_fraction: 0.20
+  has_radar: true              # fog / heavy-rain detect-and-avoid
+  has_thermal_camera: true     # night people detection at the drop zone
+  has_nir_illuminator: true    # VIO + marker reading at night
+  has_parachute: true          # ASTM F3322 style recovery
+  has_winch: true              # tethered drops: balconies, courtyards, crowded gardens
+  tether_length_m: 25.0
+  limits:
+    max_sustained_wind: 15.0   # m/s (54 km/h)
+    max_gust: 21.0             # m/s peak
+    max_rain_mm_h: 50.0        # IP67 + hydrophobic optics
+    max_snow_mm_h: 10.0
+    min_temp_c: -20.0
+    max_temp_c: 50.0
+    min_visibility_m: 100.0
+    lightning_standoff_km: 16.0
+    lightning_land_km: 8.0
+    icing_protection: true
